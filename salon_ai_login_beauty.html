@@ -1,0 +1,421 @@
+
+<h2 class="sr-only">Salon AI Platform login page with four color themes and beauty salon decorative elements — scissors, combs, lipstick, nail polish, and mirrors — with Arabic and English language switching.</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body,div,span,input,button{font-family:'Segoe UI',system-ui,sans-serif;}
+.controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;}
+.theme-pills{display:flex;gap:5px;}
+.tpill{padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:transparent;color:var(--color-text-secondary);font-size:11px;font-weight:500;cursor:pointer;transition:all 0.18s;}
+.shell{width:100%;height:430px;border-radius:14px;overflow:hidden;display:flex;transition:background 0.3s;}
+.deco-panel{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:26px 24px 28px;}
+.deco-panel svg.bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.art-content{position:relative;z-index:3;}
+.art-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:14px;}
+.pulse{width:5px;height:5px;border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+.art-headline{font-size:20px;font-weight:600;line-height:1.35;margin-bottom:7px;}
+.art-sub{font-size:11px;line-height:1.65;opacity:0.55;}
+.login-panel{width:310px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 30px;position:relative;}
+.lang-btn{position:absolute;top:14px;font-size:10px;font-weight:600;padding:4px 13px;border-radius:20px;cursor:pointer;z-index:10;border:1px solid;}
+.salon-logo{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:13px;font-size:20px;}
+.form-title{font-size:16px;font-weight:600;margin-bottom:3px;text-align:center;}
+.form-sub{font-size:11px;text-align:center;opacity:0.5;margin-bottom:22px;}
+.fgroup{width:100%;margin-bottom:11px;}
+.flabel{font-size:10px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;opacity:0.55;display:block;margin-bottom:5px;}
+.finput-wrap{position:relative;width:100%;}
+.finput-wrap i{position:absolute;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;}
+.finput{width:100%;height:40px;border-radius:9px;border:1.5px solid;font-size:12px;outline:none;background:transparent;transition:border-color 0.2s,box-shadow 0.2s;}
+.frow{display:flex;align-items:center;width:100%;gap:6px;margin-bottom:12px;}
+.fchk{width:16px;height:16px;border-radius:4px;border:1.5px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fchk-lbl{font-size:10px;opacity:0.55;}
+.spacer{flex:1;}
+.freset{font-size:10px;font-weight:600;cursor:pointer;}
+.fbtn{width:100%;height:40px;border-radius:9px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:transform 0.15s,opacity 0.15s;margin-bottom:10px;}
+.fbtn:hover{transform:translateY(-1px);opacity:0.92;}
+.ffoot{font-size:10px;text-align:center;opacity:0.35;}
+</style>
+
+<div class="controls">
+  <div class="theme-pills" id="pills"></div>
+  <div style="display:flex;gap:4px;">
+    <button id="btn-ar" onclick="setLang('ar')" style="padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:var(--color-text-primary);color:var(--color-background-primary);font-size:11px;cursor:pointer;">العربية</button>
+    <button id="btn-en" onclick="setLang('en')" style="padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:transparent;color:var(--color-text-secondary);font-size:11px;cursor:pointer;">English</button>
+  </div>
+</div>
+
+<div class="shell" id="shell">
+  <div class="deco-panel" id="deco"></div>
+  <div class="login-panel" id="login">
+    <button class="lang-btn" id="lang-pill" onclick="toggleLang()"></button>
+    <div class="salon-logo" id="s-logo"></div>
+    <div class="form-title" id="s-title"></div>
+    <div class="form-sub" id="s-sub"></div>
+    <div class="fgroup"><label class="flabel" id="l-email"></label><div class="finput-wrap" id="w-email"><i class="ti ti-mail" id="i-email"></i><input class="finput" id="inp-email" type="email"></div></div>
+    <div class="fgroup"><label class="flabel" id="l-pass"></label><div class="finput-wrap" id="w-pass"><i class="ti ti-lock" id="i-pass"></i><input class="finput" id="inp-pass" type="password"></div></div>
+    <div class="frow" id="f-row"><div class="fchk" id="f-chk"><i class="ti ti-check" style="font-size:10px"></i></div><span class="fchk-lbl" id="l-rem"></span><div class="spacer"></div><span class="freset" id="l-forgot"></span></div>
+    <button class="fbtn" id="f-btn"></button>
+    <div class="ffoot" id="f-foot"></div>
+  </div>
+</div>
+
+<script>
+/* ── BEAUTY ELEMENTS — reusable SVG snippet builders ───────────── */
+function scissors(x,y,rot,color,op){
+  return `<g transform="translate(${x},${y}) rotate(${rot})" opacity="${op}" stroke="${color}" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="-11" cy="-9" rx="9" ry="11"/>
+    <ellipse cx="11" cy="-9" rx="9" ry="11"/>
+    <line x1="-3" y1="1" x2="18" y2="36"/>
+    <line x1="3" y1="1" x2="-18" y2="36"/>
+    <circle cx="0" cy="18" r="2.2" fill="${color}" stroke="none"/>
+  </g>`;
+}
+function comb(x,y,rot,color,op){
+  const teeth=[];
+  for(let i=0;i<9;i++) teeth.push(`<line x1="${5+i*5}" y1="7" x2="${5+i*5}" y2="20" stroke="${color}" stroke-width="0.8"/>`);
+  return `<g transform="translate(${x},${y}) rotate(${rot})" opacity="${op}" stroke="${color}" fill="none" stroke-linecap="round">
+    <rect x="0" y="0" width="48" height="8" rx="3" stroke-width="0.9"/>
+    ${teeth.join('')}
+  </g>`;
+}
+function lipstick(x,y,rot,color,op){
+  return `<g transform="translate(${x},${y}) rotate(${rot})" opacity="${op}" stroke="${color}" stroke-width="0.9" fill="none" stroke-linecap="round">
+    <rect x="-7" y="8" width="14" height="26" rx="2"/>
+    <rect x="-9" y="-2" width="18" height="12" rx="3"/>
+    <rect x="-5" y="-16" width="10" height="16" rx="1.5"/>
+    <path d="M-5,-16 Q0,-22 5,-16" stroke-width="1"/>
+  </g>`;
+}
+function nailpolish(x,y,rot,color,op){
+  return `<g transform="translate(${x},${y}) rotate(${rot})" opacity="${op}" stroke="${color}" stroke-width="0.9" fill="none" stroke-linecap="round">
+    <ellipse cx="0" cy="16" rx="11" ry="14"/>
+    <rect x="-4" y="-4" width="8" height="8" rx="1"/>
+    <rect x="-7" y="-13" width="14" height="11" rx="2"/>
+  </g>`;
+}
+function mirror(x,y,rot,color,op){
+  return `<g transform="translate(${x},${y}) rotate(${rot})" opacity="${op}" stroke="${color}" stroke-width="0.9" fill="none" stroke-linecap="round">
+    <circle cx="0" cy="0" r="17"/>
+    <circle cx="0" cy="0" r="13"/>
+    <rect x="-5" y="17" width="10" height="20" rx="4"/>
+  </g>`;
+}
+function hairwave(x,y,color,op){
+  return `<path d="M${x} ${y} C${x+10} ${y-10} ${x+20} ${y+10} ${x+30} ${y} S${x+50} ${y-10} ${x+60} ${y}" stroke="${color}" stroke-width="1" fill="none" opacity="${op}" stroke-linecap="round"/>`;
+}
+function brush(x,y,rot,color,op){
+  return `<g transform="translate(${x},${y}) rotate(${rot})" opacity="${op}" stroke="${color}" stroke-width="0.9" fill="none" stroke-linecap="round">
+    <rect x="-3" y="-30" width="6" height="32" rx="1.5"/>
+    <ellipse cx="0" cy="10" rx="6" ry="12"/>
+    <line x1="0" y1="-30" x2="0" y2="-38"/>
+  </g>`;
+}
+
+const THEMES = {
+  gold:{
+    label:'✦ Gold',pill:'#C9A84C',pillText:'#0F0F14',
+    shellBg:'#0F0F14',decoBg:'#0A0A10',
+    decoSvg:`<svg class="bg" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <rect width="380" height="430" fill="#0A0A10"/>
+      <defs>
+        <pattern id="gg" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="rgba(201,168,76,0.07)" stroke-width="0.5"/></pattern>
+        <radialGradient id="g1" cx="50%" cy="38%" r="55%"><stop offset="0%" stop-color="#C9A84C" stop-opacity="0.18"/><stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/></radialGradient>
+        <radialGradient id="g2" cx="80%" cy="80%" r="40%"><stop offset="0%" stop-color="#8B6E2E" stop-opacity="0.1"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="380" height="430" fill="url(#gg)"/>
+      <rect width="380" height="430" fill="url(#g1)"/>
+      <rect width="380" height="430" fill="url(#g2)"/>
+      <polygon points="190,28 268,68 268,160 190,200 112,160 112,68" fill="none" stroke="rgba(201,168,76,0.18)" stroke-width="1.2"/>
+      <polygon points="190,50 252,84 252,152 190,178 128,152 128,84" fill="none" stroke="rgba(201,168,76,0.09)" stroke-width="0.6"/>
+      <rect x="163" y="98" width="54" height="54" fill="none" stroke="rgba(201,168,76,0.22)" stroke-width="1" transform="rotate(45,190,125)"/>
+      <rect x="175" y="110" width="30" height="30" fill="rgba(201,168,76,0.05)" stroke="rgba(201,168,76,0.18)" stroke-width="0.6" transform="rotate(45,190,125)"/>
+      <circle cx="190" cy="125" r="6" fill="#C9A84C" opacity="0.85"/>
+      <circle cx="190" cy="125" r="14" fill="none" stroke="#C9A84C" stroke-width="0.6" opacity="0.35"/>
+      <circle cx="190" cy="125" r="24" fill="none" stroke="#C9A84C" stroke-width="0.3" opacity="0.18"/>
+      <line x1="190" y1="125" x2="190" y2="28" stroke="rgba(201,168,76,0.1)" stroke-width="0.6"/>
+      <line x1="190" y1="125" x2="268" y2="125" stroke="rgba(201,168,76,0.1)" stroke-width="0.6"/>
+      <line x1="190" y1="125" x2="190" y2="200" stroke="rgba(201,168,76,0.1)" stroke-width="0.6"/>
+      <line x1="190" y1="125" x2="112" y2="125" stroke="rgba(201,168,76,0.1)" stroke-width="0.6"/>
+      <line x1="190" y1="125" x2="268" y2="68" stroke="rgba(201,168,76,0.06)" stroke-width="0.5"/>
+      <line x1="190" y1="125" x2="112" y2="68" stroke="rgba(201,168,76,0.06)" stroke-width="0.5"/>
+      <line x1="190" y1="125" x2="268" y2="182" stroke="rgba(201,168,76,0.06)" stroke-width="0.5"/>
+      <line x1="190" y1="125" x2="112" y2="182" stroke="rgba(201,168,76,0.06)" stroke-width="0.5"/>
+      <g transform="translate(316,290) scale(0.65)" opacity="0.22"><polygon points="0,-42 11,-15 40,-25 19,0 40,25 11,15 0,42 -11,15 -40,25 -19,0 -40,-25 -11,-15" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle r="13" fill="none" stroke="#C9A84C" stroke-width="0.8"/></g>
+      <g transform="translate(44,260) scale(0.45)" opacity="0.18"><polygon points="0,-42 11,-15 40,-25 19,0 40,25 11,15 0,42 -11,15 -40,25 -19,0 -40,-25 -11,-15" fill="none" stroke="#C9A84C" stroke-width="1.5"/></g>
+      <rect x="10" y="10" width="26" height="26" fill="none" stroke="rgba(201,168,76,0.22)" stroke-width="0.8" transform="rotate(45,23,23)"/>
+      <circle cx="23" cy="23" r="3" fill="rgba(201,168,76,0.35)"/>
+      <rect x="344" y="10" width="26" height="26" fill="none" stroke="rgba(201,168,76,0.22)" stroke-width="0.8" transform="rotate(45,357,23)"/>
+      <circle cx="357" cy="23" r="3" fill="rgba(201,168,76,0.35)"/>
+      <path d="M0 310 Q95 290 190 310 T380 310 L380 430 L0 430Z" fill="rgba(201,168,76,0.03)"/>
+      <path d="M0 328 Q95 308 190 328 T380 328" fill="none" stroke="rgba(201,168,76,0.07)" stroke-width="0.8"/>
+      <circle cx="66" cy="220" r="2.5" fill="#C9A84C" opacity="0.4"/>
+      <circle cx="330" cy="240" r="2" fill="#C9A84C" opacity="0.3"/>
+      <circle cx="150" cy="290" r="1.5" fill="#C9A84C" opacity="0.5"/>
+      <circle cx="275" cy="85" r="2" fill="#C9A84C" opacity="0.28"/>
+      ${scissors(70,230,'-20','#C9A84C',0.18)}
+      ${comb(42,355,'8','#C9A84C',0.13)}
+      ${mirror(318,230,'12','#C9A84C',0.14)}
+      ${hairwave(100,365,'#C9A84C',0.12)}
+      ${hairwave(200,380,'#C9A84C',0.09)}
+    </svg>`,
+    badgeBg:'rgba(201,168,76,0.1)',badgeColor:'#C9A84C',badgeBorder:'rgba(201,168,76,0.2)',
+    headlineColor:'#F0EDE8',subColor:'rgba(240,237,232,0.5)',
+    formBg:'#191924',formBorder:'rgba(201,168,76,0.12)',
+    accent:'#C9A84C',accentText:'#0F0F14',
+    inputBorder:'rgba(201,168,76,0.2)',inputFocus:'rgba(201,168,76,0.55)',inputBg:'rgba(201,168,76,0.04)',
+    inputColor:'#F0EDE8',iconColor:'rgba(201,168,76,0.4)',titleColor:'#F0EDE8',
+    chkBg:'rgba(201,168,76,0.1)',chkBorder:'rgba(201,168,76,0.3)',chkIcon:'#C9A84C',
+    langBg:'rgba(201,168,76,0.1)',langColor:'#C9A84C',langBorder:'rgba(201,168,76,0.25)',
+    footColor:'rgba(240,237,232,0.35)',
+    en:{badge:'✦ SALON AI',headline:'Your salon,\nperfectly orchestrated.',sub:'Smart bookings and AI automation,\nbuilt for Saudi beauty.',title:'Welcome back',titleSub:'Sign in to your dashboard',logoSymbol:'✦',email:'Email address',pass:'Password',rem:'Keep me signed in',forgot:'Forgot password?',btn:'Sign In',foot:'Salon AI · Riyadh'},
+    ar:{badge:'✦ صالون AI',headline:'صالونكِ،\nمُدار باحترافية.',sub:'حجوزات ذكية وأتمتة بالذكاء الاصطناعي،\nمُصمَّمة لصالونات المملكة.',title:'مرحباً بعودتكِ',titleSub:'سجّلي الدخول إلى لوحة تحكمكِ',logoSymbol:'✦',email:'البريد الإلكتروني',pass:'كلمة المرور',rem:'إبقائي مسجّلة الدخول',forgot:'نسيتِ كلمة المرور؟',btn:'تسجيل الدخول',foot:'صالون AI · الرياض'},
+  },
+  rose:{
+    label:'🌸 Rose',pill:'#D4776A',pillText:'white',
+    shellBg:'#FFF5F7',decoBg:'#3D0D1A',
+    decoSvg:`<svg class="bg" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="rg" cx="42%" cy="32%" r="60%"><stop offset="0%" stop-color="#7B1533"/><stop offset="100%" stop-color="#2A060E"/></radialGradient>
+        <radialGradient id="rg2" cx="72%" cy="72%" r="45%"><stop offset="0%" stop-color="#9B2040" stop-opacity="0.55"/><stop offset="100%" stop-color="#2A060E" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="380" height="430" fill="url(#rg)"/>
+      <rect width="380" height="430" fill="url(#rg2)"/>
+      <ellipse cx="190" cy="148" rx="60" ry="32" fill="none" stroke="rgba(244,167,192,0.2)" stroke-width="1" transform="rotate(0,190,148)"/>
+      <ellipse cx="190" cy="148" rx="60" ry="32" fill="none" stroke="rgba(244,167,192,0.15)" stroke-width="0.8" transform="rotate(30,190,148)"/>
+      <ellipse cx="190" cy="148" rx="60" ry="32" fill="none" stroke="rgba(244,167,192,0.13)" stroke-width="0.8" transform="rotate(60,190,148)"/>
+      <ellipse cx="190" cy="148" rx="60" ry="32" fill="none" stroke="rgba(244,167,192,0.15)" stroke-width="0.8" transform="rotate(90,190,148)"/>
+      <ellipse cx="190" cy="148" rx="60" ry="32" fill="none" stroke="rgba(244,167,192,0.13)" stroke-width="0.8" transform="rotate(120,190,148)"/>
+      <ellipse cx="190" cy="148" rx="60" ry="32" fill="none" stroke="rgba(244,167,192,0.15)" stroke-width="0.8" transform="rotate(150,190,148)"/>
+      <circle cx="190" cy="148" r="30" fill="rgba(212,119,106,0.07)" stroke="rgba(244,167,192,0.22)" stroke-width="0.8"/>
+      <circle cx="190" cy="148" r="15" fill="rgba(212,119,106,0.1)" stroke="rgba(244,167,192,0.32)" stroke-width="1"/>
+      <circle cx="190" cy="148" r="5.5" fill="rgba(244,167,192,0.75)"/>
+      <path d="M20 20 Q190 2 360 20" fill="none" stroke="rgba(244,167,192,0.12)" stroke-width="1"/>
+      <path d="M20 430 Q190 412 360 430" fill="none" stroke="rgba(244,167,192,0.09)" stroke-width="0.8"/>
+      <path d="M42 430 C42 370,30 310,54 248 S62 168,42 92" fill="none" stroke="rgba(244,167,192,0.09)" stroke-width="0.8"/>
+      <path d="M338 430 C338 370,350 310,326 248 S318 168,338 92" fill="none" stroke="rgba(244,167,192,0.09)" stroke-width="0.8"/>
+      <ellipse cx="66" cy="88" rx="22" ry="11" fill="rgba(244,167,192,0.06)" stroke="rgba(244,167,192,0.14)" stroke-width="0.6" transform="rotate(-28,66,88)"/>
+      <ellipse cx="320" cy="78" rx="16" ry="8" fill="rgba(244,167,192,0.05)" stroke="rgba(244,167,192,0.11)" stroke-width="0.6" transform="rotate(22,320,78)"/>
+      <path d="M10 32 L10 10 L32 10" fill="none" stroke="rgba(244,167,192,0.28)" stroke-width="1.3"/>
+      <path d="M348 10 L370 10 L370 32" fill="none" stroke="rgba(244,167,192,0.28)" stroke-width="1.3"/>
+      <path d="M10 398 L10 420 L32 420" fill="none" stroke="rgba(244,167,192,0.14)" stroke-width="1"/>
+      <path d="M348 420 L370 420 L370 398" fill="none" stroke="rgba(244,167,192,0.14)" stroke-width="1"/>
+      <circle cx="96" cy="228" r="2.5" fill="rgba(244,167,192,0.38)"/>
+      <circle cx="300" cy="208" r="2" fill="rgba(244,167,192,0.32)"/>
+      <circle cx="155" cy="278" r="1.8" fill="rgba(244,167,192,0.42)"/>
+      <circle cx="240" cy="66" r="2" fill="rgba(244,167,192,0.28)"/>
+      ${lipstick(58,228,'-15','#F4A7C0',0.22)}
+      ${nailpolish(318,215,'8','#F4A7C0',0.2)}
+      ${brush(320,330,'-10','#F4A7C0',0.18)}
+      ${comb(60,350,'5','#F4A7C0',0.15)}
+      ${hairwave(100,390,'#F4A7C0',0.14)}
+      ${hairwave(195,405,'#F4A7C0',0.1)}
+    </svg>`,
+    badgeBg:'rgba(244,167,192,0.12)',badgeColor:'#F4A7C0',badgeBorder:'rgba(244,167,192,0.25)',
+    headlineColor:'white',subColor:'rgba(255,255,255,0.45)',
+    formBg:'#FFFFFF',formBorder:'#F0D0D8',
+    accent:'#D4776A',accentText:'white',
+    inputBorder:'#F0D0D8',inputFocus:'#D4776A',inputBg:'#FFF8FA',
+    inputColor:'#5A3A4A',iconColor:'#D4A7B0',titleColor:'#5A3A4A',
+    chkBg:'#FFF0F5',chkBorder:'#F4A7C0',chkIcon:'#D4776A',
+    langBg:'rgba(212,119,106,0.1)',langColor:'#D4776A',langBorder:'rgba(212,119,106,0.22)',
+    footColor:'rgba(90,58,74,0.35)',
+    en:{badge:'✿ LAMASAT AL JAMAL',headline:'Where beauty meets\nsmart management.',sub:'Crafted for Saudi salons.\nArabic-first, always elegant.',title:'Welcome back',titleSub:'Your clients are waiting',logoSymbol:'✿',email:'Email',pass:'Password',rem:'Keep me signed in',forgot:'Forgot password?',btn:'Enter Dashboard',foot:'Salon AI — لمسة الجمال'},
+    ar:{badge:'لمسة الجمال ✿',headline:'حيث يلتقي الجمال\nبالإدارة الذكية.',sub:'مُصمَّمة للصالونات السعودية.\nعربية أولاً، أناقة دائماً.',title:'مرحباً بعودتكِ',titleSub:'عملاؤكِ في انتظاركِ',logoSymbol:'✿',email:'البريد الإلكتروني',pass:'كلمة المرور',rem:'إبقائي مسجّلة الدخول',forgot:'نسيتِ كلمة المرور؟',btn:'ادخلي إلى لوحتكِ',foot:'صالون AI — لمسة الجمال'},
+  },
+  arctic:{
+    label:'❄ Arctic',pill:'#2563EB',pillText:'white',
+    shellBg:'#F7F8FA',decoBg:'#0A1628',
+    decoSvg:`<svg class="bg" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <rect width="380" height="430" fill="#0A1628"/>
+      <defs>
+        <pattern id="ag" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M22 0H0V22" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/></pattern>
+        <radialGradient id="ab" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#1e40af" stop-opacity="0.3"/><stop offset="100%" stop-color="#1e40af" stop-opacity="0"/></radialGradient>
+        <radialGradient id="ab2" cx="80%" cy="80%" r="40%"><stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.18"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="380" height="430" fill="url(#ag)"/>
+      <rect width="380" height="430" fill="url(#ab)"/>
+      <rect width="380" height="430" fill="url(#ab2)"/>
+      <polygon points="190,26 260,64 260,148 190,182 120,148 120,64" fill="none" stroke="rgba(59,130,246,0.2)" stroke-width="1.2"/>
+      <polygon points="190,46 248,80 248,140 190,166 132,140 132,80" fill="rgba(59,130,246,0.03)" stroke="rgba(59,130,246,0.12)" stroke-width="0.7"/>
+      <polygon points="190,70 228,92 228,130 190,150 152,130 152,92" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.18)" stroke-width="0.5"/>
+      <circle cx="190" cy="112" r="20" fill="rgba(59,130,246,0.07)" stroke="rgba(59,130,246,0.22)" stroke-width="1"/>
+      <line x1="190" y1="92" x2="190" y2="132" stroke="rgba(59,130,246,0.28)" stroke-width="1.2"/>
+      <line x1="170" y1="112" x2="210" y2="112" stroke="rgba(59,130,246,0.28)" stroke-width="1.2"/>
+      <circle cx="190" cy="112" r="4.5" fill="rgba(59,130,246,0.7)"/>
+      <line x1="30" y1="200" x2="350" y2="200" stroke="rgba(59,130,246,0.07)" stroke-width="0.5" stroke-dasharray="4,5"/>
+      <line x1="30" y1="230" x2="350" y2="230" stroke="rgba(59,130,246,0.06)" stroke-width="0.5" stroke-dasharray="4,5"/>
+      <line x1="30" y1="260" x2="350" y2="260" stroke="rgba(59,130,246,0.05)" stroke-width="0.5" stroke-dasharray="4,5"/>
+      <rect x="30" y="210" width="9" height="56" rx="2" fill="rgba(59,130,246,0.14)"/>
+      <rect x="46" y="224" width="9" height="42" rx="2" fill="rgba(59,130,246,0.2)"/>
+      <rect x="62" y="198" width="9" height="68" rx="2" fill="rgba(59,130,246,0.11)"/>
+      <rect x="78" y="216" width="9" height="50" rx="2" fill="rgba(59,130,246,0.16)"/>
+      <circle cx="296" cy="96" r="24" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.16)" stroke-width="0.8"/>
+      <circle cx="296" cy="96" r="13" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.22)" stroke-width="0.6"/>
+      <circle cx="296" cy="96" r="4.5" fill="rgba(59,130,246,0.55)"/>
+      <line x1="268" y1="108" x2="245" y2="128" stroke="rgba(59,130,246,0.12)" stroke-width="0.8"/>
+      <polygon points="90,378 118,348 146,378" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.12)" stroke-width="0.7"/>
+      <polygon points="160,392 190,358 220,392" fill="rgba(59,130,246,0.04)" stroke="rgba(59,130,246,0.1)" stroke-width="0.7"/>
+      <polygon points="232,378 260,348 288,378" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.12)" stroke-width="0.7"/>
+      <circle cx="62" cy="175" r="3" fill="rgba(59,130,246,0.3)"/>
+      <circle cx="330" cy="185" r="2.5" fill="rgba(59,130,246,0.25)"/>
+      ${scissors(312,240,'20','#60A5FA',0.2)}
+      ${mirror(60,240,'-10','#60A5FA',0.18)}
+      ${comb(110,355,'0','#60A5FA',0.16)}
+      ${nailpolish(320,330,'5','#60A5FA',0.18)}
+      ${hairwave(150,400,'#60A5FA',0.13)}
+    </svg>`,
+    badgeBg:'rgba(59,130,246,0.1)',badgeColor:'#60A5FA',badgeBorder:'rgba(59,130,246,0.22)',
+    headlineColor:'white',subColor:'rgba(255,255,255,0.42)',
+    formBg:'#FFFFFF',formBorder:'#E5E7EB',
+    accent:'#2563EB',accentText:'white',
+    inputBorder:'#E5E7EB',inputFocus:'#2563EB',inputBg:'#F9FAFB',
+    inputColor:'#111827',iconColor:'#9CA3AF',titleColor:'#111827',
+    chkBg:'#EFF6FF',chkBorder:'#2563EB',chkIcon:'#2563EB',
+    langBg:'rgba(37,99,235,0.08)',langColor:'#2563EB',langBorder:'rgba(37,99,235,0.22)',
+    footColor:'rgba(17,24,39,0.35)',
+    en:{badge:'◈ SALON AI PLATFORM',headline:'Professional salon\nmanagement, simplified.',sub:'Streamlined operations for\nmodern Saudi beauty businesses.',title:'Sign in',titleSub:'Access your management platform',logoSymbol:'◈',email:'Email address',pass:'Password',rem:'Remember me',forgot:'Reset password',btn:'Continue',foot:'Salon AI Platform · Riyadh, KSA'},
+    ar:{badge:'منصة صالون AI ◈',headline:'إدارة صالون احترافية،\nبكل سهولة.',sub:'عمليات مبسّطة لأعمال التجميل\nالسعودية الحديثة.',title:'تسجيل الدخول',titleSub:'ادخلي إلى منصة الإدارة',logoSymbol:'◈',email:'البريد الإلكتروني',pass:'كلمة المرور',rem:'تذكّريني',forgot:'إعادة تعيين كلمة المرور',btn:'متابعة',foot:'منصة صالون AI · الرياض'},
+  },
+  cyber:{
+    label:'⚡ Cyber',pill:'#00D4FF',pillText:'#050510',
+    shellBg:'#050510',decoBg:'#030312',
+    decoSvg:`<svg class="bg" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <rect width="380" height="430" fill="#030312"/>
+      <defs><pattern id="cg" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/></pattern></defs>
+      <rect width="380" height="430" fill="url(#cg)"/>
+      <polygon points="190,28 256,62 256,132 190,162 124,132 124,62" fill="none" stroke="rgba(0,212,255,0.22)" stroke-width="1"/>
+      <polygon points="190,48 240,76 240,124 190,146 140,124 140,76" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="0.5"/>
+      <circle cx="190" cy="95" r="32" fill="none" stroke="rgba(0,212,255,0.14)" stroke-width="1"/>
+      <circle cx="190" cy="95" r="21" fill="rgba(0,212,255,0.05)" stroke="rgba(0,212,255,0.25)" stroke-width="0.8"/>
+      <circle cx="190" cy="95" r="11" fill="rgba(0,212,255,0.08)" stroke="rgba(0,212,255,0.42)" stroke-width="1"/>
+      <circle cx="190" cy="95" r="4.5" fill="#00D4FF" opacity="0.85"/>
+      <line x1="124" y1="95" x2="256" y2="95" stroke="rgba(0,212,255,0.18)" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <path d="M20 210 H88 V178 H140" fill="none" stroke="rgba(0,212,255,0.22)" stroke-width="0.9"/>
+      <circle cx="88" cy="210" r="3.5" fill="rgba(0,212,255,0.45)"/>
+      <circle cx="140" cy="178" r="3" fill="rgba(0,212,255,0.4)"/>
+      <path d="M360 250 H298 V278 H230" fill="none" stroke="rgba(0,212,255,0.16)" stroke-width="0.9"/>
+      <circle cx="298" cy="250" r="2.5" fill="rgba(0,212,255,0.35)"/>
+      <path d="M56 318 H100 V290 H158 V308 H210" fill="none" stroke="rgba(191,95,255,0.2)" stroke-width="0.9"/>
+      <circle cx="100" cy="318" r="3" fill="rgba(191,95,255,0.42)"/>
+      <circle cx="210" cy="308" r="2.5" fill="rgba(191,95,255,0.38)"/>
+      <path d="M10 36 L10 10 L36 10" fill="none" stroke="rgba(0,212,255,0.38)" stroke-width="1.3"/>
+      <circle cx="10" cy="10" r="2.5" fill="rgba(0,212,255,0.65)"/>
+      <path d="M344 10 L370 10 L370 36" fill="none" stroke="rgba(0,212,255,0.38)" stroke-width="1.3"/>
+      <circle cx="370" cy="10" r="2.5" fill="rgba(0,212,255,0.65)"/>
+      <path d="M10 394 L10 420 L36 420" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="1"/>
+      <path d="M344 420 L370 420 L370 394" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="1"/>
+      <line x1="52" y1="162" x2="52" y2="430" stroke="rgba(0,212,255,0.07)" stroke-width="1" stroke-dasharray="2,9"/>
+      <line x1="328" y1="162" x2="328" y2="430" stroke="rgba(191,95,255,0.06)" stroke-width="1" stroke-dasharray="2,9"/>
+      <polygon points="100,400 118,386 136,400 136,418 118,430 100,418" fill="none" stroke="rgba(0,212,255,0.12)" stroke-width="0.7"/>
+      <polygon points="162,394 180,380 198,394 198,414 180,426 162,414" fill="rgba(0,212,255,0.03)" stroke="rgba(0,212,255,0.16)" stroke-width="0.7"/>
+      <polygon points="224,400 242,386 260,400 260,418 242,430 224,418" fill="none" stroke="rgba(0,212,255,0.1)" stroke-width="0.7"/>
+      <circle cx="100" cy="248" r="2" fill="rgba(0,212,255,0.5)"/>
+      <circle cx="260" cy="228" r="1.8" fill="rgba(0,212,255,0.4)"/>
+      <circle cx="180" cy="350" r="2.2" fill="rgba(191,95,255,0.5)"/>
+      ${scissors(56,218,'-25','#00D4FF',0.2)}
+      ${comb(108,350,'0','#00D4FF',0.17)}
+      ${nailpolish(316,340,'10','#BF5FFF',0.2)}
+      ${mirror(316,190,'8','#00D4FF',0.17)}
+      ${hairwave(148,395,'#00D4FF',0.14)}
+    </svg>`,
+    badgeBg:'rgba(0,212,255,0.07)',badgeColor:'#00D4FF',badgeBorder:'rgba(0,212,255,0.2)',
+    headlineColor:'#E0E8FF',subColor:'rgba(224,232,255,0.38)',
+    formBg:'#0A051E',formBorder:'rgba(0,212,255,0.14)',
+    accent:'#00D4FF',accentText:'#050510',accentBtnBorder:'rgba(0,212,255,0.4)',accentBtnBg:'transparent',
+    inputBorder:'rgba(0,212,255,0.2)',inputFocus:'rgba(0,212,255,0.5)',inputBg:'rgba(0,212,255,0.03)',
+    inputColor:'#E0E8FF',iconColor:'rgba(0,212,255,0.32)',titleColor:'#E0E8FF',
+    chkBg:'rgba(0,212,255,0.05)',chkBorder:'rgba(0,212,255,0.3)',chkIcon:'#00D4FF',
+    langBg:'rgba(0,212,255,0.07)',langColor:'#00D4FF',langBorder:'rgba(0,212,255,0.22)',
+    footColor:'rgba(224,232,255,0.28)',
+    en:{badge:'⬡ SALON.AI SYSTEM',headline:'Intelligence meets\nbeauty. Live.',sub:'Real-time command center.\nAI-powered. Always on.',title:'Access Portal',titleSub:'Authenticate to enter',logoSymbol:'⬡',email:'Operator ID',pass:'Access Key',rem:'Keep session active',forgot:'Reset key →',btn:'AUTHENTICATE',foot:'SALON.AI // RIYADH // 2026'},
+    ar:{badge:'⬡ نظام صالون.AI',headline:'الذكاء يلتقي\nبالجمال. مباشرةً.',sub:'مركز قيادة فوري.\nمدعوم بالذكاء الاصطناعي. دائم التشغيل.',title:'بوابة الوصول',titleSub:'المصادقة للدخول',logoSymbol:'⬡',email:'معرّف المشغّل',pass:'مفتاح الوصول',rem:'إبقاء الجلسة نشطة',forgot:'إعادة تعيين ←',btn:'مصادقة',foot:'صالون.AI // الرياض // 2026'},
+  }
+};
+
+let theme='gold',lang='ar';
+
+function render(){
+  const C=THEMES[theme],cp=C[lang],isAr=lang==='ar';
+  const af=isAr?"font-family:'Noto Kufi Arabic','Arabic UI','Arial',sans-serif;":"";
+  const cyMono=theme==='cyber'?"font-family:'Courier New',monospace;":"";
+  document.getElementById('shell').style.background=C.shellBg;
+  document.getElementById('shell').style.flexDirection=isAr?'row':'row-reverse';
+  const deco=document.getElementById('deco');
+  deco.style.background=C.decoBg;
+  deco.innerHTML=C.decoSvg+`<div class="art-content" style="position:relative;z-index:3;${isAr?'direction:rtl;text-align:right;':''}">
+    <div class="art-badge" style="background:${C.badgeBg};color:${C.badgeColor};border:1px solid ${C.badgeBorder};${af}${cyMono}">
+      <span class="pulse" style="background:${C.badgeColor}"></span>${cp.badge}</div>
+    <div class="art-headline" style="color:${C.headlineColor};${af}${cyMono}">${cp.headline.replace('\n','<br>')}</div>
+    <div class="art-sub" style="color:${C.subColor};${af}${cyMono}">${cp.sub.replace('\n','<br>')}</div>
+  </div>`;
+  const lp=document.getElementById('login');
+  lp.style.background=C.formBg;
+  lp.style.borderLeft=isAr?`1px solid ${C.formBorder}`:'none';
+  lp.style.borderRight=isAr?'none':`1px solid ${C.formBorder}`;
+  lp.style.direction=isAr?'rtl':'ltr';
+  const pill=document.getElementById('lang-pill');
+  pill.textContent=isAr?'English':'العربية';
+  pill.style.cssText=`position:absolute;top:14px;${isAr?'left':'right'}:14px;font-size:10px;font-weight:600;padding:4px 13px;border-radius:20px;cursor:pointer;z-index:10;border:1px solid ${C.langBorder};background:${C.langBg};color:${C.langColor};`;
+  const logo=document.getElementById('s-logo');
+  if(theme==='gold') logo.style.cssText=`width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:13px;font-size:20px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);color:#C9A84C;flex-shrink:0;`;
+  else if(theme==='rose') logo.style.cssText=`width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:13px;font-size:20px;background:linear-gradient(135deg,#F4A7C0,#D4776A);color:white;flex-shrink:0;`;
+  else if(theme==='arctic') logo.style.cssText=`width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:13px;font-size:20px;background:#EFF6FF;border:1px solid #BFDBFE;color:#2563EB;flex-shrink:0;`;
+  else logo.style.cssText=`width:50px;height:50px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:13px;font-size:20px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.25);color:#00D4FF;flex-shrink:0;${cyMono}font-weight:700;`;
+  logo.textContent=cp.logoSymbol;
+  document.getElementById('s-title').textContent=cp.title;
+  document.getElementById('s-title').style.cssText=`font-size:16px;font-weight:600;margin-bottom:3px;text-align:center;color:${C.titleColor};${af}${cyMono}${theme==='cyber'?'font-size:13px;letter-spacing:1.5px;text-transform:uppercase;':''}`;
+  document.getElementById('s-sub').textContent=cp.titleSub;
+  document.getElementById('s-sub').style.cssText=`font-size:11px;text-align:center;opacity:0.5;margin-bottom:22px;color:${C.titleColor};${af}${cyMono}`;
+  const iconSide=isAr?'right':'left';
+  const padStyle=isAr?'padding:0 36px 0 12px;text-align:right;':'padding:0 12px 0 36px;';
+  ['email','pass'].forEach(t=>{
+    const lbl=document.getElementById('l-'+t);
+    const icon=document.getElementById('i-'+t);
+    const inp=document.getElementById('inp-'+t);
+    lbl.textContent=t==='email'?cp.email:cp.pass;
+    lbl.style.cssText=`font-size:10px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;opacity:0.55;display:block;margin-bottom:5px;color:${C.titleColor};${af}${cyMono}`;
+    icon.style.cssText=`position:absolute;${iconSide}:11px;top:50%;transform:translateY(-50%);font-size:16px;color:${C.iconColor};pointer-events:none;`;
+    inp.placeholder=t==='email'?(isAr?'أنتِ@صالون.sa':'you@salon.sa'):'••••••••';
+    inp.style.cssText=`width:100%;height:40px;border-radius:${theme==='cyber'?'5':'9'}px;border:1.5px solid ${C.inputBorder};color:${C.inputColor};background:${C.inputBg};outline:none;${padStyle}font-size:12px;transition:border-color 0.2s,box-shadow 0.2s;${af}${cyMono}`;
+    inp.onfocus=()=>{inp.style.borderColor=C.inputFocus;inp.style.boxShadow=`0 0 0 3px ${C.inputFocus}28`;};
+    inp.onblur=()=>{inp.style.borderColor=C.inputBorder;inp.style.boxShadow='none';};
+  });
+  const frow=document.getElementById('f-row');
+  frow.style.flexDirection=isAr?'row-reverse':'row';
+  const chk=document.getElementById('f-chk');
+  chk.style.cssText=`width:16px;height:16px;border-radius:${theme==='cyber'?'3':'4'}px;border:1.5px solid ${C.chkBorder};background:${C.chkBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;`;
+  chk.querySelector('i').style.color=C.chkIcon;
+  document.getElementById('l-rem').textContent=cp.rem;
+  document.getElementById('l-rem').style.cssText=`font-size:10px;opacity:0.55;color:${C.titleColor};${af}${cyMono}`;
+  document.getElementById('l-forgot').textContent=cp.forgot;
+  document.getElementById('l-forgot').style.cssText=`font-size:10px;font-weight:600;cursor:pointer;color:${C.accent};${af}${cyMono}`;
+  const btn=document.getElementById('f-btn');
+  btn.textContent=cp.btn;
+  let bs=`width:100%;height:40px;border-radius:${theme==='cyber'?'5':'9'}px;font-size:13px;font-weight:600;cursor:pointer;transition:transform 0.15s,opacity 0.15s;margin-bottom:10px;${af}`;
+  if(theme==='cyber') bs+=`border:1px solid rgba(0,212,255,0.4);background:transparent;color:#00D4FF;${cyMono}font-size:11px;letter-spacing:2px;text-transform:uppercase;`;
+  else bs+=`border:none;background:${C.accent};color:${C.accentText};`;
+  btn.style.cssText=bs;
+  document.getElementById('f-foot').textContent=cp.foot;
+  document.getElementById('f-foot').style.cssText=`font-size:10px;text-align:center;color:${C.footColor};${af}${cyMono}${theme==='cyber'?'font-size:9px;letter-spacing:0.8px;':''}`;
+  const dAr=lang==='ar',dEn=lang==='en';
+  document.getElementById('btn-ar').style.cssText=`padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:${dAr?'var(--color-text-primary)':'transparent'};color:${dAr?'var(--color-background-primary)':'var(--color-text-secondary)'};font-size:11px;cursor:pointer;`;
+  document.getElementById('btn-en').style.cssText=`padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:${dEn?'var(--color-text-primary)':'transparent'};color:${dEn?'var(--color-background-primary)':'var(--color-text-secondary)'};font-size:11px;cursor:pointer;`;
+}
+
+function setTheme(t){
+  theme=t;
+  document.querySelectorAll('.tpill').forEach(p=>p.style.cssText=`padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:transparent;color:var(--color-text-secondary);font-size:11px;font-weight:500;cursor:pointer;`);
+  const a=document.getElementById('pill-'+t);
+  if(a) a.style.cssText=`padding:5px 13px;border-radius:20px;border:none;background:${THEMES[t].pill};color:${THEMES[t].pillText};font-size:11px;font-weight:600;cursor:pointer;`;
+  render();
+}
+function setLang(l){lang=l;render();}
+function toggleLang(){setLang(lang==='ar'?'en':'ar');}
+
+const pd=document.getElementById('pills');
+Object.entries(THEMES).forEach(([k,v])=>{
+  const b=document.createElement('button');
+  b.className='tpill';b.id='pill-'+k;b.textContent=v.label;
+  b.onclick=()=>setTheme(k);pd.appendChild(b);
+});
+setTheme('gold');setLang('ar');
+</script>
