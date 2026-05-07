@@ -1,0 +1,409 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #8B6E2E;
+    --dark-bg: #0F0F14;
+    --dark-surface: #1A1A24;
+    --dark-card: #22222F;
+    --dark-border: rgba(201,168,76,0.15);
+    --text-primary: #F0EDE8;
+    --text-secondary: #9A9490;
+    --green: #2ECC8F;
+    --red: #E05555;
+    --yellow: #E8C97A;
+  }
+
+  .app { font-family: 'Segoe UI', sans-serif; background: var(--dark-bg); color: var(--text-primary); min-height: 600px; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+
+  .topbar { background: var(--dark-surface); border-bottom: 1px solid var(--dark-border); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-left { display: flex; align-items: center; gap: 10px; }
+  .logo { font-size: 15px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+  .salon-name { font-size: 12px; color: var(--text-secondary); }
+  .topbar-right { display: flex; align-items: center; gap: 8px; }
+  
+  .lang-btn { background: var(--dark-card); border: 1px solid var(--dark-border); color: var(--gold); font-size: 11px; padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+  .lang-btn:hover { background: var(--gold); color: var(--dark-bg); }
+  .lang-btn.active { background: var(--gold); color: var(--dark-bg); font-weight: 700; }
+
+  .body { display: flex; flex: 1; overflow: hidden; }
+
+  .sidebar { width: 52px; background: var(--dark-surface); border-right: 1px solid var(--dark-border); display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 4px; }
+  .nav-item { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); font-size: 16px; position: relative; }
+  .nav-item:hover { background: var(--dark-card); color: var(--gold); }
+  .nav-item.active { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .nav-item .tooltip { position: absolute; left: 46px; background: var(--dark-card); border: 1px solid var(--dark-border); color: var(--text-primary); font-size: 11px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10; }
+  .nav-item:hover .tooltip { opacity: 1; }
+  .nav-sep { width: 28px; height: 1px; background: var(--dark-border); margin: 6px 0; }
+
+  .main { flex: 1; overflow-y: auto; padding: 16px; }
+  .main::-webkit-scrollbar { width: 4px; }
+  .main::-webkit-scrollbar-thumb { background: var(--dark-border); border-radius: 2px; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-title { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .page-title span { color: var(--gold); font-size: 12px; font-weight: 400; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; padding: 12px; }
+  .stat-label { font-size: 10px; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+  .stat-value.gold { color: var(--gold); }
+  .stat-sub { font-size: 10px; color: var(--green); margin-top: 4px; }
+  .stat-sub.down { color: var(--red); }
+
+  .two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; margin-bottom: 14px; }
+
+  .card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; padding: 14px; }
+  .card-title { font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .booking-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .booking-row:last-child { border-bottom: none; }
+  .booking-time { font-size: 11px; color: var(--text-secondary); width: 38px; flex-shrink: 0; }
+  .booking-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .booking-dot.green { background: var(--green); }
+  .booking-dot.yellow { background: var(--yellow); }
+  .booking-dot.red { background: var(--red); }
+  .booking-info { flex: 1; }
+  .booking-name { font-size: 12px; font-weight: 500; }
+  .booking-service { font-size: 10px; color: var(--text-secondary); }
+  .booking-staff { font-size: 10px; color: var(--gold-dim); }
+  .badge { font-size: 9px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+  .badge.confirmed { background: rgba(46,204,143,0.15); color: var(--green); }
+  .badge.pending { background: rgba(232,201,122,0.15); color: var(--yellow); }
+  .badge.cancelled { background: rgba(224,85,85,0.15); color: var(--red); }
+
+  .activity-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .activity-icon.new { background: rgba(46,204,143,0.15); }
+  .activity-icon.msg { background: rgba(201,168,76,0.15); }
+  .activity-icon.cancel { background: rgba(224,85,85,0.15); }
+  .activity-text { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+  .activity-text strong { color: var(--text-primary); font-weight: 500; }
+  .activity-time { font-size: 10px; color: var(--text-secondary); opacity: 0.6; margin-top: 2px; }
+
+  .mini-chart { height: 48px; display: flex; align-items: flex-end; gap: 3px; margin-top: 8px; }
+  .bar { flex: 1; border-radius: 3px 3px 0 0; background: rgba(201,168,76,0.2); transition: background 0.2s; cursor: pointer; }
+  .bar:hover { background: var(--gold); }
+  .bar.active { background: var(--gold); }
+
+  .rtl { direction: rtl; }
+  .rtl .sidebar { border-right: none; border-left: 1px solid var(--dark-border); }
+  .rtl .nav-item .tooltip { left: auto; right: 46px; }
+  .rtl .booking-time { text-align: right; }
+
+  .whatsapp-msg { background: rgba(46,204,143,0.08); border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; font-size: 11px; border-left: 2px solid var(--green); }
+  .whatsapp-msg.bot { background: rgba(201,168,76,0.08); border-left: 2px solid var(--gold); }
+  .msg-meta { font-size: 10px; color: var(--text-secondary); margin-top: 4px; }
+
+  .client-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--gold); flex-shrink: 0; }
+  .client-tag { font-size: 9px; padding: 2px 6px; border-radius: 4px; }
+  .tag-vip { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .tag-regular { background: rgba(46,204,143,0.15); color: var(--green); }
+  .tag-new { background: rgba(55,138,221,0.15); color: #6ab3f5; }
+
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 14px; }
+  .tab { font-size: 11px; padding: 5px 12px; border-radius: 6px; cursor: pointer; border: 1px solid var(--dark-border); color: var(--text-secondary); background: transparent; transition: all 0.2s; }
+  .tab.active { background: var(--gold); color: var(--dark-bg); border-color: var(--gold); font-weight: 600; }
+
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 4px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .gold-bar { height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 8px 0; }
+
+  .report-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .report-row:last-child { border-bottom: none; }
+  .report-val { font-weight: 600; color: var(--gold); }
+
+  .admin-salon { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .pkg-badge { font-size: 10px; padding: 2px 8px; border-radius: 4px; }
+  .pkg-gold { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .pkg-silver { background: rgba(160,160,180,0.2); color: #b0b0c8; }
+  .pkg-bronze { background: rgba(180,120,80,0.2); color: #c87040; }
+</style>
+
+<h2 class="sr-only">Salon AI Platform dashboard mockup with navigation, stats, bookings, and module previews</h2>
+
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="logo" id="logo-text">✦ Salon AI</div>
+        <div class="salon-name" id="salon-name-text">صالون لمسة الجمال</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;margin-left:10px;">
+        <span class="status-dot"></span>
+        <span style="font-size:10px;color:var(--green)" id="bot-status">البوت نشط</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="lang-btn active" id="ar-btn" onclick="setLang('ar')">عربي</button>
+      <button class="lang-btn" id="en-btn" onclick="setLang('en')">EN</button>
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gold);border:1px solid var(--dark-border);">م</div>
+    </div>
+  </div>
+
+  <div class="body" id="body">
+    <div class="sidebar" id="sidebar">
+      <div class="nav-item active" onclick="showPage('dashboard')" title=""><i class="ti ti-layout-dashboard"></i><span class="tooltip" id="t-dash">لوحة التحكم</span></div>
+      <div class="nav-item" onclick="showPage('bookings')" title=""><i class="ti ti-calendar-check"></i><span class="tooltip" id="t-book">الحجوزات</span></div>
+      <div class="nav-item" onclick="showPage('clients')" title=""><i class="ti ti-users"></i><span class="tooltip" id="t-cli">العملاء</span></div>
+      <div class="nav-item" onclick="showPage('whatsapp')" title=""><i class="ti ti-brand-whatsapp"></i><span class="tooltip" id="t-wa">واتساب</span></div>
+      <div class="nav-sep"></div>
+      <div class="nav-item" onclick="showPage('staff')" title=""><i class="ti ti-id-badge"></i><span class="tooltip" id="t-staff">الموظفات</span></div>
+      <div class="nav-item" onclick="showPage('services')" title=""><i class="ti ti-scissors"></i><span class="tooltip" id="t-svc">الخدمات</span></div>
+      <div class="nav-item" onclick="showPage('reports')" title=""><i class="ti ti-chart-bar"></i><span class="tooltip" id="t-rep">التقارير</span></div>
+      <div class="nav-sep"></div>
+      <div class="nav-item" onclick="showPage('admin')" title=""><i class="ti ti-shield-check"></i><span class="tooltip" id="t-adm">لوحة الإدارة</span></div>
+      <div class="nav-item" onclick="showPage('settings')" title=""><i class="ti ti-settings"></i><span class="tooltip" id="t-set">الإعدادات</span></div>
+    </div>
+
+    <div class="main" id="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title" id="dash-title">لوحة التحكم <span id="dash-date">الأربعاء، 7 مايو 2026</span></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label" id="s1">حجوزات اليوم</div><div class="stat-value">18</div><div class="stat-sub">↑ 3 من أمس</div></div>
+          <div class="stat-card"><div class="stat-label" id="s2">مؤكدة</div><div class="stat-value" style="color:var(--green)">14</div><div class="stat-sub">↑ 78%</div></div>
+          <div class="stat-card"><div class="stat-label" id="s3">معلقة</div><div class="stat-value" style="color:var(--yellow)">3</div><div class="stat-sub down">تحتاج تأكيد</div></div>
+          <div class="stat-card"><div class="stat-label" id="s4">إيرادات اليوم</div><div class="stat-value gold">1,840</div><div class="stat-sub">↑ ريال</div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title" id="sched-title">📅 جدول اليوم</div>
+            <div class="booking-row"><div class="booking-time">9:00</div><div class="booking-dot green"></div><div class="booking-info"><div class="booking-name">نورا الشمري</div><div class="booking-service">قص وتصفيف — 90 د</div></div><div class="badge confirmed" id="b1">مؤكد</div></div>
+            <div class="booking-row"><div class="booking-time">10:30</div><div class="booking-dot yellow"></div><div class="booking-info"><div class="booking-name">سارة العتيبي</div><div class="booking-service">صبغة كاملة — 120 د</div></div><div class="badge pending" id="b2">معلق</div></div>
+            <div class="booking-row"><div class="booking-time">12:00</div><div class="booking-dot green"></div><div class="booking-info"><div class="booking-name">هند الدوسري</div><div class="booking-service">مكياج عروس</div></div><div class="badge confirmed" id="b1b">مؤكد</div></div>
+            <div class="booking-row"><div class="booking-time">14:00</div><div class="booking-dot green"></div><div class="booking-info"><div class="booking-name">منى القحطاني</div><div class="booking-service">مانيكير + باديكير</div></div><div class="badge confirmed" id="b1c">مؤكد</div></div>
+            <div class="booking-row"><div class="booking-time">15:30</div><div class="booking-dot red"></div><div class="booking-info"><div class="booking-name">ريم الحربي</div><div class="booking-service">كيراتين — 180 د</div></div><div class="badge cancelled" id="b3">ملغي</div></div>
+          </div>
+          <div class="card">
+            <div class="card-title" id="act-title">⚡ النشاط المباشر</div>
+            <div class="activity-item"><div class="activity-icon new"><i class="ti ti-calendar-plus" style="color:var(--green);font-size:13px"></i></div><div><div class="activity-text"><strong>حجز جديد</strong> من فاطمة الزهراني</div><div class="activity-time">منذ 3 دقائق</div></div></div>
+            <div class="activity-item"><div class="activity-icon msg"><i class="ti ti-message" style="color:var(--gold);font-size:13px"></i></div><div><div class="activity-text"><strong>رسالة واتساب</strong> — سؤال عن الأسعار</div><div class="activity-time">منذ 7 دقائق</div></div></div>
+            <div class="activity-item"><div class="activity-icon new"><i class="ti ti-calendar-plus" style="color:var(--green);font-size:13px"></i></div><div><div class="activity-text"><strong>حجز مؤكد</strong> لنورا الشمري</div><div class="activity-time">منذ 15 دقيقة</div></div></div>
+            <div class="activity-item"><div class="activity-icon cancel"><i class="ti ti-x" style="color:var(--red);font-size:13px"></i></div><div><div class="activity-text"><strong>إلغاء حجز</strong> من ريم الحربي</div><div class="activity-time">منذ 28 دقيقة</div></div></div>
+            <div class="gold-bar"></div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:6px" id="week-label">إيرادات الأسبوع</div>
+            <div class="mini-chart">
+              <div class="bar" style="height:40%" title="السبت"></div>
+              <div class="bar" style="height:65%" title="الأحد"></div>
+              <div class="bar" style="height:50%" title="الإثنين"></div>
+              <div class="bar" style="height:80%" title="الثلاثاء"></div>
+              <div class="bar active" style="height:70%" title="الأربعاء"></div>
+              <div class="bar" style="height:30%;opacity:0.3" title="الخميس"></div>
+              <div class="bar" style="height:20%;opacity:0.3" title="الجمعة"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS -->
+      <div class="page" id="page-bookings">
+        <div class="page-title">الحجوزات</div>
+        <div class="tab-bar">
+          <div class="tab active">الكل (18)</div>
+          <div class="tab" id="tab-conf">مؤكد (14)</div>
+          <div class="tab" id="tab-pend">معلق (3)</div>
+          <div class="tab" id="tab-canc">ملغي (1)</div>
+        </div>
+        <div class="card">
+          <div class="booking-row"><div class="booking-time">9:00</div><div class="booking-dot green"></div><div class="booking-info"><div class="booking-name">نورا الشمري — 0501234567</div><div class="booking-service">قص وتصفيف | ليلى | 90 دقيقة</div></div><div class="badge confirmed">مؤكد</div></div>
+          <div class="booking-row"><div class="booking-time">10:30</div><div class="booking-dot yellow"></div><div class="booking-info"><div class="booking-name">سارة العتيبي — 0559876543</div><div class="booking-service">صبغة كاملة | مريم | 120 دقيقة</div></div><div class="badge pending">معلق</div></div>
+          <div class="booking-row"><div class="booking-time">12:00</div><div class="booking-dot green"></div><div class="booking-info"><div class="booking-name">هند الدوسري — 0534561234</div><div class="booking-service">مكياج عروس | ليلى | 60 دقيقة</div></div><div class="badge confirmed">مؤكد</div></div>
+          <div class="booking-row"><div class="booking-time">14:00</div><div class="booking-dot yellow"></div><div class="booking-info"><div class="booking-name">دلال الرشيد — 0512345678</div><div class="booking-service">مانيكير + باديكير | سمر | 75 دقيقة</div></div><div class="badge pending">معلق</div></div>
+          <div class="booking-row"><div class="booking-time">15:30</div><div class="booking-dot red"></div><div class="booking-info"><div class="booking-name">ريم الحربي — 0567891234</div><div class="booking-service">كيراتين | مريم | 180 دقيقة</div></div><div class="badge cancelled">ملغي</div></div>
+        </div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div class="page" id="page-clients">
+        <div class="page-title">إدارة العملاء</div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="client-row"><div class="avatar">ن</div><div style="flex:1"><div style="font-size:12px;font-weight:500">نورا الشمري</div><div style="font-size:10px;color:var(--text-secondary)">12 زيارة | آخر زيارة: اليوم</div></div><span class="client-tag tag-vip">VIP</span></div>
+          <div class="client-row"><div class="avatar">س</div><div style="flex:1"><div style="font-size:12px;font-weight:500">سارة العتيبي</div><div style="font-size:10px;color:var(--text-secondary)">5 زيارات | آخر زيارة: أمس</div></div><span class="client-tag tag-regular">منتظمة</span></div>
+          <div class="client-row"><div class="avatar">ه</div><div style="flex:1"><div style="font-size:12px;font-weight:500">هند الدوسري</div><div style="font-size:10px;color:var(--text-secondary)">1 زيارة | عميلة جديدة</div></div><span class="client-tag tag-new">جديدة</span></div>
+          <div class="client-row"><div class="avatar">ف</div><div style="flex:1"><div style="font-size:12px;font-weight:500">فاطمة الزهراني</div><div style="font-size:10px;color:var(--text-secondary)">8 زيارات | آخر زيارة: 3 أيام</div></div><span class="client-tag tag-regular">منتظمة</span></div>
+        </div>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="page" id="page-whatsapp">
+        <div class="page-title">محادثات واتساب <span><span class="status-dot"></span>البوت نشط</span></div>
+        <div class="card">
+          <div class="card-title">نورا الشمري — 0501234567</div>
+          <div class="whatsapp-msg bot">مرحباً بك في صالون لمسة الجمال! 💛 أنا لمى، مساعدتك الافتراضية. كيف يمكنني مساعدتك اليوم؟<div class="msg-meta">البوت • 9:02 صباحاً ✓✓</div></div>
+          <div class="whatsapp-msg">أريد حجز موعد لقص الشعر<div class="msg-meta">العميلة • 9:04 صباحاً</div></div>
+          <div class="whatsapp-msg bot">ممتاز! لدينا المواعيد التالية متاحة اليوم:<br>⏰ 11:00 صباحاً<br>⏰ 2:30 مساءً<br>⏰ 4:00 مساءً<br>أي وقت يناسبك؟<div class="msg-meta">البوت • 9:04 صباحاً ✓✓</div></div>
+          <div class="whatsapp-msg">الساعة 2:30<div class="msg-meta">العميلة • 9:05 صباحاً</div></div>
+          <div class="whatsapp-msg bot">✅ تم تأكيد حجزك:<br>📅 الأربعاء 7 مايو<br>⏰ 2:30 مساءً<br>✂️ قص وتصفيف<br>سنرسل لك تذكيراً قبل موعدك بـ 24 ساعة 💛<div class="msg-meta">البوت • 9:05 صباحاً ✓✓</div></div>
+        </div>
+      </div>
+
+      <!-- STAFF -->
+      <div class="page" id="page-staff">
+        <div class="page-title">إدارة الموظفات</div>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card"><div class="stat-label">ليلى أحمد</div><div class="stat-value" style="font-size:16px">8 حجوزات</div><div class="stat-sub">قص، مكياج، عرايس</div></div>
+          <div class="stat-card"><div class="stat-label">مريم السالم</div><div class="stat-value" style="font-size:16px">6 حجوزات</div><div class="stat-sub">صبغة، كيراتين</div></div>
+          <div class="stat-card"><div class="stat-label">سمر الغامدي</div><div class="stat-value" style="font-size:16px">4 حجوزات</div><div class="stat-sub">أظافر، بشرة</div></div>
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="page" id="page-services">
+        <div class="page-title">الخدمات والأسعار</div>
+        <div class="card">
+          <div class="card-title">قائمة الخدمات</div>
+          <div class="report-row"><span>قص وتصفيف</span><span class="report-val">150 ريال | 90 د</span></div>
+          <div class="report-row"><span>صبغة كاملة</span><span class="report-val">350 ريال | 120 د</span></div>
+          <div class="report-row"><span>مكياج عروس</span><span class="report-val">800 ريال | 60 د</span></div>
+          <div class="report-row"><span>كيراتين</span><span class="report-val">500 ريال | 180 د</span></div>
+          <div class="report-row"><span>مانيكير + باديكير</span><span class="report-val">120 ريال | 75 د</span></div>
+          <div class="report-row"><span>عناية بالبشرة</span><span class="report-val">280 ريال | 60 د</span></div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="page" id="page-reports">
+        <div class="page-title">التقارير والإحصاءات</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">إيرادات الشهر</div><div class="stat-value gold">42,800</div><div class="stat-sub">↑ ريال سعودي</div></div>
+          <div class="stat-card"><div class="stat-label">إجمالي الحجوزات</div><div class="stat-value">284</div><div class="stat-sub">↑ 12% من الشهر الماضي</div></div>
+          <div class="stat-card"><div class="stat-label">عملاء جدد</div><div class="stat-value">38</div><div class="stat-sub">هذا الشهر</div></div>
+          <div class="stat-card"><div class="stat-label">نسبة الحضور</div><div class="stat-value" style="color:var(--green)">91%</div><div class="stat-sub">↑ ممتاز</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">أكثر الخدمات طلباً</div>
+          <div class="report-row"><span>مكياج عروس</span><span class="report-val">84 حجز</span></div>
+          <div class="report-row"><span>قص وتصفيف</span><span class="report-val">72 حجز</span></div>
+          <div class="report-row"><span>صبغة كاملة</span><span class="report-val">58 حجز</span></div>
+          <div class="report-row"><span>كيراتين</span><span class="report-val">41 حجز</span></div>
+        </div>
+      </div>
+
+      <!-- ADMIN -->
+      <div class="page" id="page-admin">
+        <div class="page-title">لوحة الإدارة — جميع الصالونات</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">إجمالي الصالونات</div><div class="stat-value gold">8</div><div class="stat-sub">↑ 3 هذا الشهر</div></div>
+          <div class="stat-card"><div class="stat-label">الإيراد الشهري</div><div class="stat-value gold">7,200</div><div class="stat-sub">↑ ريال/شهر</div></div>
+          <div class="stat-card"><div class="stat-label">باقة الذهب</div><div class="stat-value">3</div><div class="stat-sub">صالونات</div></div>
+          <div class="stat-card"><div class="stat-label">باقة الفضة</div><div class="stat-value">3</div><div class="stat-sub">صالونات</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">الصالونات النشطة</div>
+          <div class="admin-salon"><span>صالون لمسة الجمال</span><div style="display:flex;gap:6px;align-items:center"><span style="font-size:10px;color:var(--green)">● نشط</span><span class="pkg-badge pkg-gold">ذهبي</span></div></div>
+          <div class="admin-salon"><span>صالون نور الرياض</span><div style="display:flex;gap:6px;align-items:center"><span style="font-size:10px;color:var(--green)">● نشط</span><span class="pkg-badge pkg-silver">فضي</span></div></div>
+          <div class="admin-salon"><span>صالون سيدة الأناقة</span><div style="display:flex;gap:6px;align-items:center"><span style="font-size:10px;color:var(--green)">● نشط</span><span class="pkg-badge pkg-bronze">برونزي</span></div></div>
+          <div class="admin-salon"><span>صالون ريحانة</span><div style="display:flex;gap:6px;align-items:center"><span style="font-size:10px;color:var(--green)">● نشط</span><span class="pkg-badge pkg-gold">ذهبي</span></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-title">إعدادات الصالون والتخصيص</div>
+        <div class="card">
+          <div class="card-title">هوية الصالون</div>
+          <div class="report-row"><span style="color:var(--text-secondary)">اسم الصالون</span><span>صالون لمسة الجمال</span></div>
+          <div class="report-row"><span style="color:var(--text-secondary)">اسم البوت</span><span style="color:var(--gold)">لمى ✦</span></div>
+          <div class="report-row"><span style="color:var(--text-secondary)">نبرة البوت</span><span>ودية</span></div>
+          <div class="report-row"><span style="color:var(--text-secondary)">الثيم</span><span style="color:var(--gold)">داكن + ذهبي ●</span></div>
+          <div class="report-row"><span style="color:var(--text-secondary)">الخط</span><span>Cairo</span></div>
+          <div class="report-row"><span style="color:var(--text-secondary)">اللغة الافتراضية</span><span>عربي (RTL)</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const pages = ['dashboard','bookings','clients','whatsapp','staff','services','reports','admin','settings'];
+  const navItems = document.querySelectorAll('.nav-item');
+
+  function showPage(name) {
+    pages.forEach(p => document.getElementById('page-'+p).classList.remove('active'));
+    document.getElementById('page-'+name).classList.add('active');
+    navItems.forEach(n => n.classList.remove('active'));
+    const idx = ['dashboard','bookings','clients','whatsapp','','staff','services','reports','','admin','settings'];
+    const i = idx.indexOf(name);
+    if(i>=0) navItems[i < 4 ? i : i-1].classList.add('active');
+  }
+
+  const content = {
+    ar: {
+      lang: 'ar', dir: 'rtl',
+      botStatus: 'البوت نشط',
+      dashTitle: 'لوحة التحكم',
+      dashDate: 'الأربعاء، 7 مايو 2026',
+      s1:'حجوزات اليوم', s2:'مؤكدة', s3:'معلقة', s4:'إيرادات اليوم',
+      schedTitle:'📅 جدول اليوم', actTitle:'⚡ النشاط المباشر',
+      b1:'مؤكد', b2:'معلق', b3:'ملغي',
+      weekLabel:'إيرادات الأسبوع',
+      tDash:'لوحة التحكم', tBook:'الحجوزات', tCli:'العملاء', tWa:'واتساب',
+      tStaff:'الموظفات', tSvc:'الخدمات', tRep:'التقارير', tAdm:'لوحة الإدارة', tSet:'الإعدادات'
+    },
+    en: {
+      lang: 'en', dir: 'ltr',
+      botStatus: 'Bot Active',
+      dashTitle: 'Dashboard',
+      dashDate: 'Wednesday, May 7 2026',
+      s1:'Today\'s Bookings', s2:'Confirmed', s3:'Pending', s4:'Today\'s Revenue',
+      schedTitle:'📅 Today\'s Schedule', actTitle:'⚡ Live Activity',
+      b1:'Confirmed', b2:'Pending', b3:'Cancelled',
+      weekLabel:'Weekly Revenue',
+      tDash:'Dashboard', tBook:'Bookings', tCli:'Clients', tWa:'WhatsApp',
+      tStaff:'Staff', tSvc:'Services', tRep:'Reports', tAdm:'Admin Panel', tSet:'Settings'
+    }
+  };
+
+  function setLang(lang) {
+    const c = content[lang];
+    document.getElementById('app').style.direction = c.dir;
+    document.getElementById('bot-status').textContent = c.botStatus;
+    document.getElementById('dash-title').childNodes[0].textContent = c.dashTitle + ' ';
+    document.getElementById('dash-date').textContent = c.dashDate;
+    document.getElementById('s1').textContent = c.s1;
+    document.getElementById('s2').textContent = c.s2;
+    document.getElementById('s3').textContent = c.s3;
+    document.getElementById('s4').textContent = c.s4;
+    document.getElementById('sched-title').textContent = c.schedTitle;
+    document.getElementById('act-title').textContent = c.actTitle;
+    document.getElementById('b1').textContent = c.b1;
+    document.getElementById('b1b').textContent = c.b1;
+    document.getElementById('b1c').textContent = c.b1;
+    document.getElementById('b2').textContent = c.b2;
+    document.getElementById('b3').textContent = c.b3;
+    document.getElementById('week-label').textContent = c.weekLabel;
+    document.getElementById('t-dash').textContent = c.tDash;
+    document.getElementById('t-book').textContent = c.tBook;
+    document.getElementById('t-cli').textContent = c.tCli;
+    document.getElementById('t-wa').textContent = c.tWa;
+    document.getElementById('t-staff').textContent = c.tStaff;
+    document.getElementById('t-svc').textContent = c.tSvc;
+    document.getElementById('t-rep').textContent = c.tRep;
+    document.getElementById('t-adm').textContent = c.tAdm;
+    document.getElementById('t-set').textContent = c.tSet;
+    document.getElementById('ar-btn').classList.toggle('active', lang==='ar');
+    document.getElementById('en-btn').classList.toggle('active', lang==='en');
+    if(lang==='en') {
+      document.getElementById('tab-conf').textContent='Confirmed (14)';
+      document.getElementById('tab-pend').textContent='Pending (3)';
+      document.getElementById('tab-canc').textContent='Cancelled (1)';
+    } else {
+      document.getElementById('tab-conf').textContent='مؤكد (14)';
+      document.getElementById('tab-pend').textContent='معلق (3)';
+      document.getElementById('tab-canc').textContent='ملغي (1)';
+    }
+  }
+</script>

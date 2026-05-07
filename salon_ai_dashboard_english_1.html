@@ -1,0 +1,428 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #8B6E2E;
+    --dark-bg: #0F0F14;
+    --dark-surface: #1A1A24;
+    --dark-card: #22222F;
+    --dark-border: rgba(201,168,76,0.15);
+    --text-primary: #F0EDE8;
+    --text-secondary: #9A9490;
+    --green: #2ECC8F;
+    --red: #E05555;
+    --yellow: #E8C97A;
+    --blue: #5B9BD5;
+  }
+  .app { font-family: 'Segoe UI', sans-serif; background: var(--dark-bg); color: var(--text-primary); min-height: 620px; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; direction: ltr; }
+  .topbar { background: var(--dark-surface); border-bottom: 1px solid var(--dark-border); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .logo { font-size: 16px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+  .salon-name { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .status-pill { display: flex; align-items: center; gap: 5px; background: rgba(46,204,143,0.1); border: 1px solid rgba(46,204,143,0.2); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--green); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .avatar-btn { width: 30px; height: 30px; border-radius: 50%; background: rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--gold); border: 1px solid var(--dark-border); cursor: pointer; }
+  .notif-btn { width: 30px; height: 30px; border-radius: 8px; background: var(--dark-card); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text-secondary); border: 1px solid var(--dark-border); cursor: pointer; position: relative; }
+  .notif-badge { position: absolute; top: -3px; right: -3px; width: 14px; height: 14px; border-radius: 50%; background: var(--red); font-size: 8px; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .body { display: flex; flex: 1; overflow: hidden; }
+  .sidebar { width: 200px; background: var(--dark-surface); border-right: 1px solid var(--dark-border); display: flex; flex-direction: column; padding: 16px 10px; gap: 2px; flex-shrink: 0; }
+  .nav-section { font-size: 9px; color: var(--gold-dim); text-transform: uppercase; letter-spacing: 1px; padding: 10px 8px 4px; font-weight: 600; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); font-size: 12px; }
+  .nav-item:hover { background: var(--dark-card); color: var(--text-primary); }
+  .nav-item.active { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+  .nav-item i { font-size: 15px; width: 18px; flex-shrink: 0; }
+  .nav-badge { margin-left: auto; background: var(--red); color: white; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 8px; }
+  .nav-badge.gold { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .main { flex: 1; overflow-y: auto; padding: 18px; }
+  .main::-webkit-scrollbar { width: 4px; }
+  .main::-webkit-scrollbar-thumb { background: var(--dark-border); border-radius: 2px; }
+  .page { display: none; }
+  .page.active { display: block; }
+  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .page-title { font-size: 17px; font-weight: 600; }
+  .page-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .action-btn { background: var(--gold); color: var(--dark-bg); font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 7px; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; padding: 14px; position: relative; overflow: hidden; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); opacity: 0.4; }
+  .stat-label { font-size: 10px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 24px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.yellow { color: var(--yellow); }
+  .stat-trend { font-size: 10px; color: var(--green); margin-top: 6px; display: flex; align-items: center; gap: 3px; }
+  .stat-trend.down { color: var(--red); }
+  .stat-trend.neutral { color: var(--text-secondary); }
+  .two-col { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+  .card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .card-title { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; }
+  .card-link { font-size: 10px; color: var(--text-secondary); cursor: pointer; }
+  .card-link:hover { color: var(--gold); }
+  .booking-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .booking-row:last-child { border-bottom: none; }
+  .booking-time { font-size: 11px; color: var(--text-secondary); width: 42px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .booking-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-green { background: var(--green); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-red { background: var(--red); }
+  .booking-info { flex: 1; }
+  .booking-name { font-size: 12px; font-weight: 500; }
+  .booking-meta { font-size: 10px; color: var(--text-secondary); margin-top: 1px; }
+  .badge { font-size: 9px; padding: 3px 8px; border-radius: 5px; font-weight: 700; flex-shrink: 0; }
+  .badge-green { background: rgba(46,204,143,0.15); color: var(--green); }
+  .badge-yellow { background: rgba(232,201,122,0.15); color: var(--yellow); }
+  .badge-red { background: rgba(224,85,85,0.15); color: var(--red); }
+  .badge-blue { background: rgba(91,155,213,0.15); color: var(--blue); }
+  .badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .activity-item { display: flex; align-items: flex-start; gap: 9px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .ai-green { background: rgba(46,204,143,0.12); }
+  .ai-gold { background: rgba(201,168,76,0.12); }
+  .ai-red { background: rgba(224,85,85,0.12); }
+  .ai-blue { background: rgba(91,155,213,0.12); }
+  .activity-text { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+  .activity-text strong { color: var(--text-primary); font-weight: 500; }
+  .activity-time { font-size: 10px; color: var(--text-secondary); opacity: 0.5; margin-top: 2px; }
+  .chart-bars { height: 52px; display: flex; align-items: flex-end; gap: 3px; margin-top: 10px; }
+  .bar { flex: 1; border-radius: 3px 3px 0 0; background: rgba(201,168,76,0.15); transition: background 0.2s; cursor: pointer; }
+  .bar:hover, .bar.today { background: var(--gold); }
+  .gold-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent); margin: 10px 0; }
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tab { font-size: 11px; padding: 5px 13px; border-radius: 6px; cursor: pointer; border: 1px solid var(--dark-border); color: var(--text-secondary); background: transparent; transition: all 0.2s; }
+  .tab:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.15); }
+  .tab.active { background: var(--gold); color: var(--dark-bg); border-color: var(--gold); font-weight: 700; }
+  .search-bar { background: var(--dark-bg); border: 1px solid var(--dark-border); border-radius: 8px; padding: 8px 12px; font-size: 12px; color: var(--text-primary); width: 100%; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .client-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .client-row:last-child { border-bottom: none; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .av-gold { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .av-green { background: rgba(46,204,143,0.15); color: var(--green); }
+  .av-blue { background: rgba(91,155,213,0.15); color: var(--blue); }
+  .client-name { font-size: 12px; font-weight: 500; }
+  .client-meta { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+  .wa-msg { border-radius: 8px; padding: 9px 12px; margin-bottom: 7px; font-size: 11px; line-height: 1.5; }
+  .wa-bot { background: rgba(201,168,76,0.08); border-left: 2px solid var(--gold); }
+  .wa-client { background: rgba(46,204,143,0.08); border-left: 2px solid var(--green); }
+  .wa-meta { font-size: 10px; color: var(--text-secondary); margin-top: 5px; opacity: 0.7; }
+  .report-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .report-row:last-child { border-bottom: none; }
+  .report-val { font-weight: 600; color: var(--gold); }
+  .progress-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; background: var(--gold); }
+  .staff-card { background: var(--dark-bg); border: 1px solid var(--dark-border); border-radius: 8px; padding: 12px; }
+  .staff-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--gold); margin-bottom: 8px; border: 1px solid rgba(201,168,76,0.3); }
+  .admin-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .admin-row:last-child { border-bottom: none; }
+  .pkg { font-size: 10px; padding: 2px 9px; border-radius: 5px; font-weight: 700; }
+  .pkg-gold { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .pkg-silver { background: rgba(160,160,180,0.2); color: #b4b4d0; }
+  .pkg-bronze { background: rgba(180,120,80,0.2); color: #c87844; }
+  .swatch { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--dark-border); cursor: pointer; display: inline-block; }
+  .swatch.active { border-color: var(--gold); }
+  .toggle { width: 36px; height: 20px; background: var(--green); border-radius: 10px; position: relative; cursor: pointer; }
+  .toggle::after { content:''; position:absolute; top:3px; right:3px; width:14px; height:14px; background:white; border-radius:50%; }
+  .toggle.off { background: var(--dark-bg); border: 1px solid var(--dark-border); }
+  .toggle.off::after { right:auto; left:3px; }
+  .system-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+  .system-item:last-child { border-bottom: none; }
+</style>
+
+<h2 class="sr-only">Salon AI Platform English dashboard with full navigation, stats, bookings, clients, WhatsApp, staff, services, reports, admin panel, and settings</h2>
+
+<div class="app" id="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="logo">✦ SALON AI</div>
+        <div class="salon-name">Lamasat Al Jamal Salon — Riyadh</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="status-pill"><span class="status-dot"></span>Bot Active</div>
+      <div class="notif-btn"><i class="ti ti-bell" style="font-size:14px"></i><div class="notif-badge">3</div></div>
+      <div class="avatar-btn">M</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div class="nav-section">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard')"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+      <div class="nav-item" onclick="showPage('bookings')"><i class="ti ti-calendar-check"></i>Bookings<span class="nav-badge">3</span></div>
+      <div class="nav-item" onclick="showPage('calendar')"><i class="ti ti-calendar"></i>Calendar</div>
+      <div class="nav-item" onclick="showPage('clients')"><i class="ti ti-users"></i>Clients</div>
+      <div class="nav-item" onclick="showPage('whatsapp')"><i class="ti ti-brand-whatsapp"></i>WhatsApp<span class="nav-badge">5</span></div>
+      <div class="nav-section">Manage</div>
+      <div class="nav-item" onclick="showPage('staff')"><i class="ti ti-id-badge"></i>Staff</div>
+      <div class="nav-item" onclick="showPage('services')"><i class="ti ti-scissors"></i>Services</div>
+      <div class="nav-item" onclick="showPage('reports')"><i class="ti ti-chart-bar"></i>Reports</div>
+      <div class="nav-section">System</div>
+      <div class="nav-item" onclick="showPage('admin')"><i class="ti ti-shield-check"></i>Admin Panel</div>
+      <div class="nav-item" onclick="showPage('settings')"><i class="ti ti-settings"></i>Settings</div>
+    </div>
+
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div><div class="page-title">Good morning, Mona 👋</div><div class="page-sub">Wednesday, May 7 2026 — 18 bookings today</div></div>
+          <button class="action-btn"><i class="ti ti-plus" style="font-size:12px"></i>New Booking</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Today's Bookings</div><div class="stat-value">18</div><div class="stat-trend">↑ 3 more than yesterday</div></div>
+          <div class="stat-card"><div class="stat-label">Confirmed</div><div class="stat-value green">14</div><div class="stat-trend">78% confirmation rate</div></div>
+          <div class="stat-card"><div class="stat-label">Pending Approval</div><div class="stat-value yellow">3</div><div class="stat-trend neutral">Needs your action</div></div>
+          <div class="stat-card"><div class="stat-label">Today's Revenue</div><div class="stat-value gold">1,840</div><div class="stat-trend">↑ SAR — on track</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header"><div class="card-title">📅 Today's Schedule</div><div class="card-link" onclick="showPage('bookings')">View all →</div></div>
+            <div class="booking-row"><div class="booking-time">9:00 AM</div><div class="booking-dot dot-green"></div><div class="booking-info"><div class="booking-name">Noura Al-Shamri</div><div class="booking-meta">Haircut & Styling · Layla · 90 min</div></div><div class="badge badge-green">Confirmed</div></div>
+            <div class="booking-row"><div class="booking-time">10:30 AM</div><div class="booking-dot dot-yellow"></div><div class="booking-info"><div class="booking-name">Sara Al-Otaibi</div><div class="booking-meta">Full Color · Maryam · 120 min</div></div><div class="badge badge-yellow">Pending</div></div>
+            <div class="booking-row"><div class="booking-time">12:00 PM</div><div class="booking-dot dot-green"></div><div class="booking-info"><div class="booking-name">Hind Al-Dosari</div><div class="booking-meta">Bridal Makeup · Layla · 60 min</div></div><div class="badge badge-green">Confirmed</div></div>
+            <div class="booking-row"><div class="booking-time">2:00 PM</div><div class="booking-dot dot-yellow"></div><div class="booking-info"><div class="booking-name">Dalal Al-Rashid</div><div class="booking-meta">Mani + Pedi · Samar · 75 min</div></div><div class="badge badge-yellow">Pending</div></div>
+            <div class="booking-row"><div class="booking-time">3:30 PM</div><div class="booking-dot dot-red"></div><div class="booking-info"><div class="booking-name">Reem Al-Harbi</div><div class="booking-meta">Keratin Treatment · Maryam · 180 min</div></div><div class="badge badge-red">Cancelled</div></div>
+            <div class="booking-row"><div class="booking-time">5:00 PM</div><div class="booking-dot dot-green"></div><div class="booking-info"><div class="booking-name">Fatima Al-Zahrani</div><div class="booking-meta">Skincare Facial · Samar · 60 min</div></div><div class="badge badge-green">Confirmed</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">⚡ Live Activity</div><span style="font-size:10px;color:var(--text-secondary)">Real-time</span></div>
+            <div class="activity-item"><div class="activity-icon ai-green"><i class="ti ti-calendar-plus" style="color:var(--green);font-size:13px"></i></div><div><div class="activity-text"><strong>New booking</strong> from Fatima Al-Zahrani</div><div class="activity-time">3 minutes ago</div></div></div>
+            <div class="activity-item"><div class="activity-icon ai-gold"><i class="ti ti-message" style="color:var(--gold);font-size:13px"></i></div><div><div class="activity-text"><strong>WhatsApp message</strong> — asking about prices</div><div class="activity-time">7 minutes ago</div></div></div>
+            <div class="activity-item"><div class="activity-icon ai-green"><i class="ti ti-check" style="color:var(--green);font-size:13px"></i></div><div><div class="activity-text"><strong>Booking confirmed</strong> — Noura Al-Shamri</div><div class="activity-time">15 minutes ago</div></div></div>
+            <div class="activity-item"><div class="activity-icon ai-red"><i class="ti ti-x" style="color:var(--red);font-size:13px"></i></div><div><div class="activity-text"><strong>Booking cancelled</strong> — Reem Al-Harbi</div><div class="activity-time">28 minutes ago</div></div></div>
+            <div class="activity-item"><div class="activity-icon ai-blue"><i class="ti ti-bell" style="color:var(--blue);font-size:13px"></i></div><div><div class="activity-text"><strong>Reminder sent</strong> to Sara Al-Otaibi</div><div class="activity-time">1 hour ago</div></div></div>
+            <div class="gold-line"></div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:6px">This Week's Revenue (SAR)</div>
+            <div class="chart-bars">
+              <div class="bar" style="height:45%" title="Sat: 1,200"></div>
+              <div class="bar" style="height:68%" title="Sun: 1,800"></div>
+              <div class="bar" style="height:52%" title="Mon: 1,380"></div>
+              <div class="bar" style="height:85%" title="Tue: 2,250"></div>
+              <div class="bar today" style="height:70%" title="Wed: 1,840"></div>
+              <div class="bar" style="height:25%;opacity:0.3" title="Thu: upcoming"></div>
+              <div class="bar" style="height:15%;opacity:0.3" title="Fri: upcoming"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-secondary);margin-top:4px"><span>Sat</span><span>Sun</span><span>Mon</span><span>Tue</span><span style="color:var(--gold);font-weight:700">Wed</span><span>Thu</span><span>Fri</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS -->
+      <div class="page" id="page-bookings">
+        <div class="page-header">
+          <div><div class="page-title">Bookings</div><div class="page-sub">18 bookings today — 3 need your approval</div></div>
+          <button class="action-btn"><i class="ti ti-plus" style="font-size:12px"></i>Add Booking</button>
+        </div>
+        <div class="tab-bar">
+          <div class="tab active">All (18)</div>
+          <div class="tab">Confirmed (14)</div>
+          <div class="tab">Pending (3)</div>
+          <div class="tab">Cancelled (1)</div>
+          <div class="tab">Today</div>
+          <div class="tab">This Week</div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="booking-row"><div class="booking-time">9:00 AM</div><div class="booking-dot dot-green"></div><div class="booking-info"><div class="booking-name">Noura Al-Shamri · 0501234567</div><div class="booking-meta">Haircut & Styling · Layla · 90 min · SAR 150</div></div><div class="badge badge-green">Confirmed</div></div>
+          <div class="booking-row"><div class="booking-time">10:30 AM</div><div class="booking-dot dot-yellow"></div><div class="booking-info"><div class="booking-name">Sara Al-Otaibi · 0559876543</div><div class="booking-meta">Full Color · Maryam · 120 min · SAR 350</div></div><div class="badge badge-yellow">Pending</div></div>
+          <div class="booking-row"><div class="booking-time">12:00 PM</div><div class="booking-dot dot-green"></div><div class="booking-info"><div class="booking-name">Hind Al-Dosari · 0534561234</div><div class="booking-meta">Bridal Makeup · Layla · 60 min · SAR 800</div></div><div class="badge badge-green">Confirmed</div></div>
+          <div class="booking-row"><div class="booking-time">2:00 PM</div><div class="booking-dot dot-yellow"></div><div class="booking-info"><div class="booking-name">Dalal Al-Rashid · 0512345678</div><div class="booking-meta">Mani + Pedi · Samar · 75 min · SAR 120</div></div><div class="badge badge-yellow">Pending</div></div>
+          <div class="booking-row"><div class="booking-time">3:30 PM</div><div class="booking-dot dot-red"></div><div class="booking-info"><div class="booking-name">Reem Al-Harbi · 0567891234</div><div class="booking-meta">Keratin Treatment · Maryam · 180 min · SAR 500</div></div><div class="badge badge-red">Cancelled</div></div>
+          <div class="booking-row"><div class="booking-time">5:00 PM</div><div class="booking-dot dot-green"></div><div class="booking-info"><div class="booking-name">Fatima Al-Zahrani · 0541237890</div><div class="booking-meta">Skincare Facial · Samar · 60 min · SAR 280</div></div><div class="badge badge-green">Confirmed</div></div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div class="page" id="page-calendar">
+        <div class="page-header"><div><div class="page-title">Calendar View</div><div class="page-sub">May 2026 — Week view</div></div><div style="display:flex;gap:6px"><div class="tab active" style="font-size:10px;padding:4px 10px">Day</div><div class="tab" style="font-size:10px;padding:4px 10px">Week</div><div class="tab" style="font-size:10px;padding:4px 10px">Month</div></div></div>
+        <div class="card">
+          <div style="display:grid;grid-template-columns:50px repeat(3,1fr);gap:6px;font-size:11px">
+            <div></div>
+            <div style="text-align:center;color:var(--text-secondary);padding-bottom:8px">Layla<br><span style="color:var(--text-primary);font-weight:500">3 bookings</span></div>
+            <div style="text-align:center;color:var(--text-secondary);padding-bottom:8px">Maryam<br><span style="color:var(--text-primary);font-weight:500">2 bookings</span></div>
+            <div style="text-align:center;color:var(--text-secondary);padding-bottom:8px">Samar<br><span style="color:var(--text-primary);font-weight:500">2 bookings</span></div>
+            <div style="color:var(--text-secondary);font-size:10px;padding:4px 0">9 AM</div><div style="background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.25);border-radius:6px;padding:6px;font-size:10px"><strong>Noura</strong><br>Haircut · 90m</div><div></div><div></div>
+            <div style="color:var(--text-secondary);font-size:10px;padding:4px 0">10:30</div><div></div><div style="background:rgba(232,201,122,0.12);border:1px solid rgba(232,201,122,0.25);border-radius:6px;padding:6px;font-size:10px"><strong>Sara</strong><br>Full Color · 120m</div><div></div>
+            <div style="color:var(--text-secondary);font-size:10px;padding:4px 0">12 PM</div><div style="background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.25);border-radius:6px;padding:6px;font-size:10px"><strong>Hind</strong><br>Bridal · 60m</div><div></div><div></div>
+            <div style="color:var(--text-secondary);font-size:10px;padding:4px 0">2 PM</div><div></div><div></div><div style="background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.25);border-radius:6px;padding:6px;font-size:10px"><strong>Dalal</strong><br>Mani+Pedi · 75m</div>
+            <div style="color:var(--text-secondary);font-size:10px;padding:4px 0">5 PM</div><div></div><div></div><div style="background:rgba(46,204,143,0.12);border:1px solid rgba(46,204,143,0.25);border-radius:6px;padding:6px;font-size:10px"><strong>Fatima</strong><br>Facial · 60m</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div class="page" id="page-clients">
+        <div class="page-header"><div><div class="page-title">Client Management</div><div class="page-sub">142 total clients — 12 new this month</div></div><button class="action-btn"><i class="ti ti-download" style="font-size:12px"></i>Export Excel</button></div>
+        <div class="tab-bar"><div class="tab active">All (142)</div><div class="tab">VIP (18)</div><div class="tab">Regular (74)</div><div class="tab">New (12)</div><div class="tab">Inactive (38)</div></div>
+        <div class="card" style="margin-bottom:0">
+          <div class="client-row"><div class="avatar av-gold">N</div><div style="flex:1"><div class="client-name">Noura Al-Shamri</div><div class="client-meta">12 visits · Last: Today · Fav: Haircut · Total spend: SAR 3,200</div></div><div class="badge badge-gold">VIP</div></div>
+          <div class="client-row"><div class="avatar av-green">S</div><div style="flex:1"><div class="client-name">Sara Al-Otaibi</div><div class="client-meta">5 visits · Last: Yesterday · Fav: Color · Total spend: SAR 1,450</div></div><div class="badge badge-green">Regular</div></div>
+          <div class="client-row"><div class="avatar av-blue">H</div><div style="flex:1"><div class="client-name">Hind Al-Dosari</div><div class="client-meta">1 visit · New client · Bridal booking</div></div><div class="badge badge-blue">New</div></div>
+          <div class="client-row"><div class="avatar av-gold">F</div><div style="flex:1"><div class="client-name">Fatima Al-Zahrani</div><div class="client-meta">8 visits · Last: 3 days ago · Fav: Skincare · Total spend: SAR 2,100</div></div><div class="badge badge-green">Regular</div></div>
+          <div class="client-row"><div class="avatar av-blue">D</div><div style="flex:1"><div class="client-name">Dalal Al-Rashid</div><div class="client-meta">3 visits · Last: 2 weeks ago · Fav: Nails</div></div><div class="badge badge-green">Regular</div></div>
+        </div>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="page" id="page-whatsapp">
+        <div class="page-header"><div><div class="page-title">WhatsApp Inbox</div><div class="page-sub">Bot: Lama · 5 unread conversations</div></div><div class="status-pill"><span class="status-dot"></span>Bot Active</div></div>
+        <div class="two-col" style="margin-bottom:0">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Noura Al-Shamri · 0501234567</div><div class="badge badge-green">Bot handling</div></div>
+            <div class="wa-msg wa-bot"><strong style="color:var(--gold);font-size:10px">LAMA (Bot)</strong><br>Welcome to Lamasat Al Jamal! 💛 I'm Lama, your virtual assistant. How can I help you today?<div class="wa-meta">9:02 AM · Delivered ✓✓</div></div>
+            <div class="wa-msg wa-client"><strong style="color:var(--green);font-size:10px">Client</strong><br>Hi! I'd like to book a haircut appointment<div class="wa-meta">9:04 AM</div></div>
+            <div class="wa-msg wa-bot"><strong style="color:var(--gold);font-size:10px">LAMA (Bot)</strong><br>Of course! Here are today's available slots:<br>⏰ 11:00 AM<br>⏰ 2:30 PM<br>⏰ 4:00 PM<br>Which time works best for you?<div class="wa-meta">9:04 AM · Delivered ✓✓</div></div>
+            <div class="wa-msg wa-client"><strong style="color:var(--green);font-size:10px">Client</strong><br>2:30 PM please<div class="wa-meta">9:05 AM</div></div>
+            <div class="wa-msg wa-bot"><strong style="color:var(--gold);font-size:10px">LAMA (Bot)</strong><br>✅ Your booking is confirmed!<br>📅 Wednesday May 7<br>⏰ 2:30 PM<br>✂️ Haircut & Styling<br>We'll send you a reminder 24 hours before 💛<div class="wa-meta">9:05 AM · Delivered ✓✓</div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Bot Performance</div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Messages today</span><span class="report-val">47</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Handled by bot</span><span class="report-val" style="color:var(--green)">43 (91%)</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Escalated to owner</span><span class="report-val" style="color:var(--yellow)">4</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Bookings via bot</span><span class="report-val">11</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Avg. response time</span><span class="report-val" style="color:var(--green)">3 sec</span></div>
+            <div class="gold-line"></div>
+            <div class="card-title" style="margin-bottom:8px">Active Conversations</div>
+            <div class="client-row" style="padding:5px 0"><div class="avatar av-gold" style="width:26px;height:26px;font-size:10px">N</div><div style="flex:1;font-size:11px">Noura Al-Shamri</div><div class="badge badge-green" style="font-size:9px">Active</div></div>
+            <div class="client-row" style="padding:5px 0"><div class="avatar av-blue" style="width:26px;height:26px;font-size:10px">R</div><div style="flex:1;font-size:11px">Randa Al-Mutairi</div><div class="badge badge-yellow" style="font-size:9px">Waiting</div></div>
+            <div class="client-row" style="padding:5px 0"><div class="avatar av-green" style="width:26px;height:26px;font-size:10px">A</div><div style="flex:1;font-size:11px">Amal Al-Qahtani</div><div class="badge badge-gold" style="font-size:9px">New</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAFF -->
+      <div class="page" id="page-staff">
+        <div class="page-header"><div><div class="page-title">Staff Management</div><div class="page-sub">3 active staff members</div></div><button class="action-btn"><i class="ti ti-plus" style="font-size:12px"></i>Add Staff</button></div>
+        <div class="three-col">
+          <div class="staff-card"><div class="staff-avatar">L</div><div style="font-size:13px;font-weight:600;margin-bottom:2px">Layla Ahmad</div><div style="font-size:10px;color:var(--text-secondary);margin-bottom:10px">Senior Stylist</div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">Today</span><span class="report-val">8 bookings</span></div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">Revenue</span><span class="report-val">SAR 920</span></div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">No-show rate</span><span style="color:var(--green);font-weight:600">2%</span></div><div style="font-size:10px;color:var(--text-secondary);margin-top:8px">Haircut · Bridal · Makeup</div></div>
+          <div class="staff-card"><div class="staff-avatar">M</div><div style="font-size:13px;font-weight:600;margin-bottom:2px">Maryam Al-Salem</div><div style="font-size:10px;color:var(--text-secondary);margin-bottom:10px">Color Specialist</div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">Today</span><span class="report-val">6 bookings</span></div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">Revenue</span><span class="report-val">SAR 780</span></div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">No-show rate</span><span style="color:var(--green);font-weight:600">5%</span></div><div style="font-size:10px;color:var(--text-secondary);margin-top:8px">Color · Keratin · Highlights</div></div>
+          <div class="staff-card"><div class="staff-avatar">S</div><div style="font-size:13px;font-weight:600;margin-bottom:2px">Samar Al-Ghamdi</div><div style="font-size:10px;color:var(--text-secondary);margin-bottom:10px">Nail & Skin Tech</div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">Today</span><span class="report-val">4 bookings</span></div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">Revenue</span><span class="report-val">SAR 540</span></div><div class="report-row" style="font-size:11px"><span style="color:var(--text-secondary)">No-show rate</span><span style="color:var(--green);font-weight:600">0%</span></div><div style="font-size:10px;color:var(--text-secondary);margin-top:8px">Nails · Skincare · Facial</div></div>
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="page" id="page-services">
+        <div class="page-header"><div><div class="page-title">Services & Pricing</div><div class="page-sub">6 services — changes sync to bot instantly</div></div><button class="action-btn"><i class="ti ti-plus" style="font-size:12px"></i>Add Service</button></div>
+        <div class="tab-bar"><div class="tab active">All</div><div class="tab">Hair</div><div class="tab">Nails</div><div class="tab">Skin</div><div class="tab">Bridal</div></div>
+        <div class="card" style="margin-bottom:0">
+          <div class="report-row"><div><div style="font-weight:500">Haircut & Styling</div><div style="font-size:10px;color:var(--text-secondary)">90 min · Layla, Maryam</div></div><span class="report-val">SAR 150</span></div>
+          <div class="report-row"><div><div style="font-weight:500">Full Color Treatment</div><div style="font-size:10px;color:var(--text-secondary)">120 min · Maryam</div></div><span class="report-val">SAR 350</span></div>
+          <div class="report-row"><div><div style="font-weight:500">Bridal Makeup</div><div style="font-size:10px;color:var(--text-secondary)">60 min · Layla</div></div><span class="report-val">SAR 800</span></div>
+          <div class="report-row"><div><div style="font-weight:500">Keratin Treatment</div><div style="font-size:10px;color:var(--text-secondary)">180 min · Maryam</div></div><span class="report-val">SAR 500</span></div>
+          <div class="report-row"><div><div style="font-weight:500">Manicure + Pedicure</div><div style="font-size:10px;color:var(--text-secondary)">75 min · Samar</div></div><span class="report-val">SAR 120</span></div>
+          <div class="report-row"><div><div style="font-weight:500">Skincare Facial</div><div style="font-size:10px;color:var(--text-secondary)">60 min · Samar</div></div><span class="report-val">SAR 280</span></div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="page" id="page-reports">
+        <div class="page-header"><div><div class="page-title">Reports & Analytics</div><div class="page-sub">May 2026 — auto PDF sent on 1st of each month</div></div><button class="action-btn"><i class="ti ti-download" style="font-size:12px"></i>Export PDF</button></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Monthly Revenue</div><div class="stat-value gold">42,800</div><div class="stat-trend">↑ 18% vs last month</div></div>
+          <div class="stat-card"><div class="stat-label">Total Bookings</div><div class="stat-value">284</div><div class="stat-trend">↑ 12% vs last month</div></div>
+          <div class="stat-card"><div class="stat-label">New Clients</div><div class="stat-value">38</div><div class="stat-trend">↑ this month</div></div>
+          <div class="stat-card"><div class="stat-label">Attendance Rate</div><div class="stat-value green">91%</div><div class="stat-trend">↑ Excellent</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Top Services by Bookings</div>
+            <div class="report-row"><span>Bridal Makeup</span><span class="report-val">84 bookings</span></div>
+            <div style="padding-bottom:8px"><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div>
+            <div class="report-row"><span>Haircut & Styling</span><span class="report-val">72 bookings</span></div>
+            <div style="padding-bottom:8px"><div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div></div>
+            <div class="report-row"><span>Full Color</span><span class="report-val">58 bookings</span></div>
+            <div style="padding-bottom:8px"><div class="progress-bar"><div class="progress-fill" style="width:69%"></div></div></div>
+            <div class="report-row"><span>Keratin Treatment</span><span class="report-val">41 bookings</span></div>
+            <div style="padding-bottom:8px"><div class="progress-bar"><div class="progress-fill" style="width:48%"></div></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Client Breakdown</div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Returning clients</span><span class="report-val" style="color:var(--green)">73%</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">New clients</span><span class="report-val">27%</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">At-risk (6+ weeks)</span><span class="report-val" style="color:var(--yellow)">38</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">VIP clients</span><span class="report-val" style="color:var(--gold)">18</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Re-engaged this month</span><span class="report-val" style="color:var(--green)">12</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Cancellation rate</span><span class="report-val" style="color:var(--red)">9%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN -->
+      <div class="page" id="page-admin">
+        <div class="page-header"><div><div class="page-title">Admin Panel</div><div class="page-sub">Your platform overview — all salons</div></div><button class="action-btn"><i class="ti ti-plus" style="font-size:12px"></i>Add Salon</button></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Active Salons</div><div class="stat-value gold">8</div><div class="stat-trend">↑ 3 this month</div></div>
+          <div class="stat-card"><div class="stat-label">Monthly Revenue</div><div class="stat-value gold">7,200</div><div class="stat-trend">SAR recurring</div></div>
+          <div class="stat-card"><div class="stat-label">Gold Package</div><div class="stat-value">3</div><div class="stat-trend neutral">SAR 1,500/mo each</div></div>
+          <div class="stat-card"><div class="stat-label">Silver Package</div><div class="stat-value">3</div><div class="stat-trend neutral">SAR 900/mo each</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">All Active Salons</div><div class="card-link">Export report →</div></div>
+          <div class="admin-row"><span style="font-weight:500">Lamasat Al Jamal</span><div style="display:flex;gap:8px;align-items:center"><span style="font-size:10px;color:var(--green)">● Active</span><span class="pkg pkg-gold">Gold</span></div></div>
+          <div class="admin-row"><span style="font-weight:500">Nour Riyadh Salon</span><div style="display:flex;gap:8px;align-items:center"><span style="font-size:10px;color:var(--green)">● Active</span><span class="pkg pkg-silver">Silver</span></div></div>
+          <div class="admin-row"><span style="font-weight:500">Sayyidat Al Anaqah</span><div style="display:flex;gap:8px;align-items:center"><span style="font-size:10px;color:var(--green)">● Active</span><span class="pkg pkg-bronze">Bronze</span></div></div>
+          <div class="admin-row"><span style="font-weight:500">Rayhanah Beauty</span><div style="display:flex;gap:8px;align-items:center"><span style="font-size:10px;color:var(--green)">● Active</span><span class="pkg pkg-gold">Gold</span></div></div>
+          <div class="admin-row"><span style="font-weight:500">Lina's Studio</span><div style="display:flex;gap:8px;align-items:center"><span style="font-size:10px;color:var(--green)">● Active</span><span class="pkg pkg-silver">Silver</span></div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">System Health</div>
+          <div class="system-item"><span>WhatsApp Bots</span><span style="color:var(--green);font-size:11px">● All 8 running</span></div>
+          <div class="system-item"><span>Claude API</span><span style="color:var(--green);font-size:11px">● Connected</span></div>
+          <div class="system-item"><span>Database</span><span style="color:var(--green);font-size:11px">● Healthy</span></div>
+          <div class="system-item"><span>n8n Automations</span><span style="color:var(--green);font-size:11px">● 24 active flows</span></div>
+          <div class="system-item"><span>Server Load</span><span style="color:var(--green);font-size:11px">● 23% — Normal</span></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-header"><div><div class="page-title">Settings & Personalization</div><div class="page-sub">Customize your salon dashboard</div></div><button class="action-btn"><i class="ti ti-check" style="font-size:12px"></i>Save Changes</button></div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:12px">Salon Identity</div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Salon name (EN)</span><span>Lamasat Al Jamal</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Salon name (AR)</span><span>لمسة الجمال</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Bot name</span><span style="color:var(--gold)">Lama ✦</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Bot tone</span><span>Friendly & Warm</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Default language</span><span>Arabic (RTL)</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">WhatsApp number</span><span>+966 50 123 4567</span></div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:12px">Theme & Branding</div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Theme</span><span style="color:var(--gold)">Dark + Gold ●</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Font</span><span>Cairo</span></div>
+            <div class="report-row"><span style="color:var(--text-secondary)">Mode</span><span>Dark</span></div>
+            <div style="padding:8px 0;display:flex;align-items:center;justify-content:space-between;font-size:12px"><span style="color:var(--text-secondary)">Brand colors</span><div style="display:flex;gap:5px"><span class="swatch active" style="background:#C9A84C"></span><span class="swatch" style="background:#D4537E"></span><span class="swatch" style="background:#5B9BD5"></span></div></div>
+            <div class="gold-line"></div>
+            <div class="card-title" style="margin-bottom:10px">Automations</div>
+            <div class="system-item"><span style="font-size:11px">24hr Reminder</span><div class="toggle"></div></div>
+            <div class="system-item"><span style="font-size:11px">Birthday Greetings</span><div class="toggle"></div></div>
+            <div class="system-item"><span style="font-size:11px">Re-engagement (6 wks)</span><div class="toggle"></div></div>
+            <div class="system-item"><span style="font-size:11px">Monthly PDF Report</span><div class="toggle"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const pages = ['dashboard','bookings','calendar','clients','whatsapp','staff','services','reports','admin','settings'];
+  function showPage(name) {
+    pages.forEach(p => { const el = document.getElementById('page-'+p); if(el) el.classList.remove('active'); });
+    const target = document.getElementById('page-'+name);
+    if(target) target.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
+</script>
