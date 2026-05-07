@@ -1,0 +1,481 @@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.design-switcher{display:flex;gap:6px;margin-bottom:14px;padding:4px;background:var(--color-background-secondary);border-radius:10px;border:0.5px solid var(--color-border-tertiary);}
+.ds-btn{flex:1;padding:7px 12px;border-radius:7px;border:none;cursor:pointer;font-size:11px;font-weight:600;background:transparent;color:var(--color-text-secondary);transition:all 0.2s;letter-spacing:0.3px;}
+.ds-btn.active-rose{background:linear-gradient(135deg,#F4A7C0,#D4776A);color:white;}
+.ds-btn.active-arctic{background:#1a1a2e;color:white;}
+.ds-btn.active-cyber{background:linear-gradient(135deg,#7B2FBE,#00D4FF);color:white;}
+.frame{display:none;border-radius:12px;overflow:hidden;border:0.5px solid var(--color-border-tertiary);}
+.frame.show{display:block;}
+
+/* ===== DESIGN 1: ROSE LUXURY ===== */
+.rose{font-family:'Georgia',serif;background:linear-gradient(150deg,#FFF5F7 0%,#FDE8EE 50%,#F8F0F5 100%);min-height:580px;display:flex;flex-direction:column;}
+.rose .topbar{background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,119,106,0.15);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;}
+.rose .logo{font-size:17px;font-weight:700;background:linear-gradient(135deg,#D4776A,#C45A8E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.5px;}
+.rose .salon-nm{font-size:10px;color:#B07A8A;margin-top:1px;font-style:italic;}
+.rose .status-pill{background:rgba(166,207,140,0.2);border:1px solid rgba(166,207,140,0.4);border-radius:20px;padding:3px 10px;font-size:10px;color:#5A9A45;display:flex;align-items:center;gap:4px;}
+.rose .sdot{width:5px;height:5px;border-radius:50%;background:#5A9A45;animation:p 2s infinite;}
+.rose .body{display:flex;flex:1;}
+.rose .sidebar{width:180px;background:rgba(255,255,255,0.6);border-right:1px solid rgba(212,119,106,0.1);padding:16px 12px;display:flex;flex-direction:column;gap:2px;}
+.rose .nsec{font-size:9px;color:#C4A0A8;text-transform:uppercase;letter-spacing:1px;padding:8px 8px 3px;font-weight:600;}
+.rose .nitem{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:10px;cursor:pointer;font-size:11px;color:#9A7A82;font-family:'Segoe UI',sans-serif;transition:all 0.2s;}
+.rose .nitem:hover{background:rgba(212,119,106,0.08);color:#D4776A;}
+.rose .nitem.act{background:linear-gradient(135deg,rgba(212,119,106,0.15),rgba(196,90,142,0.1));color:#D4776A;font-weight:600;}
+.rose .nitem i{font-size:14px;width:16px;}
+.rose .main{flex:1;padding:16px;overflow-y:auto;}
+.rose .pg{display:none;}.rose .pg.on{display:block;}
+.rose .ptitle{font-size:16px;color:#5A3A4A;margin-bottom:4px;}
+.rose .psub{font-size:10px;color:#B07A8A;font-family:'Segoe UI',sans-serif;margin-bottom:14px;}
+.rose .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.rose .sc{background:rgba(255,255,255,0.8);border:1px solid rgba(212,119,106,0.12);border-radius:12px;padding:12px;position:relative;overflow:hidden;}
+.rose .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#F4A7C0,#D4776A);}
+.rose .slbl{font-size:9px;color:#B07A8A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;font-family:'Segoe UI',sans-serif;}
+.rose .sval{font-size:22px;font-weight:700;color:#5A3A4A;font-family:'Georgia',serif;}
+.rose .str{font-size:10px;color:#5A9A45;margin-top:4px;font-family:'Segoe UI',sans-serif;}
+.rose .card{background:rgba(255,255,255,0.75);border:1px solid rgba(212,119,106,0.12);border-radius:14px;padding:14px;margin-bottom:12px;backdrop-filter:blur(4px);}
+.rose .ctitle{font-size:10px;font-weight:700;color:#C45A8E;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;font-family:'Segoe UI',sans-serif;}
+.rose .brow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(212,119,106,0.06);}
+.rose .brow:last-child{border-bottom:none;}
+.rose .btime{font-size:10px;color:#B07A8A;width:40px;font-family:'Segoe UI',sans-serif;}
+.rose .bdot{width:7px;height:7px;border-radius:50%;}
+.rose .bname{font-size:11px;font-weight:600;color:#5A3A4A;}
+.rose .bmeta{font-size:9px;color:#B07A8A;font-family:'Segoe UI',sans-serif;}
+.rose .badge{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600;font-family:'Segoe UI',sans-serif;}
+.rose .bg{background:rgba(90,154,69,0.1);color:#5A9A45;}
+.rose .by{background:rgba(212,180,100,0.15);color:#A08020;}
+.rose .br{background:rgba(212,80,80,0.1);color:#C04040;}
+.rose .twoc{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;}
+.rose .act-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(212,119,106,0.06);font-family:'Segoe UI',sans-serif;}
+.rose .act-item:last-child{border-bottom:none;}
+.rose .aic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.rose .aig{background:rgba(90,154,69,0.1);}
+.rose .aim{background:rgba(196,90,142,0.1);}
+.rose .air{background:rgba(200,60,60,0.1);}
+.rose .atxt{font-size:10px;color:#9A7A82;line-height:1.5;}
+.rose .atxt strong{color:#5A3A4A;font-weight:600;}
+.rose .atm{font-size:9px;color:#C4A0A8;margin-top:2px;}
+.rose .abtn{background:linear-gradient(135deg,#F4A7C0,#D4776A);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Segoe UI',sans-serif;}
+.rose .tab-bar{display:flex;gap:4px;margin-bottom:12px;}
+.rose .tab{font-size:10px;padding:4px 12px;border-radius:20px;cursor:pointer;border:1px solid rgba(212,119,106,0.2);color:#B07A8A;background:transparent;font-family:'Segoe UI',sans-serif;transition:all 0.2s;}
+.rose .tab.act{background:linear-gradient(135deg,#F4A7C0,#D4776A);color:white;border-color:transparent;}
+
+/* ===== DESIGN 2: ARCTIC MINIMAL ===== */
+.arctic{font-family:'SF Pro Display','Segoe UI',sans-serif;background:#F7F8FA;min-height:580px;display:flex;flex-direction:column;}
+.arctic .topbar{background:#FFFFFF;border-bottom:1px solid #EAECF0;padding:11px 20px;display:flex;align-items:center;justify-content:space-between;}
+.arctic .logo{font-size:14px;font-weight:700;color:#0A0E1A;letter-spacing:-0.3px;}
+.arctic .logo span{color:#2563EB;}
+.arctic .salon-nm{font-size:10px;color:#9CA3AF;margin-top:1px;}
+.arctic .nbadge{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:3px 10px;font-size:10px;color:#2563EB;font-weight:600;}
+.arctic .body{display:flex;flex:1;}
+.arctic .sidebar{width:56px;background:#FFFFFF;border-right:1px solid #EAECF0;display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;}
+.arctic .nitem{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9CA3AF;font-size:16px;transition:all 0.2s;position:relative;}
+.arctic .nitem:hover{background:#F3F4F6;color:#374151;}
+.arctic .nitem.act{background:#EFF6FF;color:#2563EB;}
+.arctic .nitem .tt{position:absolute;left:46px;background:#111827;color:white;font-size:10px;padding:4px 8px;border-radius:5px;white-space:nowrap;opacity:0;pointer-events:none;z-index:10;transition:opacity 0.15s;}
+.arctic .nitem:hover .tt{opacity:1;}
+.arctic .nsep{width:24px;height:1px;background:#EAECF0;margin:4px 0;}
+.arctic .main{flex:1;padding:18px;overflow-y:auto;}
+.arctic .pg{display:none;}.arctic .pg.on{display:block;}
+.arctic .phdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;}
+.arctic .ptitle{font-size:18px;font-weight:700;color:#0A0E1A;letter-spacing:-0.3px;}
+.arctic .psub{font-size:11px;color:#6B7280;margin-top:2px;}
+.arctic .abtn{background:#2563EB;color:white;border:none;border-radius:8px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.arctic .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.arctic .sc{background:#FFFFFF;border:1px solid #EAECF0;border-radius:12px;padding:14px;}
+.arctic .slbl{font-size:10px;color:#6B7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;font-weight:600;}
+.arctic .sval{font-size:26px;font-weight:700;color:#0A0E1A;letter-spacing:-0.5px;}
+.arctic .sval.blue{color:#2563EB;}
+.arctic .sval.grn{color:#059669;}
+.arctic .sval.ylw{color:#D97706;}
+.arctic .str{font-size:10px;color:#059669;margin-top:5px;display:flex;align-items:center;gap:3px;}
+.arctic .str.neu{color:#6B7280;}
+.arctic .card{background:#FFFFFF;border:1px solid #EAECF0;border-radius:12px;padding:14px;margin-bottom:12px;}
+.arctic .ctitle{font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;}
+.arctic .brow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F3F4F6;}
+.arctic .brow:last-child{border-bottom:none;}
+.arctic .btime{font-size:11px;color:#6B7280;width:44px;}
+.arctic .bdot{width:8px;height:8px;border-radius:2px;}
+.arctic .bname{font-size:12px;font-weight:600;color:#111827;}
+.arctic .bmeta{font-size:10px;color:#9CA3AF;margin-top:1px;}
+.arctic .badge{font-size:9px;padding:3px 8px;border-radius:5px;font-weight:700;}
+.arctic .bg{background:#ECFDF5;color:#059669;}
+.arctic .by{background:#FFFBEB;color:#D97706;}
+.arctic .br{background:#FEF2F2;color:#DC2626;}
+.arctic .twoc{display:grid;grid-template-columns:1.5fr 1fr;gap:10px;}
+.arctic .act-item{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid #F3F4F6;}
+.arctic .act-item:last-child{border-bottom:none;}
+.arctic .aic{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.arctic .aig{background:#ECFDF5;}
+.arctic .aim{background:#EFF6FF;}
+.arctic .air{background:#FEF2F2;}
+.arctic .atxt{font-size:11px;color:#6B7280;line-height:1.5;}
+.arctic .atxt strong{color:#111827;font-weight:600;}
+.arctic .atm{font-size:10px;color:#9CA3AF;margin-top:2px;}
+.arctic .tab-bar{display:flex;gap:4px;margin-bottom:12px;}
+.arctic .tab{font-size:11px;padding:5px 14px;border-radius:7px;cursor:pointer;border:1px solid #E5E7EB;color:#6B7280;background:transparent;transition:all 0.2s;}
+.arctic .tab.act{background:#2563EB;color:white;border-color:#2563EB;}
+.arctic .div-line{height:1px;background:#F3F4F6;margin:10px 0;}
+
+/* ===== DESIGN 3: NEON CYBER ===== */
+.cyber{font-family:'Courier New',monospace;background:#050510;min-height:580px;display:flex;flex-direction:column;position:relative;}
+.cyber::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(0,212,255,0.015) 40px,rgba(0,212,255,0.015) 41px);pointer-events:none;}
+.cyber .topbar{background:rgba(10,5,30,0.95);border-bottom:1px solid rgba(0,212,255,0.2);padding:11px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
+.cyber .logo{font-size:14px;font-weight:700;color:#00D4FF;letter-spacing:3px;text-transform:uppercase;}
+.cyber .logo-sub{font-size:9px;color:rgba(0,212,255,0.4);letter-spacing:2px;margin-top:1px;}
+.cyber .status-chip{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);border-radius:4px;padding:3px 10px;font-size:9px;color:#00FF88;letter-spacing:1px;display:flex;align-items:center;gap:5px;}
+.cyber .cdot{width:5px;height:5px;border-radius:50%;background:#00FF88;animation:p 1.5s infinite;}
+.cyber .body{display:flex;flex:1;position:relative;z-index:1;}
+.cyber .sidebar{width:180px;background:rgba(10,5,30,0.8);border-right:1px solid rgba(0,212,255,0.1);padding:14px 10px;display:flex;flex-direction:column;gap:2px;}
+.cyber .nsec{font-size:8px;color:rgba(0,212,255,0.3);letter-spacing:2px;padding:10px 8px 3px;}
+.cyber .nitem{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:4px;cursor:pointer;font-size:10px;color:rgba(0,212,255,0.4);letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;border:1px solid transparent;}
+.cyber .nitem:hover{color:#00D4FF;border-color:rgba(0,212,255,0.15);background:rgba(0,212,255,0.05);}
+.cyber .nitem.act{color:#00D4FF;border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.08);}
+.cyber .nitem i{font-size:13px;width:16px;}
+.cyber .nbdg{margin-left:auto;background:rgba(255,50,100,0.15);color:#FF3264;font-size:8px;padding:1px 5px;border-radius:3px;letter-spacing:1px;}
+.cyber .main{flex:1;padding:16px;overflow-y:auto;}
+.cyber .pg{display:none;}.cyber .pg.on{display:block;}
+.cyber .phdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.cyber .ptitle{font-size:11px;color:#00D4FF;letter-spacing:3px;text-transform:uppercase;}
+.cyber .psub{font-size:9px;color:rgba(0,212,255,0.3);letter-spacing:1px;margin-bottom:14px;}
+.cyber .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.cyber .sc{background:rgba(10,5,30,0.9);border:1px solid rgba(0,212,255,0.15);border-radius:4px;padding:12px;position:relative;overflow:hidden;}
+.cyber .sc::after{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,#00D4FF,transparent);}
+.cyber .slbl{font-size:8px;color:rgba(0,212,255,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.cyber .sval{font-size:22px;font-weight:700;color:#00D4FF;font-family:'Courier New',monospace;}
+.cyber .sval.grn{color:#00FF88;}
+.cyber .sval.ylw{color:#FFD700;}
+.cyber .sval.prp{color:#BF5FFF;}
+.cyber .str{font-size:9px;color:#00FF88;margin-top:4px;letter-spacing:1px;}
+.cyber .str.neu{color:rgba(0,212,255,0.3);}
+.cyber .card{background:rgba(10,5,30,0.85);border:1px solid rgba(0,212,255,0.12);border-radius:4px;padding:14px;margin-bottom:10px;position:relative;}
+.cyber .card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,#00D4FF,#BF5FFF);}
+.cyber .ctitle{font-size:8px;color:#00D4FF;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;padding-left:8px;}
+.cyber .brow{display:flex;align-items:center;gap:8px;padding:8px 0 8px 8px;border-bottom:1px solid rgba(0,212,255,0.05);}
+.cyber .brow:last-child{border-bottom:none;}
+.cyber .btime{font-size:10px;color:rgba(0,212,255,0.3);width:40px;letter-spacing:1px;}
+.cyber .bdot{width:6px;height:6px;border-radius:1px;}
+.cyber .bname{font-size:10px;color:#E0E8FF;letter-spacing:0.5px;}
+.cyber .bmeta{font-size:9px;color:rgba(0,212,255,0.3);letter-spacing:0.5px;}
+.cyber .badge{font-size:8px;padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:1px;}
+.cyber .bg{background:rgba(0,255,136,0.1);color:#00FF88;border:1px solid rgba(0,255,136,0.2);}
+.cyber .by{background:rgba(255,215,0,0.08);color:#FFD700;border:1px solid rgba(255,215,0,0.2);}
+.cyber .br{background:rgba(255,50,100,0.1);color:#FF3264;border:1px solid rgba(255,50,100,0.2);}
+.cyber .twoc{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;}
+.cyber .act-item{display:flex;gap:8px;padding:7px 0 7px 8px;border-bottom:1px solid rgba(0,212,255,0.05);}
+.cyber .act-item:last-child{border-bottom:none;}
+.cyber .aic{width:26px;height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.cyber .aig{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.15);}
+.cyber .aim{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.15);}
+.cyber .air{background:rgba(255,50,100,0.08);border:1px solid rgba(255,50,100,0.15);}
+.cyber .atxt{font-size:10px;color:rgba(224,232,255,0.5);line-height:1.5;letter-spacing:0.3px;}
+.cyber .atxt strong{color:#E0E8FF;}
+.cyber .atm{font-size:9px;color:rgba(0,212,255,0.2);margin-top:2px;letter-spacing:1px;}
+.cyber .cbtn{background:transparent;border:1px solid #00D4FF;color:#00D4FF;border-radius:3px;padding:6px 14px;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:2px;text-transform:uppercase;font-family:'Courier New',monospace;transition:all 0.2s;}
+.cyber .cbtn:hover{background:#00D4FF;color:#050510;}
+.cyber .tab-bar{display:flex;gap:4px;margin-bottom:12px;}
+.cyber .tab{font-size:9px;padding:4px 12px;border-radius:2px;cursor:pointer;border:1px solid rgba(0,212,255,0.15);color:rgba(0,212,255,0.3);background:transparent;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;}
+.cyber .tab.act{border-color:#00D4FF;color:#00D4FF;background:rgba(0,212,255,0.08);}
+.cyber .chart-wrap{height:60px;position:relative;margin-top:8px;}
+.cyber .mini-bars{display:flex;align-items:flex-end;gap:2px;height:60px;}
+.cyber .mb{flex:1;border-radius:1px;background:rgba(0,212,255,0.1);transition:all 0.2s;cursor:pointer;}
+.cyber .mb:hover,.cyber .mb.tod{background:#00D4FF;box-shadow:0 0 8px rgba(0,212,255,0.4);}
+.cyber .report-row{display:flex;justify-content:space-between;padding:7px 0 7px 8px;border-bottom:1px solid rgba(0,212,255,0.05);font-size:10px;}
+.cyber .report-row:last-child{border-bottom:none;}
+.cyber .rval{color:#00D4FF;font-weight:700;letter-spacing:1px;}
+
+@keyframes p{0%,100%{opacity:1}50%{opacity:0.3}}
+</style>
+
+<div class="design-switcher">
+  <button class="ds-btn active-rose" id="btn-rose" onclick="switchDesign('rose')">🌸 Design 1 — Rose Luxury</button>
+  <button class="ds-btn" id="btn-arctic" onclick="switchDesign('arctic')">❄️ Design 2 — Arctic Minimal</button>
+  <button class="ds-btn" id="btn-cyber" onclick="switchDesign('cyber')">⚡ Design 3 — Neon Cyber</button>
+</div>
+
+<!-- ===== ROSE LUXURY ===== -->
+<div class="frame show" id="frame-rose">
+<div class="rose">
+  <div class="topbar">
+    <div><div class="logo">✦ Salon AI</div><div class="salon-nm">Lamasat Al Jamal — Riyadh</div></div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="status-pill"><span class="sdot"></span>Bot Active</div>
+      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#F4A7C0,#D4776A);display:flex;align-items:center;justify-content:center;font-size:12px;color:white;font-family:'Segoe UI',sans-serif;font-weight:700;">M</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="sidebar">
+      <div class="nsec">Main</div>
+      <div class="nitem act" onclick="rShowPage('rdash')"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+      <div class="nitem" onclick="rShowPage('rbooks')"><i class="ti ti-calendar-check"></i>Bookings</div>
+      <div class="nitem" onclick="rShowPage('rclients')"><i class="ti ti-users"></i>Clients</div>
+      <div class="nitem" onclick="rShowPage('rwa')"><i class="ti ti-brand-whatsapp"></i>WhatsApp</div>
+      <div class="nsec">Manage</div>
+      <div class="nitem" onclick="rShowPage('rstaff')"><i class="ti ti-id-badge"></i>Staff</div>
+      <div class="nitem" onclick="rShowPage('rservices')"><i class="ti ti-scissors"></i>Services</div>
+      <div class="nitem" onclick="rShowPage('rreports')"><i class="ti ti-chart-bar"></i>Reports</div>
+    </div>
+    <div class="main">
+      <div class="pg on" id="rdash">
+        <div class="ptitle">Good morning, Mona 🌸</div>
+        <div class="psub">Wednesday, May 7 · 18 bookings · Your most beautiful day yet</div>
+        <div class="sgrid">
+          <div class="sc"><div class="slbl">Bookings</div><div class="sval" style="color:#D4776A">18</div><div class="str">↑ 3 from yesterday</div></div>
+          <div class="sc"><div class="slbl">Confirmed</div><div class="sval" style="color:#5A9A45">14</div><div class="str">↑ 78%</div></div>
+          <div class="sc"><div class="slbl">Pending</div><div class="sval" style="color:#A08020">3</div><div class="str" style="color:#A08020">Awaiting you</div></div>
+          <div class="sc"><div class="slbl">Revenue</div><div class="sval" style="color:#C45A8E">1,840</div><div class="str">SAR today</div></div>
+        </div>
+        <div class="twoc">
+          <div class="card">
+            <div class="ctitle">🌺 Today's Appointments</div>
+            <div class="brow"><div class="btime">9:00</div><div class="bdot" style="background:#5A9A45"></div><div style="flex:1"><div class="bname">Noura Al-Shamri</div><div class="bmeta">Haircut & Styling · Layla · 90 min</div></div><div class="badge bg">Done</div></div>
+            <div class="brow"><div class="btime">10:30</div><div class="bdot" style="background:#A08020"></div><div style="flex:1"><div class="bname">Sara Al-Otaibi</div><div class="bmeta">Full Color · Maryam · 120 min</div></div><div class="badge by">Pending</div></div>
+            <div class="brow"><div class="btime">12:00</div><div class="bdot" style="background:#5A9A45"></div><div style="flex:1"><div class="bname">Hind Al-Dosari</div><div class="bmeta">Bridal Makeup · Layla · 60 min</div></div><div class="badge bg">Confirmed</div></div>
+            <div class="brow"><div class="btime">2:00</div><div class="bdot" style="background:#A08020"></div><div style="flex:1"><div class="bname">Dalal Al-Rashid</div><div class="bmeta">Mani + Pedi · Samar · 75 min</div></div><div class="badge by">Pending</div></div>
+            <div class="brow"><div class="btime">3:30</div><div class="bdot" style="background:#C04040"></div><div style="flex:1"><div class="bname">Reem Al-Harbi</div><div class="bmeta">Keratin · Maryam · 180 min</div></div><div class="badge br">Cancelled</div></div>
+          </div>
+          <div class="card">
+            <div class="ctitle">💝 Live Activity</div>
+            <div class="act-item"><div class="aic aig"><i class="ti ti-calendar-plus" style="color:#5A9A45;font-size:12px"></i></div><div><div class="atxt"><strong>New booking</strong> — Fatima Al-Zahrani</div><div class="atm">3 minutes ago</div></div></div>
+            <div class="act-item"><div class="aic aim"><i class="ti ti-message" style="color:#C45A8E;font-size:12px"></i></div><div><div class="atxt"><strong>WhatsApp</strong> — price inquiry</div><div class="atm">7 minutes ago</div></div></div>
+            <div class="act-item"><div class="aic aig"><i class="ti ti-check" style="color:#5A9A45;font-size:12px"></i></div><div><div class="atxt"><strong>Confirmed</strong> — Noura Al-Shamri</div><div class="atm">15 minutes ago</div></div></div>
+            <div class="act-item"><div class="aic air"><i class="ti ti-x" style="color:#C04040;font-size:12px"></i></div><div><div class="atxt"><strong>Cancelled</strong> — Reem Al-Harbi</div><div class="atm">28 minutes ago</div></div></div>
+            <div style="margin-top:12px"><canvas id="roseChart" height="70"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="pg" id="rbooks">
+        <div class="ptitle">Bookings</div><div class="psub">18 today · 3 need approval</div>
+        <div class="tab-bar"><div class="tab act">All (18)</div><div class="tab">Confirmed</div><div class="tab">Pending</div><div class="tab">Cancelled</div></div>
+        <div class="card">
+          <div class="brow"><div class="btime">9:00 AM</div><div class="bdot" style="background:#5A9A45"></div><div style="flex:1"><div class="bname">Noura Al-Shamri · 0501234567</div><div class="bmeta">Haircut & Styling · Layla · SAR 150</div></div><div class="badge bg">Confirmed</div></div>
+          <div class="brow"><div class="btime">10:30 AM</div><div class="bdot" style="background:#A08020"></div><div style="flex:1"><div class="bname">Sara Al-Otaibi · 0559876543</div><div class="bmeta">Full Color · Maryam · SAR 350</div></div><div class="badge by">Pending</div></div>
+          <div class="brow"><div class="btime">12:00 PM</div><div class="bdot" style="background:#5A9A45"></div><div style="flex:1"><div class="bname">Hind Al-Dosari · 0534561234</div><div class="bmeta">Bridal Makeup · Layla · SAR 800</div></div><div class="badge bg">Confirmed</div></div>
+          <div class="brow"><div class="btime">3:30 PM</div><div class="bdot" style="background:#C04040"></div><div style="flex:1"><div class="bname">Reem Al-Harbi · 0567891234</div><div class="bmeta">Keratin Treatment · Maryam · SAR 500</div></div><div class="badge br">Cancelled</div></div>
+        </div>
+      </div>
+      <div class="pg" id="rclients">
+        <div class="ptitle">Clients</div><div class="psub">142 beautiful clients</div>
+        <div class="card">
+          <div class="brow"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#F4A7C0,#D4776A);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;font-family:'Segoe UI',sans-serif;flex-shrink:0;">N</div><div style="flex:1;margin-left:8px"><div class="bname">Noura Al-Shamri</div><div class="bmeta">12 visits · VIP · SAR 3,200 total</div></div><div class="badge bg">VIP</div></div>
+          <div class="brow"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#A7C4F4,#6A94D4);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;font-family:'Segoe UI',sans-serif;flex-shrink:0;">S</div><div style="flex:1;margin-left:8px"><div class="bname">Sara Al-Otaibi</div><div class="bmeta">5 visits · Regular · SAR 1,450 total</div></div><div class="badge by">Regular</div></div>
+          <div class="brow"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#A7F4C4,#6AD494);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;font-family:'Segoe UI',sans-serif;flex-shrink:0;">F</div><div style="flex:1;margin-left:8px"><div class="bname">Fatima Al-Zahrani</div><div class="bmeta">8 visits · Regular · SAR 2,100 total</div></div><div class="badge bg">Regular</div></div>
+        </div>
+      </div>
+      <div class="pg" id="rwa">
+        <div class="ptitle">WhatsApp</div><div class="psub">Bot Lama is handling conversations</div>
+        <div class="card">
+          <div style="background:rgba(212,119,106,0.06);border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid #D4776A;font-family:'Segoe UI',sans-serif;font-size:11px;color:#7A4A5A;"><strong style="font-size:10px;color:#C45A8E;display:block;margin-bottom:4px;">LAMA (Bot)</strong>Welcome to Lamasat Al Jamal! 🌸 I'm Lama. How can I help you today?</div>
+          <div style="background:rgba(90,154,69,0.06);border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid #5A9A45;font-family:'Segoe UI',sans-serif;font-size:11px;color:#3A6A2A;"><strong style="font-size:10px;color:#5A9A45;display:block;margin-bottom:4px;">Client</strong>I'd like to book a haircut please</div>
+          <div style="background:rgba(212,119,106,0.06);border-radius:10px;padding:10px;border-left:3px solid #D4776A;font-family:'Segoe UI',sans-serif;font-size:11px;color:#7A4A5A;"><strong style="font-size:10px;color:#C45A8E;display:block;margin-bottom:4px;">LAMA (Bot)</strong>Of course! ✨ Available times today:<br>⏰ 11:00 AM · ⏰ 2:30 PM · ⏰ 4:00 PM<br>Which works for you?</div>
+        </div>
+      </div>
+      <div class="pg" id="rstaff">
+        <div class="ptitle">Staff</div><div class="psub">3 talented team members</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div class="card" style="text-align:center"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#F4A7C0,#D4776A);display:flex;align-items:center;justify-content:center;color:white;font-size:18px;font-family:'Segoe UI',sans-serif;font-weight:700;margin:0 auto 8px">L</div><div class="bname">Layla Ahmad</div><div class="bmeta" style="margin-top:4px">8 bookings · SAR 920</div><div class="badge bg" style="display:inline-block;margin-top:6px">Senior</div></div>
+          <div class="card" style="text-align:center"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#C4A7F4,#9A6AD4);display:flex;align-items:center;justify-content:center;color:white;font-size:18px;font-family:'Segoe UI',sans-serif;font-weight:700;margin:0 auto 8px">M</div><div class="bname">Maryam Salem</div><div class="bmeta" style="margin-top:4px">6 bookings · SAR 780</div><div class="badge by" style="display:inline-block;margin-top:6px">Color</div></div>
+          <div class="card" style="text-align:center"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#A7F4D4,#5AC49A);display:flex;align-items:center;justify-content:center;color:white;font-size:18px;font-family:'Segoe UI',sans-serif;font-weight:700;margin:0 auto 8px">S</div><div class="bname">Samar Ghamdi</div><div class="bmeta" style="margin-top:4px">4 bookings · SAR 540</div><div class="badge bg" style="display:inline-block;margin-top:6px">Nails</div></div>
+        </div>
+      </div>
+      <div class="pg" id="rservices">
+        <div class="ptitle">Services & Pricing</div><div class="psub">Prices sync to bot instantly</div>
+        <div class="card">
+          <div class="brow"><div style="flex:1"><div class="bname">Haircut & Styling</div><div class="bmeta">90 min · Layla, Maryam</div></div><div class="sval" style="font-size:16px;color:#D4776A;font-family:'Georgia',serif">SAR 150</div></div>
+          <div class="brow"><div style="flex:1"><div class="bname">Full Color Treatment</div><div class="bmeta">120 min · Maryam</div></div><div class="sval" style="font-size:16px;color:#D4776A;font-family:'Georgia',serif">SAR 350</div></div>
+          <div class="brow"><div style="flex:1"><div class="bname">Bridal Makeup</div><div class="bmeta">60 min · Layla</div></div><div class="sval" style="font-size:16px;color:#D4776A;font-family:'Georgia',serif">SAR 800</div></div>
+          <div class="brow"><div style="flex:1"><div class="bname">Keratin Treatment</div><div class="bmeta">180 min · Maryam</div></div><div class="sval" style="font-size:16px;color:#D4776A;font-family:'Georgia',serif">SAR 500</div></div>
+          <div class="brow"><div style="flex:1"><div class="bname">Manicure + Pedicure</div><div class="bmeta">75 min · Samar</div></div><div class="sval" style="font-size:16px;color:#D4776A;font-family:'Georgia',serif">SAR 120</div></div>
+        </div>
+      </div>
+      <div class="pg" id="rreports">
+        <div class="ptitle">Reports</div><div class="psub">May 2026 · PDF auto-sent on 1st</div>
+        <div class="sgrid">
+          <div class="sc"><div class="slbl">Revenue</div><div class="sval" style="color:#C45A8E">42,800</div><div class="str">↑ 18%</div></div>
+          <div class="sc"><div class="slbl">Bookings</div><div class="sval" style="color:#D4776A">284</div><div class="str">↑ 12%</div></div>
+          <div class="sc"><div class="slbl">New Clients</div><div class="sval" style="color:#5A9A45">38</div><div class="str">This month</div></div>
+          <div class="sc"><div class="slbl">Attendance</div><div class="sval" style="color:#5A9A45">91%</div><div class="str">Excellent</div></div>
+        </div>
+        <div class="card"><div class="ctitle">Top Services</div>
+          <div class="brow"><div style="flex:1"><div class="bname">Bridal Makeup</div></div><div class="sval" style="font-size:14px;color:#C45A8E;font-family:'Georgia',serif">84 bookings</div></div>
+          <div class="brow"><div style="flex:1"><div class="bname">Haircut & Styling</div></div><div class="sval" style="font-size:14px;color:#C45A8E;font-family:'Georgia',serif">72 bookings</div></div>
+          <div class="brow"><div style="flex:1"><div class="bname">Full Color</div></div><div class="sval" style="font-size:14px;color:#C45A8E;font-family:'Georgia',serif">58 bookings</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== ARCTIC MINIMAL ===== -->
+<div class="frame" id="frame-arctic">
+<div class="arctic">
+  <div class="topbar">
+    <div><div class="logo">Salon<span>AI</span></div><div class="salon-nm">Lamasat Al Jamal Salon · Riyadh</div></div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="nbadge">● Bot Active</div>
+      <div style="width:30px;height:30px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:12px;color:#2563EB;font-weight:700;border:1px solid #BFDBFE;">M</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="sidebar">
+      <div class="nitem act" onclick="aShowPage('adash')"><i class="ti ti-layout-dashboard"></i><span class="tt">Dashboard</span></div>
+      <div class="nitem" onclick="aShowPage('abooks')"><i class="ti ti-calendar-check"></i><span class="tt">Bookings</span></div>
+      <div class="nitem" onclick="aShowPage('acal')"><i class="ti ti-calendar"></i><span class="tt">Calendar</span></div>
+      <div class="nitem" onclick="aShowPage('aclients')"><i class="ti ti-users"></i><span class="tt">Clients</span></div>
+      <div class="nitem" onclick="aShowPage('awa')"><i class="ti ti-brand-whatsapp"></i><span class="tt">WhatsApp</span></div>
+      <div class="nsep"></div>
+      <div class="nitem" onclick="aShowPage('astaff')"><i class="ti ti-id-badge"></i><span class="tt">Staff</span></div>
+      <div class="nitem" onclick="aShowPage('aservices')"><i class="ti ti-scissors"></i><span class="tt">Services</span></div>
+      <div class="nitem" onclick="aShowPage('areports')"><i class="ti ti-chart-bar"></i><span class="tt">Reports</span></div>
+      <div class="nsep"></div>
+      <div class="nitem" onclick="aShowPage('aadmin')"><i class="ti ti-shield-check"></i><span class="tt">Admin</span></div>
+      <div class="nitem" onclick="aShowPage('asettings')"><i class="ti ti-settings"></i><span class="tt">Settings</span></div>
+    </div>
+    <div class="main">
+      <div class="pg on" id="adash">
+        <div class="phdr"><div><div class="ptitle">Good morning, Mona 👋</div><div class="psub">Wednesday May 7 · 18 bookings scheduled today</div></div><button class="abtn"><i class="ti ti-plus" style="font-size:11px"></i>New Booking</button></div>
+        <div class="sgrid">
+          <div class="sc"><div class="slbl">Bookings</div><div class="sval blue">18</div><div class="str">↑ 3 from yesterday</div></div>
+          <div class="sc"><div class="slbl">Confirmed</div><div class="sval grn">14</div><div class="str">78% rate</div></div>
+          <div class="sc"><div class="slbl">Pending</div><div class="sval ylw">3</div><div class="str neu">Need action</div></div>
+          <div class="sc"><div class="slbl">Revenue (SAR)</div><div class="sval blue">1,840</div><div class="str">On track</div></div>
+        </div>
+        <div class="twoc">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="ctitle">Today's Schedule</div><span style="font-size:10px;color:#2563EB;cursor:pointer">View all →</span></div>
+            <div class="brow"><div class="btime">9:00 AM</div><div class="bdot" style="background:#059669;border-radius:2px"></div><div style="flex:1"><div class="bname">Noura Al-Shamri</div><div class="bmeta">Haircut & Styling · Layla · 90 min</div></div><div class="badge bg">Confirmed</div></div>
+            <div class="brow"><div class="btime">10:30 AM</div><div class="bdot" style="background:#D97706;border-radius:2px"></div><div style="flex:1"><div class="bname">Sara Al-Otaibi</div><div class="bmeta">Full Color · Maryam · 120 min</div></div><div class="badge by">Pending</div></div>
+            <div class="brow"><div class="btime">12:00 PM</div><div class="bdot" style="background:#059669;border-radius:2px"></div><div style="flex:1"><div class="bname">Hind Al-Dosari</div><div class="bmeta">Bridal Makeup · Layla · 60 min</div></div><div class="badge bg">Confirmed</div></div>
+            <div class="brow"><div class="btime">2:00 PM</div><div class="bdot" style="background:#D97706;border-radius:2px"></div><div style="flex:1"><div class="bname">Dalal Al-Rashid</div><div class="bmeta">Mani + Pedi · Samar · 75 min</div></div><div class="badge by">Pending</div></div>
+            <div class="brow"><div class="btime">5:00 PM</div><div class="bdot" style="background:#059669;border-radius:2px"></div><div style="flex:1"><div class="bname">Fatima Al-Zahrani</div><div class="bmeta">Skincare Facial · Samar · 60 min</div></div><div class="badge bg">Confirmed</div></div>
+          </div>
+          <div class="card">
+            <div class="ctitle">Live Activity</div>
+            <div class="act-item"><div class="aic aig"><i class="ti ti-calendar-plus" style="color:#059669;font-size:13px"></i></div><div><div class="atxt"><strong>New booking</strong> from Fatima</div><div class="atm">3 min ago</div></div></div>
+            <div class="act-item"><div class="aic aim"><i class="ti ti-message" style="color:#2563EB;font-size:13px"></i></div><div><div class="atxt"><strong>WhatsApp</strong> — price query</div><div class="atm">7 min ago</div></div></div>
+            <div class="act-item"><div class="aic aig"><i class="ti ti-check" style="color:#059669;font-size:13px"></i></div><div><div class="atxt"><strong>Confirmed</strong> — Noura</div><div class="atm">15 min ago</div></div></div>
+            <div class="act-item"><div class="aic air"><i class="ti ti-x" style="color:#DC2626;font-size:13px"></i></div><div><div class="atxt"><strong>Cancelled</strong> — Reem</div><div class="atm">28 min ago</div></div></div>
+            <div class="div-line"></div>
+            <div style="font-size:10px;color:#6B7280;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Weekly Revenue</div>
+            <canvas id="arcticChart" height="65"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="pg" id="abooks"><div class="ptitle">Bookings</div><div class="psub">18 today · 3 need approval</div><div class="tab-bar"><div class="tab act">All (18)</div><div class="tab">Confirmed (14)</div><div class="tab">Pending (3)</div><div class="tab">Cancelled (1)</div></div><div class="card"><div class="brow"><div class="btime">9:00 AM</div><div class="bdot" style="background:#059669;border-radius:2px"></div><div style="flex:1"><div class="bname">Noura Al-Shamri · 0501234567</div><div class="bmeta">Haircut & Styling · Layla · SAR 150</div></div><div class="badge bg">Confirmed</div></div><div class="brow"><div class="btime">10:30 AM</div><div class="bdot" style="background:#D97706;border-radius:2px"></div><div style="flex:1"><div class="bname">Sara Al-Otaibi · 0559876543</div><div class="bmeta">Full Color · Maryam · SAR 350</div></div><div class="badge by">Pending</div></div><div class="brow"><div class="btime">12:00 PM</div><div class="bdot" style="background:#059669;border-radius:2px"></div><div style="flex:1"><div class="bname">Hind Al-Dosari · 0534561234</div><div class="bmeta">Bridal Makeup · Layla · SAR 800</div></div><div class="badge bg">Confirmed</div></div><div class="brow"><div class="btime">3:30 PM</div><div class="bdot" style="background:#DC2626;border-radius:2px"></div><div style="flex:1"><div class="bname">Reem Al-Harbi · 0567891234</div><div class="bmeta">Keratin Treatment · Maryam · SAR 500</div></div><div class="badge br">Cancelled</div></div></div></div>
+      <div class="pg" id="acal"><div class="ptitle">Calendar</div><div class="psub">Wednesday May 7 · Staff view</div><div class="card"><div style="display:grid;grid-template-columns:44px repeat(3,1fr);gap:6px;font-size:11px"><div></div><div style="text-align:center;padding-bottom:8px;font-weight:700;color:#111827">Layla<br><span style="color:#059669;font-weight:400;font-size:10px">3 bookings</span></div><div style="text-align:center;padding-bottom:8px;font-weight:700;color:#111827">Maryam<br><span style="color:#059669;font-weight:400;font-size:10px">2 bookings</span></div><div style="text-align:center;padding-bottom:8px;font-weight:700;color:#111827">Samar<br><span style="color:#059669;font-weight:400;font-size:10px">2 bookings</span></div><div style="color:#6B7280;font-size:10px;padding:4px 0">9 AM</div><div style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:6px;font-size:10px"><strong>Noura</strong><br>Haircut 90m</div><div></div><div></div><div style="color:#6B7280;font-size:10px;padding:4px 0">10:30</div><div></div><div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;padding:6px;font-size:10px"><strong>Sara</strong><br>Color 120m</div><div></div><div style="color:#6B7280;font-size:10px;padding:4px 0">12 PM</div><div style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:6px;font-size:10px"><strong>Hind</strong><br>Bridal 60m</div><div></div><div></div><div style="color:#6B7280;font-size:10px;padding:4px 0">5 PM</div><div></div><div></div><div style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:6px;font-size:10px"><strong>Fatima</strong><br>Facial 60m</div></div></div></div>
+      <div class="pg" id="aclients"><div class="ptitle">Clients</div><div class="psub">142 total · 12 new this month</div><div class="tab-bar"><div class="tab act">All</div><div class="tab">VIP (18)</div><div class="tab">Regular (74)</div><div class="tab">New (12)</div><div class="tab">Inactive (38)</div></div><div class="card"><div class="brow"><div style="width:34px;height:34px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#2563EB;flex-shrink:0">N</div><div style="flex:1;margin-left:8px"><div class="bname">Noura Al-Shamri</div><div class="bmeta">12 visits · Fav: Haircut · SAR 3,200 total</div></div><div class="badge" style="background:#FFFBEB;color:#D97706">VIP</div></div><div class="brow"><div style="width:34px;height:34px;border-radius:8px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#059669;flex-shrink:0">S</div><div style="flex:1;margin-left:8px"><div class="bname">Sara Al-Otaibi</div><div class="bmeta">5 visits · Fav: Color · SAR 1,450 total</div></div><div class="badge bg">Regular</div></div><div class="brow"><div style="width:34px;height:34px;border-radius:8px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#059669;flex-shrink:0">F</div><div style="flex:1;margin-left:8px"><div class="bname">Fatima Al-Zahrani</div><div class="bmeta">8 visits · Fav: Skincare · SAR 2,100 total</div></div><div class="badge bg">Regular</div></div></div></div>
+      <div class="pg" id="awa"><div class="ptitle">WhatsApp Inbox</div><div class="psub">Bot Lama · 5 unread</div><div class="card"><div style="background:#F0FDF4;border-left:3px solid #059669;border-radius:6px;padding:10px;margin-bottom:8px;font-size:11px;color:#374151"><strong style="font-size:10px;color:#059669;display:block;margin-bottom:3px">LAMA (Bot)</strong>Welcome to Lamasat Al Jamal! I'm Lama. How can I help?</div><div style="background:#F9FAFB;border-left:3px solid #D1D5DB;border-radius:6px;padding:10px;margin-bottom:8px;font-size:11px;color:#374151"><strong style="font-size:10px;color:#374151;display:block;margin-bottom:3px">Client</strong>I'd like to book a haircut</div><div style="background:#EFF6FF;border-left:3px solid #2563EB;border-radius:6px;padding:10px;font-size:11px;color:#374151"><strong style="font-size:10px;color:#2563EB;display:block;margin-bottom:3px">LAMA (Bot)</strong>Available times today: 11:00 AM · 2:30 PM · 4:00 PM. Which works for you?</div></div></div>
+      <div class="pg" id="astaff"><div class="ptitle">Staff</div><div class="psub">3 active members</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="card" style="text-align:center"><div style="width:40px;height:40px;border-radius:10px;background:#EFF6FF;color:#2563EB;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 8px">L</div><div class="bname">Layla Ahmad</div><div class="bmeta" style="margin-top:4px">8 bookings · SAR 920</div><div class="badge bg" style="display:inline-block;margin-top:6px">Senior</div></div><div class="card" style="text-align:center"><div style="width:40px;height:40px;border-radius:10px;background:#FDF4FF;color:#9333EA;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 8px">M</div><div class="bname">Maryam Salem</div><div class="bmeta" style="margin-top:4px">6 bookings · SAR 780</div><div class="badge" style="background:#FDF4FF;color:#9333EA;display:inline-block;margin-top:6px">Color</div></div><div class="card" style="text-align:center"><div style="width:40px;height:40px;border-radius:10px;background:#ECFDF5;color:#059669;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;margin:0 auto 8px">S</div><div class="bname">Samar Ghamdi</div><div class="bmeta" style="margin-top:4px">4 bookings · SAR 540</div><div class="badge bg" style="display:inline-block;margin-top:6px">Nails</div></div></div></div>
+      <div class="pg" id="aservices"><div class="ptitle">Services & Pricing</div><div class="psub">Changes sync to bot instantly</div><div class="tab-bar"><div class="tab act">All</div><div class="tab">Hair</div><div class="tab">Nails</div><div class="tab">Skin</div><div class="tab">Bridal</div></div><div class="card"><div class="brow"><div style="flex:1"><div class="bname">Haircut & Styling</div><div class="bmeta">90 min · Layla, Maryam</div></div><span style="font-weight:700;color:#2563EB">SAR 150</span></div><div class="brow"><div style="flex:1"><div class="bname">Full Color</div><div class="bmeta">120 min · Maryam</div></div><span style="font-weight:700;color:#2563EB">SAR 350</span></div><div class="brow"><div style="flex:1"><div class="bname">Bridal Makeup</div><div class="bmeta">60 min · Layla</div></div><span style="font-weight:700;color:#2563EB">SAR 800</span></div><div class="brow"><div style="flex:1"><div class="bname">Keratin Treatment</div><div class="bmeta">180 min · Maryam</div></div><span style="font-weight:700;color:#2563EB">SAR 500</span></div><div class="brow"><div style="flex:1"><div class="bname">Manicure + Pedicure</div><div class="bmeta">75 min · Samar</div></div><span style="font-weight:700;color:#2563EB">SAR 120</span></div></div></div>
+      <div class="pg" id="areports"><div class="ptitle">Reports</div><div class="psub">May 2026 · Auto PDF on 1st</div><div class="sgrid"><div class="sc"><div class="slbl">Revenue</div><div class="sval blue">42,800</div><div class="str">↑ 18%</div></div><div class="sc"><div class="slbl">Bookings</div><div class="sval grn">284</div><div class="str">↑ 12%</div></div><div class="sc"><div class="slbl">New Clients</div><div class="sval grn">38</div><div class="str">This month</div></div><div class="sc"><div class="slbl">Attendance</div><div class="sval grn">91%</div><div class="str">Excellent</div></div></div><div class="card"><div class="ctitle">Top Services</div><div class="brow"><div style="flex:1"><div class="bname">Bridal Makeup</div><div style="height:4px;background:#E5E7EB;border-radius:2px;margin-top:4px"><div style="height:4px;background:#2563EB;border-radius:2px;width:100%"></div></div></div><span style="font-weight:700;color:#2563EB;margin-left:8px">84</span></div><div class="brow"><div style="flex:1"><div class="bname">Haircut & Styling</div><div style="height:4px;background:#E5E7EB;border-radius:2px;margin-top:4px"><div style="height:4px;background:#2563EB;border-radius:2px;width:86%"></div></div></div><span style="font-weight:700;color:#2563EB;margin-left:8px">72</span></div><div class="brow"><div style="flex:1"><div class="bname">Full Color</div><div style="height:4px;background:#E5E7EB;border-radius:2px;margin-top:4px"><div style="height:4px;background:#2563EB;border-radius:2px;width:69%"></div></div></div><span style="font-weight:700;color:#2563EB;margin-left:8px">58</span></div></div></div>
+      <div class="pg" id="aadmin"><div class="ptitle">Admin Panel</div><div class="psub">All salons overview</div><div class="sgrid"><div class="sc"><div class="slbl">Active Salons</div><div class="sval blue">8</div><div class="str">↑ 3 this month</div></div><div class="sc"><div class="slbl">MRR (SAR)</div><div class="sval blue">7,200</div><div class="str">Recurring</div></div><div class="sc"><div class="slbl">Gold Package</div><div class="sval grn">3</div><div class="str">SAR 1,500/mo</div></div><div class="sc"><div class="slbl">Silver Package</div><div class="sval ylw">3</div><div class="str">SAR 900/mo</div></div></div><div class="card"><div class="ctitle">Active Salons</div><div class="brow"><div style="flex:1"><div class="bname">Lamasat Al Jamal</div></div><div class="badge bg" style="margin-right:6px">Active</div><div class="badge" style="background:#FFFBEB;color:#D97706">Gold</div></div><div class="brow"><div style="flex:1"><div class="bname">Nour Riyadh Salon</div></div><div class="badge bg" style="margin-right:6px">Active</div><div class="badge" style="background:#F5F3FF;color:#7C3AED">Silver</div></div><div class="brow"><div style="flex:1"><div class="bname">Sayyidat Al Anaqah</div></div><div class="badge bg" style="margin-right:6px">Active</div><div class="badge" style="background:#FFF7ED;color:#C2410C">Bronze</div></div></div></div>
+      <div class="pg" id="asettings"><div class="ptitle">Settings</div><div class="psub">Customize your salon</div><div class="twoc"><div class="card"><div class="ctitle">Salon Identity</div><div class="brow"><span style="color:#6B7280;font-size:11px">Salon name</span><span style="font-weight:600;font-size:11px">Lamasat Al Jamal</span></div><div class="brow"><span style="color:#6B7280;font-size:11px">Bot name</span><span style="font-weight:600;font-size:11px;color:#2563EB">Lama</span></div><div class="brow"><span style="color:#6B7280;font-size:11px">Bot tone</span><span style="font-weight:600;font-size:11px">Friendly</span></div><div class="brow"><span style="color:#6B7280;font-size:11px">Language</span><span style="font-weight:600;font-size:11px">Arabic RTL</span></div></div><div class="card"><div class="ctitle">Automations</div><div class="brow"><span style="font-size:11px">24hr Reminder</span><div style="width:34px;height:18px;background:#059669;border-radius:9px;position:relative"><div style="width:12px;height:12px;background:white;border-radius:50%;position:absolute;top:3px;right:3px"></div></div></div><div class="brow"><span style="font-size:11px">Birthday Messages</span><div style="width:34px;height:18px;background:#059669;border-radius:9px;position:relative"><div style="width:12px;height:12px;background:white;border-radius:50%;position:absolute;top:3px;right:3px"></div></div></div><div class="brow"><span style="font-size:11px">Re-engagement</span><div style="width:34px;height:18px;background:#059669;border-radius:9px;position:relative"><div style="width:12px;height:12px;background:white;border-radius:50%;position:absolute;top:3px;right:3px"></div></div></div><div class="brow"><span style="font-size:11px">Monthly PDF</span><div style="width:34px;height:18px;background:#059669;border-radius:9px;position:relative"><div style="width:12px;height:12px;background:white;border-radius:50%;position:absolute;top:3px;right:3px"></div></div></div></div></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== NEON CYBER ===== -->
+<div class="frame" id="frame-cyber">
+<div class="cyber">
+  <div class="topbar">
+    <div><div class="logo">⬡ SALON.AI</div><div class="logo-sub">SYSTEM ONLINE · RIYADH NODE</div></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="status-chip"><span class="cdot"></span>BOT ACTIVE</div>
+      <div style="width:28px;height:28px;border-radius:3px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:#00D4FF;">M</div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="sidebar">
+      <div class="nsec">MAIN</div>
+      <div class="nitem act" onclick="cShowPage('cdash')"><i class="ti ti-layout-dashboard"></i>DASHBOARD</div>
+      <div class="nitem" onclick="cShowPage('cbooks')"><i class="ti ti-calendar-check"></i>BOOKINGS<span class="nbdg">3</span></div>
+      <div class="nitem" onclick="cShowPage('cclients')"><i class="ti ti-users"></i>CLIENTS</div>
+      <div class="nitem" onclick="cShowPage('cwa')"><i class="ti ti-brand-whatsapp"></i>WHATSAPP<span class="nbdg">5</span></div>
+      <div class="nsec">MANAGE</div>
+      <div class="nitem" onclick="cShowPage('cstaff')"><i class="ti ti-id-badge"></i>STAFF</div>
+      <div class="nitem" onclick="cShowPage('cservices')"><i class="ti ti-scissors"></i>SERVICES</div>
+      <div class="nitem" onclick="cShowPage('creports')"><i class="ti ti-chart-bar"></i>REPORTS</div>
+      <div class="nsec">SYSTEM</div>
+      <div class="nitem" onclick="cShowPage('cadmin')"><i class="ti ti-shield-check"></i>ADMIN</div>
+    </div>
+    <div class="main">
+      <div class="pg on" id="cdash">
+        <div class="phdr"><div><div class="ptitle">// DASHBOARD</div><div class="psub">WED 07.05.2026 · 18 SESSIONS QUEUED</div></div><button class="cbtn">+ NEW SESSION</button></div>
+        <div class="sgrid">
+          <div class="sc"><div class="slbl">SESSIONS</div><div class="sval">18</div><div class="str">↑ +3 UNITS</div></div>
+          <div class="sc"><div class="slbl">CONFIRMED</div><div class="sval grn">14</div><div class="str">78% RATE</div></div>
+          <div class="sc"><div class="slbl">PENDING</div><div class="sval ylw">3</div><div class="str neu">AWAITING</div></div>
+          <div class="sc"><div class="slbl">REVENUE</div><div class="sval prp">1,840</div><div class="str">SAR TODAY</div></div>
+        </div>
+        <div class="twoc">
+          <div class="card">
+            <div class="ctitle">// TODAY'S QUEUE</div>
+            <div class="brow"><div class="btime">09:00</div><div class="bdot" style="background:#00FF88"></div><div style="flex:1"><div class="bname">NOURA AL-SHAMRI</div><div class="bmeta">HAIRCUT · LAYLA · 90 MIN</div></div><div class="badge bg">ACTIVE</div></div>
+            <div class="brow"><div class="btime">10:30</div><div class="bdot" style="background:#FFD700"></div><div style="flex:1"><div class="bname">SARA AL-OTAIBI</div><div class="bmeta">FULL COLOR · MARYAM · 120 MIN</div></div><div class="badge by">QUEUE</div></div>
+            <div class="brow"><div class="btime">12:00</div><div class="bdot" style="background:#00FF88"></div><div style="flex:1"><div class="bname">HIND AL-DOSARI</div><div class="bmeta">BRIDAL · LAYLA · 60 MIN</div></div><div class="badge bg">ACTIVE</div></div>
+            <div class="brow"><div class="btime">14:00</div><div class="bdot" style="background:#FFD700"></div><div style="flex:1"><div class="bname">DALAL AL-RASHID</div><div class="bmeta">MANI+PEDI · SAMAR · 75 MIN</div></div><div class="badge by">QUEUE</div></div>
+            <div class="brow"><div class="btime">15:30</div><div class="bdot" style="background:#FF3264"></div><div style="flex:1"><div class="bname">REEM AL-HARBI</div><div class="bmeta">KERATIN · MARYAM · 180 MIN</div></div><div class="badge br">VOID</div></div>
+          </div>
+          <div class="card">
+            <div class="ctitle">// LIVE FEED</div>
+            <div class="act-item"><div class="aic aig"><i class="ti ti-calendar-plus" style="color:#00FF88;font-size:12px"></i></div><div><div class="atxt"><strong>NEW SESSION</strong> — Fatima</div><div class="atm">T-3 MIN</div></div></div>
+            <div class="act-item"><div class="aic aim"><i class="ti ti-message" style="color:#00D4FF;font-size:12px"></i></div><div><div class="atxt"><strong>SIGNAL RECEIVED</strong> — price query</div><div class="atm">T-7 MIN</div></div></div>
+            <div class="act-item"><div class="aic aig"><i class="ti ti-check" style="color:#00FF88;font-size:12px"></i></div><div><div class="atxt"><strong>CONFIRMED</strong> — Noura session</div><div class="atm">T-15 MIN</div></div></div>
+            <div class="act-item"><div class="aic air"><i class="ti ti-x" style="color:#FF3264;font-size:12px"></i></div><div><div class="atxt"><strong>SESSION VOID</strong> — Reem</div><div class="atm">T-28 MIN</div></div></div>
+            <div style="margin-top:10px;padding-left:8px"><div class="ctitle" style="margin-bottom:6px">// WEEKLY OUTPUT</div>
+            <div class="mini-bars">
+              <div class="mb" style="height:45%"></div>
+              <div class="mb" style="height:68%"></div>
+              <div class="mb" style="height:52%"></div>
+              <div class="mb" style="height:85%"></div>
+              <div class="mb tod" style="height:70%"></div>
+              <div class="mb" style="height:25%;opacity:0.3"></div>
+              <div class="mb" style="height:15%;opacity:0.3"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:8px;color:rgba(0,212,255,0.3);margin-top:3px;letter-spacing:1px"><span>SAT</span><span>SUN</span><span>MON</span><span>TUE</span><span style="color:#00D4FF">WED</span><span>THU</span><span>FRI</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="pg" id="cbooks"><div class="ptitle">// BOOKINGS</div><div class="psub">18 SESSIONS · 3 AWAIT AUTHORIZATION</div><div class="tab-bar"><div class="tab act">ALL (18)</div><div class="tab">CONFIRMED</div><div class="tab">PENDING</div><div class="tab">VOID</div></div><div class="card"><div class="brow"><div class="btime">09:00</div><div class="bdot" style="background:#00FF88"></div><div style="flex:1"><div class="bname">NOURA AL-SHAMRI · 0501234567</div><div class="bmeta">HAIRCUT · LAYLA · SAR 150</div></div><div class="badge bg">CONFIRMED</div></div><div class="brow"><div class="btime">10:30</div><div class="bdot" style="background:#FFD700"></div><div style="flex:1"><div class="bname">SARA AL-OTAIBI · 0559876543</div><div class="bmeta">FULL COLOR · MARYAM · SAR 350</div></div><div class="badge by">PENDING</div></div><div class="brow"><div class="btime">12:00</div><div class="bdot" style="background:#00FF88"></div><div style="flex:1"><div class="bname">HIND AL-DOSARI · 0534561234</div><div class="bmeta">BRIDAL · LAYLA · SAR 800</div></div><div class="badge bg">CONFIRMED</div></div><div class="brow"><div class="btime">15:30</div><div class="bdot" style="background:#FF3264"></div><div style="flex:1"><div class="bname">REEM AL-HARBI · 0567891234</div><div class="bmeta">KERATIN · MARYAM · SAR 500</div></div><div class="badge br">VOID</div></div></div></div>
+      <div class="pg" id="cclients"><div class="ptitle">// CLIENT DATABASE</div><div class="psub">142 RECORDS · 12 NEW THIS CYCLE</div><div class="tab-bar"><div class="tab act">ALL</div><div class="tab">TIER-1 VIP</div><div class="tab">REGULAR</div><div class="tab">INACTIVE</div></div><div class="card"><div class="brow"><div style="width:32px;height:32px;border-radius:3px;background:rgba(191,95,255,0.1);border:1px solid rgba(191,95,255,0.3);display:flex;align-items:center;justify-content:center;color:#BF5FFF;font-size:12px;font-weight:700;flex-shrink:0">N</div><div style="flex:1;margin-left:8px"><div class="bname">NOURA AL-SHAMRI</div><div class="bmeta">12 SESSIONS · SAR 3,200 LIFETIME</div></div><div class="badge" style="background:rgba(191,95,255,0.1);color:#BF5FFF;border:1px solid rgba(191,95,255,0.2)">VIP</div></div><div class="brow"><div style="width:32px;height:32px;border-radius:3px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);display:flex;align-items:center;justify-content:center;color:#00D4FF;font-size:12px;font-weight:700;flex-shrink:0">S</div><div style="flex:1;margin-left:8px"><div class="bname">SARA AL-OTAIBI</div><div class="bmeta">5 SESSIONS · SAR 1,450 LIFETIME</div></div><div class="badge bg">ACTIVE</div></div><div class="brow"><div style="width:32px;height:32px;border-radius:3px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);display:flex;align-items:center;justify-content:center;color:#00FF88;font-size:12px;font-weight:700;flex-shrink:0">F</div><div style="flex:1;margin-left:8px"><div class="bname">FATIMA AL-ZAHRANI</div><div class="bmeta">8 SESSIONS · SAR 2,100 LIFETIME</div></div><div class="badge bg">ACTIVE</div></div></div></div>
+      <div class="pg" id="cwa"><div class="ptitle">// WHATSAPP CHANNEL</div><div class="psub">BOT: LAMA · SIGNAL STRENGTH: STRONG</div><div class="card"><div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:3px;padding:10px;margin-bottom:6px;font-size:10px;color:rgba(224,232,255,0.7)"><strong style="color:#00D4FF;font-size:9px;letter-spacing:1px;display:block;margin-bottom:3px">LAMA // BOT TRANSMISSION</strong>Welcome to Lamasat Al Jamal! Signal received. I am Lama — your AI concierge. How may I assist?</div><div style="background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.12);border-radius:3px;padding:10px;margin-bottom:6px;font-size:10px;color:rgba(224,232,255,0.7)"><strong style="color:#00FF88;font-size:9px;letter-spacing:1px;display:block;margin-bottom:3px">CLIENT // INBOUND</strong>I need a haircut appointment today</div><div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:3px;padding:10px;font-size:10px;color:rgba(224,232,255,0.7)"><strong style="color:#00D4FF;font-size:9px;letter-spacing:1px;display:block;margin-bottom:3px">LAMA // BOT TRANSMISSION</strong>SLOTS AVAILABLE: 11:00 // 14:30 // 16:00 — Select preferred time to confirm session.</div></div></div>
+      <div class="pg" id="cstaff"><div class="ptitle">// STAFF UNITS</div><div class="psub">3 OPERATORS ONLINE</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div class="card"><div style="width:36px;height:36px;border-radius:3px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;color:#00D4FF;font-size:16px;font-weight:700;margin-bottom:8px">L</div><div class="bname">LAYLA AHMAD</div><div class="bmeta">8 SESSIONS</div><div class="report-row" style="margin-top:8px"><span>REVENUE</span><span class="rval">SAR 920</span></div><div class="report-row"><span>NO-SHOW</span><span style="color:#00FF88;font-weight:700">2%</span></div></div><div class="card"><div style="width:36px;height:36px;border-radius:3px;background:rgba(191,95,255,0.08);border:1px solid rgba(191,95,255,0.3);display:flex;align-items:center;justify-content:center;color:#BF5FFF;font-size:16px;font-weight:700;margin-bottom:8px">M</div><div class="bname">MARYAM SALEM</div><div class="bmeta">6 SESSIONS</div><div class="report-row" style="margin-top:8px"><span>REVENUE</span><span class="rval">SAR 780</span></div><div class="report-row"><span>NO-SHOW</span><span style="color:#00FF88;font-weight:700">5%</span></div></div><div class="card"><div style="width:36px;height:36px;border-radius:3px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);display:flex;align-items:center;justify-content:center;color:#00FF88;font-size:16px;font-weight:700;margin-bottom:8px">S</div><div class="bname">SAMAR GHAMDI</div><div class="bmeta">4 SESSIONS</div><div class="report-row" style="margin-top:8px"><span>REVENUE</span><span class="rval">SAR 540</span></div><div class="report-row"><span>NO-SHOW</span><span style="color:#00FF88;font-weight:700">0%</span></div></div></div></div>
+      <div class="pg" id="cservices"><div class="ptitle">// SERVICE MATRIX</div><div class="psub">PRICE CHANGES SYNC TO BOT IN REAL-TIME</div><div class="tab-bar"><div class="tab act">ALL</div><div class="tab">HAIR</div><div class="tab">NAILS</div><div class="tab">SKIN</div><div class="tab">BRIDAL</div></div><div class="card"><div class="report-row"><div><div class="bname">HAIRCUT & STYLING</div><div class="bmeta">90 MIN · LAYLA</div></div><span class="rval">SAR 150</span></div><div class="report-row"><div><div class="bname">FULL COLOR</div><div class="bmeta">120 MIN · MARYAM</div></div><span class="rval">SAR 350</span></div><div class="report-row"><div><div class="bname">BRIDAL MAKEUP</div><div class="bmeta">60 MIN · LAYLA</div></div><span class="rval">SAR 800</span></div><div class="report-row"><div><div class="bname">KERATIN</div><div class="bmeta">180 MIN · MARYAM</div></div><span class="rval">SAR 500</span></div><div class="report-row"><div><div class="bname">MANI + PEDI</div><div class="bmeta">75 MIN · SAMAR</div></div><span class="rval">SAR 120</span></div></div></div>
+      <div class="pg" id="creports"><div class="ptitle">// ANALYTICS</div><div class="psub">CYCLE: MAY 2026 · AUTO-REPORT: ACTIVE</div><div class="sgrid"><div class="sc"><div class="slbl">REVENUE</div><div class="sval prp">42,800</div><div class="str">↑ 18%</div></div><div class="sc"><div class="slbl">SESSIONS</div><div class="sval">284</div><div class="str">↑ 12%</div></div><div class="sc"><div class="slbl">NEW USERS</div><div class="sval grn">38</div><div class="str">THIS CYCLE</div></div><div class="sc"><div class="slbl">ATTENDANCE</div><div class="sval grn">91%</div><div class="str">OPTIMAL</div></div></div><div class="card"><div class="ctitle">// TOP SERVICES</div><div class="report-row"><span>BRIDAL MAKEUP</span><span class="rval">84 SESSIONS</span></div><div class="report-row"><span>HAIRCUT</span><span class="rval">72 SESSIONS</span></div><div class="report-row"><span>FULL COLOR</span><span class="rval">58 SESSIONS</span></div><div class="report-row"><span>KERATIN</span><span class="rval">41 SESSIONS</span></div></div></div>
+      <div class="pg" id="cadmin"><div class="ptitle">// ADMIN TERMINAL</div><div class="psub">PLATFORM OVERVIEW · ALL NODES</div><div class="sgrid"><div class="sc"><div class="slbl">ACTIVE NODES</div><div class="sval grn">8</div><div class="str">↑ 3 NEW</div></div><div class="sc"><div class="slbl">MRR (SAR)</div><div class="sval prp">7,200</div><div class="str">RECURRING</div></div><div class="sc"><div class="slbl">GOLD TIER</div><div class="sval ylw">3</div><div class="str">SAR 1,500</div></div><div class="sc"><div class="slbl">SILVER TIER</div><div class="sval">3</div><div class="str">SAR 900</div></div></div><div class="card"><div class="ctitle">// NODE STATUS</div><div class="report-row"><span>LAMASAT AL JAMAL</span><div style="display:flex;gap:6px"><span style="color:#00FF88;font-size:9px">● ONLINE</span><span class="badge ylw" style="font-size:8px;padding:1px 6px">GOLD</span></div></div><div class="report-row"><span>NOUR RIYADH</span><div style="display:flex;gap:6px"><span style="color:#00FF88;font-size:9px">● ONLINE</span><span class="badge" style="background:rgba(0,212,255,0.1);color:#00D4FF;border:1px solid rgba(0,212,255,0.2);font-size:8px;padding:1px 6px">SILVER</span></div></div><div class="report-row"><span>SAYYIDAT AL ANAQAH</span><div style="display:flex;gap:6px"><span style="color:#00FF88;font-size:9px">● ONLINE</span><span class="badge" style="background:rgba(255,100,50,0.1);color:#FF6432;border:1px solid rgba(255,100,50,0.2);font-size:8px;padding:1px 6px">BRONZE</span></div></div></div><div class="card"><div class="ctitle">// SYSTEM STATUS</div><div class="report-row"><span>WHATSAPP BOTS</span><span style="color:#00FF88;font-size:10px;letter-spacing:1px">● 8/8 ONLINE</span></div><div class="report-row"><span>CLAUDE API</span><span style="color:#00FF88;font-size:10px;letter-spacing:1px">● CONNECTED</span></div><div class="report-row"><span>DATABASE</span><span style="color:#00FF88;font-size:10px;letter-spacing:1px">● HEALTHY</span></div><div class="report-row"><span>SERVER LOAD</span><span style="color:#00D4FF;font-size:10px;letter-spacing:1px">23% NOMINAL</span></div></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function switchDesign(d) {
+  ['rose','arctic','cyber'].forEach(x => {
+    document.getElementById('frame-'+x).classList.toggle('show', x===d);
+    const b = document.getElementById('btn-'+x);
+    b.className = 'ds-btn';
+    if(x===d) b.classList.add('active-'+d);
+  });
+  if(d==='arctic' && !window.arcticDone) drawArcticChart();
+  if(d==='rose' && !window.roseDone) drawRoseChart();
+}
+function rShowPage(id) { document.querySelectorAll('.rose .pg').forEach(p=>p.classList.remove('on')); document.getElementById(id).classList.add('on'); document.querySelectorAll('.rose .nitem').forEach(n=>n.classList.remove('act')); event.currentTarget.classList.add('act'); }
+function aShowPage(id) { document.querySelectorAll('.arctic .pg').forEach(p=>p.classList.remove('on')); document.getElementById(id).classList.add('on'); document.querySelectorAll('.arctic .nitem').forEach(n=>n.classList.remove('act')); event.currentTarget.classList.add('act'); }
+function cShowPage(id) { document.querySelectorAll('.cyber .pg').forEach(p=>p.classList.remove('on')); document.getElementById(id).classList.add('on'); document.querySelectorAll('.cyber .nitem').forEach(n=>n.classList.remove('act')); event.currentTarget.classList.add('act'); }
+function drawRoseChart() {
+  const ctx = document.getElementById('roseChart');
+  if(!ctx||!window.Chart) return;
+  new Chart(ctx, { type:'bar', data:{ labels:['Sat','Sun','Mon','Tue','Wed','Thu','Fri'], datasets:[{data:[1200,1800,1380,2250,1840,0,0], backgroundColor:['rgba(212,119,106,0.3)','rgba(212,119,106,0.3)','rgba(212,119,106,0.3)','rgba(212,119,106,0.3)','rgba(196,90,142,0.8)','rgba(212,119,106,0.1)','rgba(212,119,106,0.1)'], borderRadius:4, borderSkipped:false}]}, options:{ plugins:{legend:{display:false}}, scales:{ x:{grid:{display:false},ticks:{color:'#B07A8A',font:{size:9}}}, y:{display:false,grid:{display:false}} }, responsive:true, maintainAspectRatio:false } });
+  window.roseDone=true;
+}
+function drawArcticChart() {
+  const ctx = document.getElementById('arcticChart');
+  if(!ctx||!window.Chart) return;
+  new Chart(ctx, { type:'bar', data:{ labels:['Sat','Sun','Mon','Tue','Wed','Thu','Fri'], datasets:[{data:[1200,1800,1380,2250,1840,0,0], backgroundColor:['#BFDBFE','#BFDBFE','#BFDBFE','#BFDBFE','#2563EB','#E5E7EB','#E5E7EB'], borderRadius:4, borderSkipped:false}]}, options:{ plugins:{legend:{display:false}}, scales:{ x:{grid:{display:false},ticks:{color:'#9CA3AF',font:{size:9}}}, y:{display:false,grid:{display:false}} }, responsive:true, maintainAspectRatio:false } });
+  window.arcticDone=true;
+}
+window.addEventListener('load', () => { setTimeout(drawRoseChart, 300); });
+</script>
