@@ -1,0 +1,541 @@
+
+<h2 class="sr-only">Salon AI — four completely different login designs using the same four color schemes: Gold with Islamic mandala, Rose with abstract bloom, Arctic with blueprint grid, Cyber with circuit board.</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+@keyframes sCW{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes sCCW{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+@keyframes ftA{0%,100%{transform:translateY(0) rotate(0deg);opacity:.7}50%{transform:translateY(-13px) rotate(5deg);opacity:.9}}
+@keyframes ftB{0%,100%{transform:translateY(0) rotate(0deg);opacity:.62}50%{transform:translateY(-9px) rotate(-4deg);opacity:.84}}
+@keyframes ftC{0%,100%{transform:translateY(0);opacity:.58}50%{transform:translateY(-11px);opacity:.8}}
+@keyframes ftD{0%,100%{transform:translateY(0) rotate(0deg);opacity:.5}50%{transform:translateY(-8px) rotate(3deg);opacity:.72}}
+@keyframes pRise{0%{transform:translateY(0) translateX(0);opacity:.75}100%{transform:translateY(-320px) translateX(var(--dx,5px));opacity:0}}
+@keyframes spinLogo{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes dotPls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.28;transform:scale(.55)}}
+@keyframes scanH{from{transform:translateY(-100%)}to{transform:translateY(430px)}}
+@keyframes pCorePls{0%,100%{opacity:.7;r:6}50%{opacity:1;r:8}}
+</style>
+
+<!-- CONTROLS -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;">
+  <div id="pills" style="display:flex;gap:5px;"></div>
+  <div style="display:flex;gap:4px;">
+    <button id="btn-ar" onclick="setLang('ar')" style="padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:var(--color-text-primary);color:var(--color-background-primary);font-size:11px;cursor:pointer;font-weight:600;">العربية</button>
+    <button id="btn-en" onclick="setLang('en')" style="padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:transparent;color:var(--color-text-secondary);font-size:11px;cursor:pointer;">English</button>
+  </div>
+</div>
+
+<div id="shell" style="width:100%;height:448px;border-radius:18px;overflow:hidden;display:flex;flex-direction:row-reverse;">
+
+  <!-- ═══ DECO GOLD — Islamic Mandala ═══ -->
+  <div id="dg" style="flex:1;position:relative;overflow:hidden;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <rect width="380" height="430" fill="#0A0A0E"/>
+      <defs>
+        <radialGradient id="gau1" cx="38%" cy="38%" r="55%"><stop offset="0%" stop-color="#6B4A00" stop-opacity=".55"/><stop offset="100%" stop-color="#0A0A0E" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gau2" cx="72%" cy="70%" r="42%"><stop offset="0%" stop-color="#3A2400" stop-opacity=".45"/><stop offset="100%" stop-color="#0A0A0E" stop-opacity="0"/></radialGradient>
+        <pattern id="gdots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="14" cy="14" r="1" fill="rgba(201,168,76,.13)"/></pattern>
+      </defs>
+      <rect width="380" height="430" fill="url(#gau1)"/>
+      <rect width="380" height="430" fill="url(#gau2)"/>
+      <rect width="380" height="430" fill="url(#gdots)" opacity=".7"/>
+      <!-- Outer 12-point star, slow CW -->
+      <g style="transform-origin:190px 185px;animation:sCW 90s linear infinite">
+        <path d="M190,65 L202.9,136.7 L245,81.1 L220.4,149.6 L288.9,125 L233.3,172.1 L305,185 L233.3,197.9 L288.9,245 L220.4,220.4 L245,288.9 L202.9,233.3 L190,305 L177.1,233.3 L135,288.9 L159.6,220.4 L91.1,245 L146.7,197.9 L75,185 L146.7,172.1 L91.1,125 L159.6,149.6 L135,81.1 L177.1,136.7 Z" fill="none" stroke="rgba(201,168,76,.24)" stroke-width="1.3"/>
+      </g>
+      <!-- Inner 6-point star, medium CCW -->
+      <g style="transform-origin:190px 185px;animation:sCCW 55s linear infinite">
+        <path d="M190,110 L202.5,154.7 L249.9,147.5 L220,185 L249.9,222.5 L202.5,215.3 L190,260 L177.5,215.3 L120.1,222.5 L160,185 L120.1,147.5 L177.5,154.7 Z" fill="none" stroke="rgba(201,168,76,.2)" stroke-width="1.1"/>
+      </g>
+      <!-- Tiny 12-point inner, fast CW -->
+      <g style="transform-origin:190px 185px;animation:sCW 30s linear infinite">
+        <path d="M190,148 L195.2,167.6 L212.8,157.2 L206.7,175.5 L224.8,170.2 L213.5,185 L224.8,199.8 L206.7,194.5 L212.8,212.8 L195.2,202.4 L190,222 L184.8,202.4 L167.2,212.8 L173.3,194.5 L155.2,199.8 L166.5,185 L155.2,170.2 L173.3,175.5 L167.2,157.2 L184.8,167.6 Z" fill="none" stroke="rgba(201,168,76,.3)" stroke-width="0.8"/>
+      </g>
+      <!-- Concentric circles -->
+      <circle cx="190" cy="185" r="130" fill="none" stroke="rgba(201,168,76,.07)" stroke-width="0.8"/>
+      <circle cx="190" cy="185" r="100" fill="none" stroke="rgba(201,168,76,.09)" stroke-width="0.6"/>
+      <circle cx="190" cy="185" r="70" fill="none" stroke="rgba(201,168,76,.11)" stroke-width="0.7"/>
+      <circle cx="190" cy="185" r="42" fill="none" stroke="rgba(201,168,76,.16)" stroke-width="0.8"/>
+      <!-- Center orb -->
+      <circle cx="190" cy="185" r="16" fill="rgba(201,168,76,.08)" stroke="rgba(201,168,76,.5)" stroke-width="1.5"/>
+      <circle cx="190" cy="185" r="6" fill="rgba(201,168,76,.88)"/>
+      <!-- Arabesque corner ornaments -->
+      <path d="M10,10 Q42,10 42,42 Q42,10 74,10" fill="none" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+      <circle cx="10" cy="10" r="3" fill="rgba(201,168,76,.45)"/>
+      <path d="M370,10 Q338,10 338,42 Q338,10 306,10" fill="none" stroke="rgba(201,168,76,.22)" stroke-width="1"/>
+      <circle cx="370" cy="10" r="3" fill="rgba(201,168,76,.45)"/>
+      <path d="M10,420 Q42,420 42,388 Q42,420 74,420" fill="none" stroke="rgba(201,168,76,.14)" stroke-width="0.8"/>
+      <path d="M370,420 Q338,420 338,388 Q338,420 306,420" fill="none" stroke="rgba(201,168,76,.14)" stroke-width="0.8"/>
+      <!-- Outer ring tick marks at every 30° -->
+      <g stroke="rgba(201,168,76,.3)" stroke-width="1" stroke-linecap="round">
+        <line x1="190" y1="52" x2="190" y2="62"/><line x1="255" y1="70" x2="250" y2="79"/>
+        <line x1="307" y1="120" x2="298" y2="125"/><line x1="322" y1="185" x2="312" y2="185"/>
+        <line x1="307" y1="250" x2="298" y2="245"/><line x1="255" y1="300" x2="250" y2="291"/>
+        <line x1="190" y1="318" x2="190" y2="308"/><line x1="125" y1="300" x2="130" y2="291"/>
+        <line x1="73" y1="250" x2="82" y2="245"/><line x1="58" y1="185" x2="68" y2="185"/>
+        <line x1="73" y1="120" x2="82" y2="125"/><line x1="125" y1="70" x2="130" y2="79"/>
+      </g>
+    </svg>
+    <!-- Beauty tools GOLD -->
+    <div style="position:absolute;top:32px;left:26px;animation:ftA 5.5s ease-in-out infinite;">
+      <svg width="40" height="40" viewBox="-20 -20 40 40" fill="none"><ellipse rx="4.5" ry="9" stroke="rgba(201,168,76,.42)" stroke-width="1.2"/><ellipse rx="4.5" ry="9" stroke="rgba(201,168,76,.38)" stroke-width="1.1" transform="rotate(72)"/><ellipse rx="4.5" ry="9" stroke="rgba(201,168,76,.38)" stroke-width="1.1" transform="rotate(144)"/><ellipse rx="4.5" ry="9" stroke="rgba(201,168,76,.38)" stroke-width="1.1" transform="rotate(216)"/><ellipse rx="4.5" ry="9" stroke="rgba(201,168,76,.38)" stroke-width="1.1" transform="rotate(288)"/><circle r="4" stroke="rgba(201,168,76,.55)" stroke-width="1.3"/><circle r="1.8" fill="rgba(201,168,76,.65)"/></svg>
+    </div>
+    <div style="position:absolute;top:28px;right:32px;animation:ftB 6s ease-in-out infinite;animation-delay:1.2s;">
+      <svg width="16" height="54" viewBox="-8 -14 16 56" fill="none"><rect x="-6" y="8" width="12" height="26" rx="2.5" stroke="rgba(201,168,76,.45)" stroke-width="1.2"/><rect x="-8" y="-3" width="16" height="13" rx="3" stroke="rgba(201,168,76,.45)" stroke-width="1.2"/><rect x="-4.5" y="-13" width="9" height="12" rx="1.5" stroke="rgba(201,168,76,.45)" stroke-width="1.2"/><path d="M-4.5,-13 Q0,-21 4.5,-13" stroke="rgba(201,168,76,.52)" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:absolute;top:50%;right:26px;transform:translateY(-50%);animation:ftC 6.5s ease-in-out infinite;animation-delay:2.5s;">
+      <svg width="34" height="50" viewBox="-13 -13 34 54" fill="none"><rect x="-10" y="6" width="20" height="26" rx="5" stroke="rgba(201,168,76,.44)" stroke-width="1.2"/><rect x="-4" y="-4" width="8" height="12" rx="2" stroke="rgba(201,168,76,.44)" stroke-width="1.2"/><ellipse cx="0" cy="-6" rx="6.5" ry="2.5" stroke="rgba(201,168,76,.44)" stroke-width="1.2"/><line x1="6.5" y1="-6" x2="16" y2="-6" stroke="rgba(201,168,76,.42)" stroke-width="1.1" stroke-linecap="round"/><circle cx="17" cy="-6" r="2" fill="rgba(201,168,76,.5)"/><circle cx="20" cy="-11" r="1.5" fill="rgba(201,168,76,.38)"/><circle cx="21" cy="-4" r="1" fill="rgba(201,168,76,.3)"/></svg>
+    </div>
+    <div style="position:absolute;top:48%;left:22px;transform:translateY(-50%);animation:ftD 7s ease-in-out infinite;animation-delay:.8s;">
+      <svg width="44" height="30" viewBox="-22 -13 44 30" fill="none"><ellipse cx="0" cy="0" rx="20" ry="12" stroke="rgba(201,168,76,.42)" stroke-width="1.2"/><ellipse cx="0" cy="0" rx="16" ry="9.5" stroke="rgba(201,168,76,.26)" stroke-width="0.8"/><line x1="-20" y1="0" x2="20" y2="0" stroke="rgba(201,168,76,.2)" stroke-width="0.7"/><line x1="-6" y1="-5" x2="-9" y2="-8" stroke="rgba(201,168,76,.38)" stroke-width="0.9" stroke-linecap="round"/><circle cx="0" cy="0" r="1.5" fill="rgba(201,168,76,.5)"/></svg>
+    </div>
+    <div style="position:absolute;bottom:150px;left:24px;animation:ftA 5s ease-in-out infinite;animation-delay:3.5s;">
+      <svg width="24" height="48" viewBox="-12 -4 24 52" fill="none"><ellipse cx="0" cy="29" rx="10" ry="14" stroke="rgba(201,168,76,.44)" stroke-width="1.2"/><rect x="-4" y="8" width="8" height="9" rx="1.5" stroke="rgba(201,168,76,.44)" stroke-width="1.2"/><rect x="-6.5" y="-2" width="13" height="12" rx="3" stroke="rgba(201,168,76,.44)" stroke-width="1.2"/></svg>
+    </div>
+    <div style="position:absolute;top:35px;right:108px;animation:ftB 7s ease-in-out infinite;animation-delay:4s;transform:rotate(-32deg);">
+      <svg width="14" height="56" viewBox="-7 -22 14 58" fill="none"><rect x="-3" y="10" width="6" height="26" rx="2" stroke="rgba(201,168,76,.4)" stroke-width="1.2"/><ellipse cx="0" cy="4" rx="5" ry="8.5" stroke="rgba(201,168,76,.4)" stroke-width="1.2"/><line x1="-4" y1="-5" x2="-6" y2="-15" stroke="rgba(201,168,76,.4)" stroke-width="1" stroke-linecap="round"/><line x1="-2" y1="-8" x2="-3" y2="-19" stroke="rgba(201,168,76,.4)" stroke-width="1" stroke-linecap="round"/><line x1="0" y1="-8" x2="0" y2="-20" stroke="rgba(201,168,76,.4)" stroke-width="1" stroke-linecap="round"/><line x1="2" y1="-8" x2="3" y2="-19" stroke="rgba(201,168,76,.4)" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="-5" x2="6" y2="-15" stroke="rgba(201,168,76,.4)" stroke-width="1" stroke-linecap="round"/></svg>
+    </div>
+    <!-- particles gold -->
+    <div style="position:absolute;bottom:0;left:14%;width:3px;height:3px;border-radius:50%;background:#C9A84C;--dx:-5px;animation:pRise 6s ease-in-out infinite;box-shadow:0 0 5px #C9A84C;"></div>
+    <div style="position:absolute;bottom:0;left:28%;width:2px;height:2px;border-radius:50%;background:#FFD700;--dx:7px;animation:pRise 5.5s ease-in-out infinite;animation-delay:1.4s;box-shadow:0 0 5px #FFD700;"></div>
+    <div style="position:absolute;bottom:0;left:44%;width:3px;height:3px;border-radius:50%;background:#C9A84C;--dx:-4px;animation:pRise 7s ease-in-out infinite;animation-delay:2.8s;box-shadow:0 0 6px #C9A84C;"></div>
+    <div style="position:absolute;bottom:0;left:60%;width:2px;height:2px;border-radius:50%;background:#8B6E2E;--dx:6px;animation:pRise 5s ease-in-out infinite;animation-delay:.6s;"></div>
+    <div style="position:absolute;bottom:0;left:76%;width:2.5px;height:2.5px;border-radius:50%;background:#C9A84C;--dx:-6px;animation:pRise 6.5s ease-in-out infinite;animation-delay:3.5s;box-shadow:0 0 5px #C9A84C;"></div>
+    <div style="position:absolute;bottom:0;left:88%;width:2px;height:2px;border-radius:50%;background:#FFD700;--dx:5px;animation:pRise 5.8s ease-in-out infinite;animation-delay:1.8s;box-shadow:0 0 5px #FFD700;"></div>
+    <div class="art-cnt" id="art-g" style="position:absolute;bottom:26px;left:26px;right:26px;z-index:4;direction:rtl;text-align:right;"></div>
+  </div>
+
+  <!-- ═══ DECO ROSE — Abstract Bloom ═══ -->
+  <div id="dr" style="flex:1;position:relative;overflow:hidden;display:none;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="rg" cx="42%" cy="38%" r="60%"><stop offset="0%" stop-color="#7B1533"/><stop offset="100%" stop-color="#1A0408"/></radialGradient>
+        <radialGradient id="rg2" cx="75%" cy="72%" r="45%"><stop offset="0%" stop-color="#9B2040" stop-opacity=".55"/><stop offset="100%" stop-color="#1A0408" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="380" height="430" fill="url(#rg)"/>
+      <rect width="380" height="430" fill="url(#rg2)"/>
+      <!-- Outer bloom — 6 ellipses rotating slowly CW -->
+      <g style="transform-origin:190px 178px;animation:sCW 55s linear infinite">
+        <ellipse cx="190" cy="178" rx="58" ry="112" fill="none" stroke="rgba(244,167,192,.2)" stroke-width="1.2" transform="rotate(0,190,178)"/>
+        <ellipse cx="190" cy="178" rx="58" ry="112" fill="none" stroke="rgba(244,167,192,.16)" stroke-width="0.9" transform="rotate(30,190,178)"/>
+        <ellipse cx="190" cy="178" rx="58" ry="112" fill="none" stroke="rgba(244,167,192,.18)" stroke-width="1" transform="rotate(60,190,178)"/>
+        <ellipse cx="190" cy="178" rx="58" ry="112" fill="none" stroke="rgba(244,167,192,.16)" stroke-width="0.9" transform="rotate(90,190,178)"/>
+        <ellipse cx="190" cy="178" rx="58" ry="112" fill="none" stroke="rgba(244,167,192,.18)" stroke-width="1" transform="rotate(120,190,178)"/>
+        <ellipse cx="190" cy="178" rx="58" ry="112" fill="none" stroke="rgba(244,167,192,.16)" stroke-width="0.9" transform="rotate(150,190,178)"/>
+      </g>
+      <!-- Mid bloom — CCW, rose -->
+      <g style="transform-origin:190px 178px;animation:sCCW 38s linear infinite">
+        <ellipse cx="190" cy="178" rx="38" ry="74" fill="none" stroke="rgba(212,119,106,.25)" stroke-width="1" transform="rotate(15,190,178)"/>
+        <ellipse cx="190" cy="178" rx="38" ry="74" fill="none" stroke="rgba(212,119,106,.22)" stroke-width="0.9" transform="rotate(75,190,178)"/>
+        <ellipse cx="190" cy="178" rx="38" ry="74" fill="none" stroke="rgba(212,119,106,.22)" stroke-width="0.9" transform="rotate(135,190,178)"/>
+      </g>
+      <!-- Inner bloom — fast CW -->
+      <g style="transform-origin:190px 178px;animation:sCW 22s linear infinite">
+        <ellipse cx="190" cy="178" rx="20" ry="42" fill="none" stroke="rgba(244,167,192,.32)" stroke-width="0.8" transform="rotate(0,190,178)"/>
+        <ellipse cx="190" cy="178" rx="20" ry="42" fill="none" stroke="rgba(244,167,192,.28)" stroke-width="0.7" transform="rotate(60,190,178)"/>
+        <ellipse cx="190" cy="178" rx="20" ry="42" fill="none" stroke="rgba(244,167,192,.28)" stroke-width="0.7" transform="rotate(120,190,178)"/>
+      </g>
+      <!-- Center orb -->
+      <circle cx="190" cy="178" r="18" fill="rgba(212,119,106,.1)" stroke="rgba(244,167,192,.5)" stroke-width="1.5"/>
+      <circle cx="190" cy="178" r="7" fill="rgba(244,167,192,.85)"/>
+      <!-- Radial lines from center -->
+      <line x1="190" y1="66" x2="190" y2="96" stroke="rgba(244,167,192,.18)" stroke-width="0.8"/>
+      <line x1="190" y1="260" x2="190" y2="290" stroke="rgba(244,167,192,.16)" stroke-width="0.8"/>
+      <line x1="78" y1="178" x2="108" y2="178" stroke="rgba(244,167,192,.16)" stroke-width="0.8"/>
+      <line x1="272" y1="178" x2="302" y2="178" stroke="rgba(244,167,192,.16)" stroke-width="0.8"/>
+      <!-- Corner brackets -->
+      <path d="M10 32 L10 10 L32 10" fill="none" stroke="rgba(244,167,192,.28)" stroke-width="1.3"/>
+      <path d="M348 10 L370 10 L370 32" fill="none" stroke="rgba(244,167,192,.28)" stroke-width="1.3"/>
+      <path d="M10 398 L10 420 L32 420" fill="none" stroke="rgba(244,167,192,.14)" stroke-width="1"/>
+      <path d="M348 420 L370 420 L370 398" fill="none" stroke="rgba(244,167,192,.14)" stroke-width="1"/>
+    </svg>
+    <!-- Beauty tools ROSE -->
+    <div style="position:absolute;top:32px;left:26px;animation:ftA 5.5s ease-in-out infinite;">
+      <svg width="40" height="40" viewBox="-20 -20 40 40" fill="none"><ellipse rx="4.5" ry="9" stroke="rgba(244,167,192,.45)" stroke-width="1.2"/><ellipse rx="4.5" ry="9" stroke="rgba(244,167,192,.38)" stroke-width="1.1" transform="rotate(72)"/><ellipse rx="4.5" ry="9" stroke="rgba(244,167,192,.38)" stroke-width="1.1" transform="rotate(144)"/><ellipse rx="4.5" ry="9" stroke="rgba(244,167,192,.38)" stroke-width="1.1" transform="rotate(216)"/><ellipse rx="4.5" ry="9" stroke="rgba(244,167,192,.38)" stroke-width="1.1" transform="rotate(288)"/><circle r="4" stroke="rgba(244,167,192,.58)" stroke-width="1.3"/><circle r="1.8" fill="rgba(244,167,192,.7)"/></svg>
+    </div>
+    <div style="position:absolute;top:28px;right:32px;animation:ftB 6s ease-in-out infinite;animation-delay:1.2s;">
+      <svg width="16" height="54" viewBox="-8 -14 16 56" fill="none"><rect x="-6" y="8" width="12" height="26" rx="2.5" stroke="rgba(244,167,192,.48)" stroke-width="1.2"/><rect x="-8" y="-3" width="16" height="13" rx="3" stroke="rgba(244,167,192,.48)" stroke-width="1.2"/><rect x="-4.5" y="-13" width="9" height="12" rx="1.5" stroke="rgba(244,167,192,.48)" stroke-width="1.2"/><path d="M-4.5,-13 Q0,-21 4.5,-13" stroke="rgba(244,167,192,.55)" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:absolute;top:50%;right:26px;transform:translateY(-50%);animation:ftC 6.5s ease-in-out infinite;animation-delay:2.5s;">
+      <svg width="34" height="50" viewBox="-13 -13 34 54" fill="none"><rect x="-10" y="6" width="20" height="26" rx="5" stroke="rgba(212,119,106,.48)" stroke-width="1.2"/><rect x="-4" y="-4" width="8" height="12" rx="2" stroke="rgba(212,119,106,.48)" stroke-width="1.2"/><ellipse cx="0" cy="-6" rx="6.5" ry="2.5" stroke="rgba(212,119,106,.48)" stroke-width="1.2"/><line x1="6.5" y1="-6" x2="16" y2="-6" stroke="rgba(212,119,106,.44)" stroke-width="1.1" stroke-linecap="round"/><circle cx="17" cy="-6" r="2" fill="rgba(212,119,106,.55)"/><circle cx="20" cy="-11" r="1.5" fill="rgba(212,119,106,.42)"/><circle cx="21" cy="-4" r="1" fill="rgba(212,119,106,.32)"/></svg>
+    </div>
+    <div style="position:absolute;top:48%;left:22px;transform:translateY(-50%);animation:ftD 7s ease-in-out infinite;animation-delay:.8s;">
+      <svg width="44" height="30" viewBox="-22 -13 44 30" fill="none"><ellipse cx="0" cy="0" rx="20" ry="12" stroke="rgba(244,167,192,.44)" stroke-width="1.2"/><ellipse cx="0" cy="0" rx="16" ry="9.5" stroke="rgba(244,167,192,.26)" stroke-width="0.8"/><line x1="-20" y1="0" x2="20" y2="0" stroke="rgba(244,167,192,.2)" stroke-width="0.7"/><line x1="-6" y1="-5" x2="-9" y2="-8" stroke="rgba(244,167,192,.4)" stroke-width="0.9" stroke-linecap="round"/><circle cx="0" cy="0" r="1.5" fill="rgba(244,167,192,.55)"/></svg>
+    </div>
+    <div style="position:absolute;bottom:150px;left:24px;animation:ftA 5s ease-in-out infinite;animation-delay:3.5s;">
+      <svg width="24" height="48" viewBox="-12 -4 24 52" fill="none"><ellipse cx="0" cy="29" rx="10" ry="14" stroke="rgba(244,167,192,.46)" stroke-width="1.2"/><rect x="-4" y="8" width="8" height="9" rx="1.5" stroke="rgba(244,167,192,.46)" stroke-width="1.2"/><rect x="-6.5" y="-2" width="13" height="12" rx="3" stroke="rgba(244,167,192,.46)" stroke-width="1.2"/></svg>
+    </div>
+    <div style="position:absolute;top:35px;right:108px;animation:ftB 7s ease-in-out infinite;animation-delay:4s;transform:rotate(-32deg);">
+      <svg width="14" height="56" viewBox="-7 -22 14 58" fill="none"><rect x="-3" y="10" width="6" height="26" rx="2" stroke="rgba(212,119,106,.42)" stroke-width="1.2"/><ellipse cx="0" cy="4" rx="5" ry="8.5" stroke="rgba(212,119,106,.42)" stroke-width="1.2"/><line x1="-4" y1="-5" x2="-6" y2="-15" stroke="rgba(212,119,106,.42)" stroke-width="1" stroke-linecap="round"/><line x1="0" y1="-8" x2="0" y2="-20" stroke="rgba(212,119,106,.42)" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="-5" x2="6" y2="-15" stroke="rgba(212,119,106,.42)" stroke-width="1" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:absolute;bottom:0;left:14%;width:3px;height:3px;border-radius:50%;background:#F4A7C0;--dx:-5px;animation:pRise 6s ease-in-out infinite;box-shadow:0 0 5px #F4A7C0;"></div>
+    <div style="position:absolute;bottom:0;left:30%;width:2px;height:2px;border-radius:50%;background:#D4776A;--dx:7px;animation:pRise 5.5s ease-in-out infinite;animation-delay:1.4s;box-shadow:0 0 5px #D4776A;"></div>
+    <div style="position:absolute;bottom:0;left:48%;width:3px;height:3px;border-radius:50%;background:#F4A7C0;--dx:-4px;animation:pRise 7s ease-in-out infinite;animation-delay:2.8s;box-shadow:0 0 6px #F4A7C0;"></div>
+    <div style="position:absolute;bottom:0;left:65%;width:2px;height:2px;border-radius:50%;background:#D4776A;--dx:6px;animation:pRise 5s ease-in-out infinite;animation-delay:.6s;"></div>
+    <div style="position:absolute;bottom:0;left:80%;width:2.5px;height:2.5px;border-radius:50%;background:#F4A7C0;--dx:-6px;animation:pRise 6.5s ease-in-out infinite;animation-delay:3.5s;box-shadow:0 0 5px #F4A7C0;"></div>
+    <div class="art-cnt" id="art-r" style="position:absolute;bottom:26px;left:26px;right:26px;z-index:4;direction:rtl;text-align:right;"></div>
+  </div>
+
+  <!-- ═══ DECO ARCTIC — Blueprint Grid ═══ -->
+  <div id="da" style="flex:1;position:relative;overflow:hidden;display:none;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <rect width="380" height="430" fill="#EEF3FF"/>
+      <defs>
+        <pattern id="ahex" width="44" height="76" patternUnits="userSpaceOnUse">
+          <polygon points="22,0 44,12 44,36 22,48 0,36 0,12" fill="none" stroke="rgba(37,99,235,.1)" stroke-width="0.7"/>
+          <polygon points="22,48 44,60 44,76 22,76 0,76 0,60" fill="none" stroke="rgba(37,99,235,.07)" stroke-width="0.5"/>
+        </pattern>
+        <radialGradient id="agl" cx="50%" cy="42%" r="50%"><stop offset="0%" stop-color="#2563EB" stop-opacity=".08"/><stop offset="100%" stop-color="#EEF3FF" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="380" height="430" fill="url(#ahex)"/>
+      <rect width="380" height="430" fill="url(#agl)"/>
+      <!-- Blueprint cross-hairs -->
+      <line x1="0" y1="185" x2="380" y2="185" stroke="rgba(37,99,235,.07)" stroke-width="0.6" stroke-dasharray="5,5"/>
+      <line x1="190" y1="0" x2="190" y2="430" stroke="rgba(37,99,235,.07)" stroke-width="0.6" stroke-dasharray="5,5"/>
+      <!-- Concentric measurement circles -->
+      <circle cx="190" cy="185" r="128" fill="none" stroke="rgba(37,99,235,.1)" stroke-width="0.8" stroke-dasharray="6,6"/>
+      <circle cx="190" cy="185" r="96" fill="none" stroke="rgba(37,99,235,.13)" stroke-width="0.8"/>
+      <circle cx="190" cy="185" r="64" fill="none" stroke="rgba(37,99,235,.16)" stroke-width="1"/>
+      <circle cx="190" cy="185" r="32" fill="rgba(37,99,235,.04)" stroke="rgba(37,99,235,.25)" stroke-width="1.2"/>
+      <!-- Crosshair arms (gap in center) -->
+      <line x1="190" y1="57" x2="190" y2="125" stroke="rgba(37,99,235,.22)" stroke-width="0.9" stroke-linecap="round"/>
+      <line x1="190" y1="245" x2="190" y2="313" stroke="rgba(37,99,235,.22)" stroke-width="0.9" stroke-linecap="round"/>
+      <line x1="62" y1="185" x2="126" y2="185" stroke="rgba(37,99,235,.22)" stroke-width="0.9" stroke-linecap="round"/>
+      <line x1="254" y1="185" x2="318" y2="185" stroke="rgba(37,99,235,.22)" stroke-width="0.9" stroke-linecap="round"/>
+      <!-- Diagonal guides at 45° -->
+      <line x1="100" y1="95" x2="148" y2="153" stroke="rgba(37,99,235,.12)" stroke-width="0.7" stroke-dasharray="3,4"/>
+      <line x1="280" y1="95" x2="232" y2="153" stroke="rgba(37,99,235,.12)" stroke-width="0.7" stroke-dasharray="3,4"/>
+      <line x1="100" y1="275" x2="148" y2="217" stroke="rgba(37,99,235,.1)" stroke-width="0.7" stroke-dasharray="3,4"/>
+      <line x1="280" y1="275" x2="232" y2="217" stroke="rgba(37,99,235,.1)" stroke-width="0.7" stroke-dasharray="3,4"/>
+      <!-- Blueprint nodes at measurement points -->
+      <circle cx="190" cy="57" r="4.5" fill="rgba(37,99,235,.35)" stroke="rgba(37,99,235,.6)" stroke-width="1"/>
+      <circle cx="318" cy="185" r="4" fill="rgba(37,99,235,.3)" stroke="rgba(37,99,235,.5)" stroke-width="1"/>
+      <circle cx="62" cy="185" r="3.5" fill="rgba(37,99,235,.28)" stroke="rgba(37,99,235,.45)" stroke-width="0.9"/>
+      <circle cx="190" cy="313" r="3.5" fill="rgba(37,99,235,.28)" stroke="rgba(37,99,235,.45)" stroke-width="0.9"/>
+      <!-- Corner measurement nodes -->
+      <circle cx="100" cy="95" r="5" fill="rgba(37,99,235,.25)" stroke="rgba(37,99,235,.4)" stroke-width="1"/>
+      <circle cx="280" cy="95" r="4" fill="rgba(37,99,235,.22)" stroke="rgba(37,99,235,.38)" stroke-width="0.9"/>
+      <circle cx="100" cy="275" r="4" fill="rgba(37,99,235,.2)" stroke="rgba(37,99,235,.35)" stroke-width="0.9"/>
+      <circle cx="280" cy="275" r="5" fill="rgba(37,99,235,.25)" stroke="rgba(37,99,235,.42)" stroke-width="1"/>
+      <!-- Arc for angle indication -->
+      <path d="M 222,153 A 45,45 0 0,1 254,185" fill="none" stroke="rgba(37,99,235,.2)" stroke-width="0.9"/>
+      <path d="M 148,217 A 45,45 0 0,0 116,185" fill="none" stroke="rgba(37,99,235,.18)" stroke-width="0.8"/>
+      <!-- Center cross + dot -->
+      <line x1="185" y1="185" x2="195" y2="185" stroke="rgba(37,99,235,.4)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="190" y1="180" x2="190" y2="190" stroke="rgba(37,99,235,.4)" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="190" cy="185" r="5.5" fill="rgba(37,99,235,.65)"/>
+      <!-- Dimension tick marks at every 30° on outer circle -->
+      <g stroke="rgba(37,99,235,.25)" stroke-width="1" stroke-linecap="round">
+        <line x1="190" y1="54" x2="190" y2="64"/><line x1="254" y1="73" x2="249" y2="81"/>
+        <line x1="311" y1="122" x2="302" y2="127"/><line x1="320" y1="185" x2="310" y2="185"/>
+        <line x1="311" y1="248" x2="302" y2="243"/><line x1="254" y1="297" x2="249" y2="289"/>
+        <line x1="190" y1="316" x2="190" y2="306"/><line x1="126" y1="297" x2="131" y2="289"/>
+        <line x1="69" y1="248" x2="78" y2="243"/><line x1="60" y1="185" x2="70" y2="185"/>
+        <line x1="69" y1="122" x2="78" y2="127"/><line x1="126" y1="73" x2="131" y2="81"/>
+      </g>
+    </svg>
+    <!-- Beauty tools ARCTIC (blue tones on light bg) -->
+    <div style="position:absolute;top:32px;left:26px;animation:ftA 5.5s ease-in-out infinite;">
+      <svg width="40" height="40" viewBox="-20 -20 40 40" fill="none"><ellipse rx="4.5" ry="9" stroke="rgba(37,99,235,.38)" stroke-width="1.2"/><ellipse rx="4.5" ry="9" stroke="rgba(37,99,235,.32)" stroke-width="1.1" transform="rotate(72)"/><ellipse rx="4.5" ry="9" stroke="rgba(37,99,235,.32)" stroke-width="1.1" transform="rotate(144)"/><ellipse rx="4.5" ry="9" stroke="rgba(37,99,235,.32)" stroke-width="1.1" transform="rotate(216)"/><ellipse rx="4.5" ry="9" stroke="rgba(37,99,235,.32)" stroke-width="1.1" transform="rotate(288)"/><circle r="4" stroke="rgba(37,99,235,.48)" stroke-width="1.3"/><circle r="1.8" fill="rgba(37,99,235,.55)"/></svg>
+    </div>
+    <div style="position:absolute;top:28px;right:32px;animation:ftB 6s ease-in-out infinite;animation-delay:1.2s;">
+      <svg width="16" height="54" viewBox="-8 -14 16 56" fill="none"><rect x="-6" y="8" width="12" height="26" rx="2.5" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><rect x="-8" y="-3" width="16" height="13" rx="3" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><rect x="-4.5" y="-13" width="9" height="12" rx="1.5" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><path d="M-4.5,-13 Q0,-21 4.5,-13" stroke="rgba(37,99,235,.48)" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:absolute;top:50%;right:26px;transform:translateY(-50%);animation:ftC 6.5s ease-in-out infinite;animation-delay:2.5s;">
+      <svg width="34" height="50" viewBox="-13 -13 34 54" fill="none"><rect x="-10" y="6" width="20" height="26" rx="5" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><rect x="-4" y="-4" width="8" height="12" rx="2" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><ellipse cx="0" cy="-6" rx="6.5" ry="2.5" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><line x1="6.5" y1="-6" x2="16" y2="-6" stroke="rgba(37,99,235,.38)" stroke-width="1.1" stroke-linecap="round"/><circle cx="17" cy="-6" r="2" fill="rgba(37,99,235,.45)"/><circle cx="20" cy="-11" r="1.5" fill="rgba(37,99,235,.35)"/></svg>
+    </div>
+    <div style="position:absolute;top:48%;left:22px;transform:translateY(-50%);animation:ftD 7s ease-in-out infinite;animation-delay:.8s;">
+      <svg width="44" height="30" viewBox="-22 -13 44 30" fill="none"><ellipse cx="0" cy="0" rx="20" ry="12" stroke="rgba(37,99,235,.38)" stroke-width="1.2"/><ellipse cx="0" cy="0" rx="16" ry="9.5" stroke="rgba(37,99,235,.22)" stroke-width="0.8"/><line x1="-20" y1="0" x2="20" y2="0" stroke="rgba(37,99,235,.18)" stroke-width="0.7"/><line x1="-6" y1="-5" x2="-9" y2="-8" stroke="rgba(37,99,235,.35)" stroke-width="0.9" stroke-linecap="round"/><circle cx="0" cy="0" r="1.5" fill="rgba(37,99,235,.5)"/></svg>
+    </div>
+    <div style="position:absolute;bottom:150px;left:24px;animation:ftA 5s ease-in-out infinite;animation-delay:3.5s;">
+      <svg width="24" height="48" viewBox="-12 -4 24 52" fill="none"><ellipse cx="0" cy="29" rx="10" ry="14" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><rect x="-4" y="8" width="8" height="9" rx="1.5" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/><rect x="-6.5" y="-2" width="13" height="12" rx="3" stroke="rgba(37,99,235,.4)" stroke-width="1.2"/></svg>
+    </div>
+    <div style="position:absolute;top:35px;right:108px;animation:ftB 7s ease-in-out infinite;animation-delay:4s;transform:rotate(-32deg);">
+      <svg width="14" height="56" viewBox="-7 -22 14 58" fill="none"><rect x="-3" y="10" width="6" height="26" rx="2" stroke="rgba(37,99,235,.38)" stroke-width="1.2"/><ellipse cx="0" cy="4" rx="5" ry="8.5" stroke="rgba(37,99,235,.38)" stroke-width="1.2"/><line x1="-4" y1="-5" x2="-6" y2="-15" stroke="rgba(37,99,235,.38)" stroke-width="1" stroke-linecap="round"/><line x1="0" y1="-8" x2="0" y2="-20" stroke="rgba(37,99,235,.38)" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="-5" x2="6" y2="-15" stroke="rgba(37,99,235,.38)" stroke-width="1" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:absolute;bottom:0;left:14%;width:3px;height:3px;border-radius:50%;background:#2563EB;--dx:-5px;animation:pRise 6s ease-in-out infinite;box-shadow:0 0 5px #2563EB;"></div>
+    <div style="position:absolute;bottom:0;left:30%;width:2px;height:2px;border-radius:50%;background:#60A5FA;--dx:7px;animation:pRise 5.5s ease-in-out infinite;animation-delay:1.4s;box-shadow:0 0 4px #60A5FA;"></div>
+    <div style="position:absolute;bottom:0;left:50%;width:3px;height:3px;border-radius:50%;background:#2563EB;--dx:-4px;animation:pRise 7s ease-in-out infinite;animation-delay:2.8s;box-shadow:0 0 5px #2563EB;"></div>
+    <div style="position:absolute;bottom:0;left:70%;width:2px;height:2px;border-radius:50%;background:#BFDBFE;--dx:6px;animation:pRise 5s ease-in-out infinite;animation-delay:.6s;"></div>
+    <div style="position:absolute;bottom:0;left:85%;width:2.5px;height:2.5px;border-radius:50%;background:#2563EB;--dx:-6px;animation:pRise 6.5s ease-in-out infinite;animation-delay:3.5s;box-shadow:0 0 5px #2563EB;"></div>
+    <div class="art-cnt" id="art-a" style="position:absolute;bottom:26px;left:26px;right:26px;z-index:4;direction:rtl;text-align:right;"></div>
+  </div>
+
+  <!-- ═══ DECO CYBER — Circuit Board ═══ -->
+  <div id="dc" style="flex:1;position:relative;overflow:hidden;display:none;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 380 430" xmlns="http://www.w3.org/2000/svg">
+      <rect width="380" height="430" fill="#030312"/>
+      <defs>
+        <pattern id="matrix" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r=".8" fill="rgba(0,212,255,.1)"/></pattern>
+        <radialGradient id="cgl" cx="50%" cy="42%" r="52%"><stop offset="0%" stop-color="#0D5B8B" stop-opacity=".25"/><stop offset="100%" stop-color="#030312" stop-opacity="0"/></radialGradient>
+        <radialGradient id="cgl2" cx="80%" cy="78%" r="38%"><stop offset="0%" stop-color="#5B21B6" stop-opacity=".2"/><stop offset="100%" stop-color="#030312" stop-opacity="0"/></radialGradient>
+      </defs>
+      <rect width="380" height="430" fill="url(#matrix)"/>
+      <rect width="380" height="430" fill="url(#cgl)"/>
+      <rect width="380" height="430" fill="url(#cgl2)"/>
+      <!-- Main circuit traces (H & V with right-angle turns) -->
+      <path d="M30 185 H95 V130 H178" fill="none" stroke="rgba(0,212,255,.28)" stroke-width="1.1"/>
+      <path d="M30 185 H95 V240 H178" fill="none" stroke="rgba(0,212,255,.24)" stroke-width="1.1"/>
+      <path d="M350 185 H285 V130 H202" fill="none" stroke="rgba(0,212,255,.22)" stroke-width="1.1"/>
+      <path d="M350 185 H285 V240 H202" fill="none" stroke="rgba(0,212,255,.2)" stroke-width="1.1"/>
+      <path d="M190 48 V128" fill="none" stroke="rgba(0,212,255,.22)" stroke-width="1.1"/>
+      <path d="M190 242 V322" fill="none" stroke="rgba(0,212,255,.2)" stroke-width="1.1"/>
+      <!-- Secondary purple traces -->
+      <path d="M30 310 H80 V270 H130 V300 H178" fill="none" stroke="rgba(191,95,255,.22)" stroke-width="0.9"/>
+      <path d="M350 90 H310 V120 H260 V100 H202" fill="none" stroke="rgba(191,95,255,.18)" stroke-width="0.9"/>
+      <!-- Trace nodes -->
+      <circle cx="95" cy="185" r="4.5" fill="rgba(0,212,255,.55)"/><circle cx="95" cy="130" r="4" fill="rgba(0,212,255,.5)"/>
+      <circle cx="95" cy="240" r="4" fill="rgba(0,212,255,.45)"/><circle cx="285" cy="185" r="4.5" fill="rgba(0,212,255,.5)"/>
+      <circle cx="285" cy="130" r="3.5" fill="rgba(0,212,255,.42)"/><circle cx="285" cy="240" r="3.5" fill="rgba(0,212,255,.38)"/>
+      <circle cx="190" cy="48" r="4" fill="rgba(0,212,255,.55)"/><circle cx="190" cy="322" r="4" fill="rgba(0,212,255,.5)"/>
+      <circle cx="80" cy="310" r="3.5" fill="rgba(191,95,255,.48)"/><circle cx="310" cy="90" r="3" fill="rgba(191,95,255,.42)"/>
+      <!-- CPU CHIP — center -->
+      <rect x="160" y="155" width="60" height="60" rx="5" fill="rgba(0,212,255,.05)" stroke="rgba(0,212,255,.42)" stroke-width="1.3"/>
+      <rect x="168" y="163" width="44" height="44" rx="3" fill="rgba(0,212,255,.07)" stroke="rgba(0,212,255,.28)" stroke-width="0.9"/>
+      <!-- CPU pins left -->
+      <line x1="160" y1="168" x2="148" y2="168" stroke="rgba(0,212,255,.35)" stroke-width="1.1"/><line x1="160" y1="179" x2="148" y2="179" stroke="rgba(0,212,255,.35)" stroke-width="1.1"/>
+      <line x1="160" y1="190" x2="148" y2="190" stroke="rgba(0,212,255,.35)" stroke-width="1.1"/><line x1="160" y1="201" x2="148" y2="201" stroke="rgba(0,212,255,.35)" stroke-width="1.1"/>
+      <line x1="160" y1="202" x2="148" y2="202" stroke="rgba(0,212,255,.28)" stroke-width="1.1"/>
+      <!-- CPU pins right -->
+      <line x1="220" y1="168" x2="232" y2="168" stroke="rgba(0,212,255,.3)" stroke-width="1.1"/><line x1="220" y1="179" x2="232" y2="179" stroke="rgba(0,212,255,.3)" stroke-width="1.1"/>
+      <line x1="220" y1="190" x2="232" y2="190" stroke="rgba(0,212,255,.3)" stroke-width="1.1"/><line x1="220" y1="201" x2="232" y2="201" stroke="rgba(0,212,255,.3)" stroke-width="1.1"/>
+      <!-- CPU pins top + bottom -->
+      <line x1="173" y1="155" x2="173" y2="143" stroke="rgba(0,212,255,.28)" stroke-width="1.1"/><line x1="185" y1="155" x2="185" y2="143" stroke="rgba(0,212,255,.28)" stroke-width="1.1"/>
+      <line x1="197" y1="155" x2="197" y2="143" stroke="rgba(0,212,255,.28)" stroke-width="1.1"/><line x1="209" y1="155" x2="209" y2="143" stroke="rgba(0,212,255,.28)" stroke-width="1.1"/>
+      <line x1="173" y1="215" x2="173" y2="227" stroke="rgba(0,212,255,.25)" stroke-width="1.1"/><line x1="197" y1="215" x2="197" y2="227" stroke="rgba(0,212,255,.25)" stroke-width="1.1"/>
+      <!-- CPU center indicator -->
+      <circle cx="190" cy="185" r="9" fill="rgba(0,212,255,.12)" stroke="rgba(0,212,255,.55)" stroke-width="1.5"/>
+      <circle cx="190" cy="185" r="4" fill="rgba(0,212,255,.85)"/>
+      <!-- HUD corner brackets -->
+      <path d="M10 36 L10 10 L36 10" fill="none" stroke="rgba(0,212,255,.4)" stroke-width="1.4"/><circle cx="10" cy="10" r="2.8" fill="rgba(0,212,255,.7)"/>
+      <path d="M344 10 L370 10 L370 36" fill="none" stroke="rgba(0,212,255,.4)" stroke-width="1.4"/><circle cx="370" cy="10" r="2.8" fill="rgba(0,212,255,.7)"/>
+      <path d="M10 394 L10 420 L36 420" fill="none" stroke="rgba(0,212,255,.2)" stroke-width="1"/>
+      <path d="M344 420 L370 420 L370 394" fill="none" stroke="rgba(0,212,255,.2)" stroke-width="1"/>
+      <!-- Vertical status columns -->
+      <line x1="46" y1="75" x2="46" y2="345" stroke="rgba(0,212,255,.07)" stroke-width="1" stroke-dasharray="2,9"/>
+      <line x1="334" y1="75" x2="334" y2="345" stroke="rgba(191,95,255,.06)" stroke-width="1" stroke-dasharray="2,9"/>
+      <!-- Small hex nodes at corners of chip area -->
+      <polygon points="140,143 148,139 156,143 156,151 148,155 140,151" fill="none" stroke="rgba(0,212,255,.22)" stroke-width="0.7"/>
+      <polygon points="234,143 242,139 250,143 250,151 242,155 234,151" fill="none" stroke="rgba(0,212,255,.2)" stroke-width="0.7"/>
+      <!-- Scan line effect (thin horizontal moving line) -->
+      <rect x="0" y="0" width="380" height="1.5" fill="rgba(0,212,255,.06)" style="animation:scanH 8s linear infinite"/>
+    </svg>
+    <!-- Beauty tools CYBER (cyan) -->
+    <div style="position:absolute;top:32px;left:26px;animation:ftA 5.5s ease-in-out infinite;">
+      <svg width="40" height="40" viewBox="-20 -20 40 40" fill="none"><ellipse rx="4.5" ry="9" stroke="rgba(0,212,255,.42)" stroke-width="1.2"/><ellipse rx="4.5" ry="9" stroke="rgba(0,212,255,.35)" stroke-width="1.1" transform="rotate(72)"/><ellipse rx="4.5" ry="9" stroke="rgba(0,212,255,.35)" stroke-width="1.1" transform="rotate(144)"/><ellipse rx="4.5" ry="9" stroke="rgba(0,212,255,.35)" stroke-width="1.1" transform="rotate(216)"/><ellipse rx="4.5" ry="9" stroke="rgba(0,212,255,.35)" stroke-width="1.1" transform="rotate(288)"/><circle r="4" stroke="rgba(0,212,255,.55)" stroke-width="1.3"/><circle r="1.8" fill="rgba(0,212,255,.65)"/></svg>
+    </div>
+    <div style="position:absolute;top:28px;right:32px;animation:ftB 6s ease-in-out infinite;animation-delay:1.2s;">
+      <svg width="16" height="54" viewBox="-8 -14 16 56" fill="none"><rect x="-6" y="8" width="12" height="26" rx="2.5" stroke="rgba(191,95,255,.48)" stroke-width="1.2"/><rect x="-8" y="-3" width="16" height="13" rx="3" stroke="rgba(191,95,255,.48)" stroke-width="1.2"/><rect x="-4.5" y="-13" width="9" height="12" rx="1.5" stroke="rgba(191,95,255,.48)" stroke-width="1.2"/><path d="M-4.5,-13 Q0,-21 4.5,-13" stroke="rgba(191,95,255,.55)" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:absolute;top:50%;right:26px;transform:translateY(-50%);animation:ftC 6.5s ease-in-out infinite;animation-delay:2.5s;">
+      <svg width="34" height="50" viewBox="-13 -13 34 54" fill="none"><rect x="-10" y="6" width="20" height="26" rx="5" stroke="rgba(0,212,255,.45)" stroke-width="1.2"/><rect x="-4" y="-4" width="8" height="12" rx="2" stroke="rgba(0,212,255,.45)" stroke-width="1.2"/><ellipse cx="0" cy="-6" rx="6.5" ry="2.5" stroke="rgba(0,212,255,.45)" stroke-width="1.2"/><line x1="6.5" y1="-6" x2="16" y2="-6" stroke="rgba(0,212,255,.42)" stroke-width="1.1" stroke-linecap="round"/><circle cx="17" cy="-6" r="2" fill="rgba(0,212,255,.55)"/><circle cx="20" cy="-11" r="1.5" fill="rgba(0,212,255,.4)"/><circle cx="21" cy="-4" r="1" fill="rgba(0,212,255,.3)"/></svg>
+    </div>
+    <div style="position:absolute;top:48%;left:22px;transform:translateY(-50%);animation:ftD 7s ease-in-out infinite;animation-delay:.8s;">
+      <svg width="44" height="30" viewBox="-22 -13 44 30" fill="none"><ellipse cx="0" cy="0" rx="20" ry="12" stroke="rgba(0,212,255,.4)" stroke-width="1.2"/><ellipse cx="0" cy="0" rx="16" ry="9.5" stroke="rgba(0,212,255,.24)" stroke-width="0.8"/><line x1="-20" y1="0" x2="20" y2="0" stroke="rgba(0,212,255,.18)" stroke-width="0.7"/><line x1="-6" y1="-5" x2="-9" y2="-8" stroke="rgba(0,212,255,.38)" stroke-width="0.9" stroke-linecap="round"/><circle cx="0" cy="0" r="1.5" fill="rgba(0,212,255,.52)"/></svg>
+    </div>
+    <div style="position:absolute;bottom:150px;left:24px;animation:ftA 5s ease-in-out infinite;animation-delay:3.5s;">
+      <svg width="24" height="48" viewBox="-12 -4 24 52" fill="none"><ellipse cx="0" cy="29" rx="10" ry="14" stroke="rgba(191,95,255,.44)" stroke-width="1.2"/><rect x="-4" y="8" width="8" height="9" rx="1.5" stroke="rgba(191,95,255,.44)" stroke-width="1.2"/><rect x="-6.5" y="-2" width="13" height="12" rx="3" stroke="rgba(191,95,255,.44)" stroke-width="1.2"/></svg>
+    </div>
+    <div style="position:absolute;top:35px;right:108px;animation:ftB 7s ease-in-out infinite;animation-delay:4s;transform:rotate(-32deg);">
+      <svg width="14" height="56" viewBox="-7 -22 14 58" fill="none"><rect x="-3" y="10" width="6" height="26" rx="2" stroke="rgba(0,212,255,.38)" stroke-width="1.2"/><ellipse cx="0" cy="4" rx="5" ry="8.5" stroke="rgba(0,212,255,.38)" stroke-width="1.2"/><line x1="-4" y1="-5" x2="-6" y2="-15" stroke="rgba(0,212,255,.38)" stroke-width="1" stroke-linecap="round"/><line x1="0" y1="-8" x2="0" y2="-20" stroke="rgba(0,212,255,.38)" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="-5" x2="6" y2="-15" stroke="rgba(0,212,255,.38)" stroke-width="1" stroke-linecap="round"/></svg>
+    </div>
+    <div style="position:absolute;bottom:0;left:14%;width:3px;height:3px;border-radius:50%;background:#00D4FF;--dx:-5px;animation:pRise 6s ease-in-out infinite;box-shadow:0 0 5px #00D4FF;"></div>
+    <div style="position:absolute;bottom:0;left:30%;width:2px;height:2px;border-radius:50%;background:#BF5FFF;--dx:7px;animation:pRise 5.5s ease-in-out infinite;animation-delay:1.4s;box-shadow:0 0 5px #BF5FFF;"></div>
+    <div style="position:absolute;bottom:0;left:50%;width:3px;height:3px;border-radius:50%;background:#00D4FF;--dx:-4px;animation:pRise 7s ease-in-out infinite;animation-delay:2.8s;box-shadow:0 0 6px #00D4FF;"></div>
+    <div style="position:absolute;bottom:0;left:68%;width:2px;height:2px;border-radius:50%;background:#BF5FFF;--dx:6px;animation:pRise 5s ease-in-out infinite;animation-delay:.6s;"></div>
+    <div style="position:absolute;bottom:0;left:84%;width:2.5px;height:2.5px;border-radius:50%;background:#00D4FF;--dx:-6px;animation:pRise 6.5s ease-in-out infinite;animation-delay:3.5s;box-shadow:0 0 5px #00D4FF;"></div>
+    <div class="art-cnt" id="art-c" style="position:absolute;bottom:26px;left:26px;right:26px;z-index:4;direction:rtl;text-align:right;"></div>
+  </div>
+
+  <!-- ═══ SHARED FORM PANEL ═══ -->
+  <div id="fp" style="width:334px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 32px;position:relative;direction:rtl;">
+    <div id="ftl" style="position:absolute;top:0;left:18%;right:18%;height:1.5px;"></div>
+    <button id="lpill" onclick="toggleLang()" style="position:absolute;left:15px;top:15px;font-size:10px;font-weight:700;padding:4px 14px;border-radius:20px;cursor:pointer;z-index:10;">English</button>
+    <div style="position:relative;width:58px;height:58px;margin-bottom:14px;flex-shrink:0;">
+      <div id="lspin" style="position:absolute;left:50%;top:50%;width:66px;height:66px;margin-left:-33px;margin-top:-33px;border-radius:17px;animation:spinLogo 4s linear infinite;"></div>
+      <div id="linn" style="position:absolute;inset:0;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:1;"></div>
+    </div>
+    <div id="ftitle" style="font-size:18px;font-weight:700;text-align:center;margin-bottom:3px;"></div>
+    <div id="ftsub" style="font-size:12px;text-align:center;margin-bottom:22px;"></div>
+    <div style="width:100%;margin-bottom:11px;">
+      <label id="lemail" style="font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;display:block;margin-bottom:5px;"></label>
+      <div style="position:relative;"><i class="ti ti-mail" id="iemail" style="position:absolute;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;" aria-hidden="true"></i><input id="inpe" type="email" style="width:100%;height:41px;font-size:12px;outline:none;transition:border-color .2s,box-shadow .2s;border:1.5px solid;"></div>
+    </div>
+    <div style="width:100%;margin-bottom:11px;">
+      <label id="lpass" style="font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;display:block;margin-bottom:5px;"></label>
+      <div style="position:relative;"><i class="ti ti-lock" id="ipass" style="position:absolute;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;" aria-hidden="true"></i><input id="inpp" type="password" placeholder="••••••••" style="width:100%;height:41px;font-size:12px;outline:none;transition:border-color .2s,box-shadow .2s;border:1.5px solid;"></div>
+    </div>
+    <div id="frow" style="display:flex;align-items:center;width:100%;gap:7px;margin-bottom:13px;flex-direction:row-reverse;">
+      <div id="fchk" style="width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid;"><i class="ti ti-check" id="chki" style="font-size:10px;" aria-hidden="true"></i></div>
+      <span id="lrem" style="font-size:10px;"></span>
+      <div style="flex:1;"></div>
+      <span id="lforgot" style="font-size:10px;font-weight:700;cursor:pointer;"></span>
+    </div>
+    <button id="fbtn" style="width:100%;height:41px;border:none;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;letter-spacing:.3px;"></button>
+    <div id="ffoot" style="font-size:10px;text-align:center;"></div>
+    <div id="fbl" style="position:absolute;bottom:0;left:18%;right:18%;height:1px;"></div>
+  </div>
+</div>
+
+<script>
+const AF="font-family:'Noto Kufi Arabic','Arabic UI',system-ui,sans-serif;";
+const T={
+  gold:{label:'✦ Gold',pill:'#C9A84C',pt:'#0F0F14',decos:['dg'],
+    fbg:'#16151F',fbd:'rgba(201,168,76,.14)',
+    ib:'rgba(201,168,76,.22)',if_:'rgba(201,168,76,.6)',ibg:'rgba(201,168,76,.05)',ic:'#F0EDE8',ico:'rgba(201,168,76,.42)',
+    lc:'rgba(230,215,170,.55)',tc:'#F0EDE8',sc:'rgba(230,215,170,.4)',
+    cb:'rgba(201,168,76,.38)',cbg:'rgba(201,168,76,.1)',ci:'#C9A84C',
+    btn:'#C9A84C',btnc:'#0F0F14',
+    ls:'conic-gradient(from 0deg,#C9A84C 0%,#8B6E2E 33%,#FFD700 66%,#C9A84C 100%)',lb:'#0D0C00',lsym:'✦',lsc:'#C9A84C',
+    lpbg:'rgba(201,168,76,.1)',lpc:'#C9A84C',lpb:'rgba(201,168,76,.3)',fc:'rgba(201,168,76,.3)',
+    tl:'linear-gradient(90deg,transparent,rgba(201,168,76,.45),transparent)',bl:'rgba(201,168,76,.2)',fgc:'#C9A84C',
+    ac:'#C9A84C',abbd:'rgba(201,168,76,.22)',abbg:'rgba(201,168,76,.1)',ahl:'#F0EDE8',asub:'rgba(230,215,170,.52)',br:10,mono:false},
+  rose:{label:'🌸 Rose',pill:'#D4776A',pt:'white',decos:['dr'],
+    fbg:'#FFFFFF',fbd:'rgba(212,119,106,.15)',
+    ib:'#F0D0D8',if_:'#D4776A',ibg:'#FFF8FA',ic:'#5A3A4A',ico:'#D4A7B0',
+    lc:'rgba(160,100,110,.65)',tc:'#5A3A4A',sc:'rgba(160,100,110,.5)',
+    cb:'#F4A7C0',cbg:'#FFF0F5',ci:'#D4776A',
+    btn:'linear-gradient(135deg,#D4776A,#C45A8E)',btnc:'white',
+    ls:'conic-gradient(from 0deg,#F4A7C0 0%,#D4776A 33%,#C45A8E 66%,#F4A7C0 100%)',lb:'#FFF0F5',lsym:'✿',lsc:'#D4776A',
+    lpbg:'rgba(212,119,106,.1)',lpc:'#D4776A',lpb:'rgba(212,119,106,.25)',fc:'rgba(160,100,110,.38)',
+    tl:'linear-gradient(90deg,transparent,rgba(212,119,106,.4),transparent)',bl:'rgba(212,119,106,.2)',fgc:'#D4776A',
+    ac:'#F4A7C0',abbd:'rgba(244,167,192,.25)',abbg:'rgba(244,167,192,.12)',ahl:'white',asub:'rgba(255,225,235,.5)',br:10,mono:false},
+  arctic:{label:'❄ Arctic',pill:'#2563EB',pt:'white',decos:['da'],
+    fbg:'#FFFFFF',fbd:'rgba(37,99,235,.14)',
+    ib:'#E5E7EB',if_:'#2563EB',ibg:'#F9FAFB',ic:'#111827',ico:'#9CA3AF',
+    lc:'rgba(75,85,99,.65)',tc:'#111827',sc:'rgba(75,85,99,.5)',
+    cb:'#2563EB',cbg:'#EFF6FF',ci:'#2563EB',
+    btn:'#2563EB',btnc:'white',
+    ls:'conic-gradient(from 0deg,#2563EB 0%,#60A5FA 33%,#BFDBFE 66%,#2563EB 100%)',lb:'#EFF6FF',lsym:'◈',lsc:'#2563EB',
+    lpbg:'rgba(37,99,235,.08)',lpc:'#2563EB',lpb:'rgba(37,99,235,.25)',fc:'rgba(75,85,99,.38)',
+    tl:'linear-gradient(90deg,transparent,rgba(37,99,235,.4),transparent)',bl:'rgba(37,99,235,.18)',fgc:'#2563EB',
+    ac:'#60A5FA',abbd:'rgba(59,130,246,.22)',abbg:'rgba(59,130,246,.1)',ahl:'#0A1628',asub:'rgba(30,58,138,.55)',br:10,mono:false},
+  cyber:{label:'⚡ Cyber',pill:'#00D4FF',pt:'#050510',decos:['dc'],
+    fbg:'#0A051E',fbd:'rgba(0,212,255,.14)',
+    ib:'rgba(0,212,255,.22)',if_:'rgba(0,212,255,.6)',ibg:'rgba(0,212,255,.04)',ic:'#E0E8FF',ico:'rgba(0,212,255,.38)',
+    lc:'rgba(180,200,255,.52)',tc:'#E0E8FF',sc:'rgba(180,200,255,.4)',
+    cb:'rgba(0,212,255,.38)',cbg:'rgba(0,212,255,.08)',ci:'#00D4FF',
+    btn:'linear-gradient(135deg,#7B2FFF,#00D4FF)',btnc:'#050510',
+    ls:'conic-gradient(from 0deg,#00D4FF 0%,#BF5FFF 33%,#00FF88 66%,#00D4FF 100%)',lb:'#0D0922',lsym:'⬡',lsc:'#00D4FF',
+    lpbg:'rgba(0,212,255,.08)',lpc:'#00D4FF',lpb:'rgba(0,212,255,.25)',fc:'rgba(0,212,255,.28)',
+    tl:'linear-gradient(90deg,transparent,rgba(0,212,255,.45),transparent)',bl:'rgba(0,212,255,.18)',fgc:'#00D4FF',
+    ac:'#00D4FF',abbd:'rgba(0,212,255,.22)',abbg:'rgba(0,212,255,.08)',ahl:'#E0E8FF',asub:'rgba(200,220,255,.45)',br:4,mono:true}
+};
+const COPY={
+  en:{badge:'✦ SALON AI PLATFORM',hl:'The future of<br>beauty management.',sub:'AI-powered bookings, smart automation,<br>and real-time insights — built for Saudi salons.',title:'Welcome back',tsub:'Sign in to your dashboard',email:'Email',pass:'Password',rem:'Keep me signed in',forgot:'Forgot password?',btn:'Sign In',foot:'Salon AI Platform · Riyadh, KSA',eph:'you@salon.sa',pl:'العربية'},
+  ar:{badge:'منصة صالون AI ✦',hl:'مستقبل إدارة<br>صالونات الجمال.',sub:'حجوزات ذكية وأتمتة بالذكاء الاصطناعي،<br>ورؤى فورية — مُصمَّمة للصالونات السعودية.',title:'مرحباً بعودتكِ',tsub:'سجّلي الدخول إلى لوحة تحكمكِ',email:'البريد الإلكتروني',pass:'كلمة المرور',rem:'إبقائي مسجّلة الدخول',forgot:'نسيتِ كلمة المرور؟',btn:'تسجيل الدخول',foot:'منصة صالون AI · الرياض، المملكة العربية السعودية',eph:'أنتِ@صالون.sa',pl:'English'}
+};
+let theme='gold',lang='ar';
+
+function renderArtText(c,cp,isAr){
+  const fontStyle=isAr?AF:'';
+  const html=`<div style="display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;padding:4px 13px;border-radius:20px;margin-bottom:14px;background:${c.abbg};color:${c.ac};border:1px solid ${c.abbd};${fontStyle}"><span style="width:5px;height:5px;border-radius:50%;background:${c.ac};animation:dotPls 2s ease-in-out infinite;flex-shrink:0;box-shadow:0 0 6px ${c.ac};"></span><span>${cp.badge}</span></div>
+  <div style="font-size:24px;font-weight:700;line-height:1.32;margin-bottom:9px;color:${c.ahl};${fontStyle}${!isAr?'letter-spacing:-.2px;':''}">${cp.hl}</div>
+  <div style="font-size:13px;line-height:1.68;color:${c.asub};${fontStyle}">${cp.sub}</div>`;
+  ['art-g','art-r','art-a','art-c'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.innerHTML=html;el.style.direction=isAr?'rtl':'ltr';el.style.textAlign=isAr?'right':'left';}
+  });
+}
+
+function render(){
+  const c=T[theme],cp=COPY[lang],isAr=lang==='ar';
+  const fontAr=isAr?AF:'';const monoFont=c.mono?"font-family:'Courier New',monospace;":'';
+
+  // Shell direction
+  document.getElementById('shell').style.flexDirection=isAr?'row-reverse':'row';
+
+  // Show correct deco
+  ['dg','dr','da','dc'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById(c.decos[0]).style.display='flex';
+
+  // Art text in all deco panels
+  renderArtText(c,cp,isAr);
+
+  // Form panel
+  const fp=document.getElementById('fp');
+  fp.style.background=c.fbg;
+  fp.style.borderLeft=isAr?`1px solid ${c.fbd}`:'none';
+  fp.style.borderRight=isAr?'none':`1px solid ${c.fbd}`;
+  fp.style.direction=isAr?'rtl':'ltr';
+  document.getElementById('ftl').style.background=c.tl;
+  document.getElementById('fbl').style.background=c.bl;
+
+  // Lang pill
+  const pill=document.getElementById('lpill');
+  pill.textContent=cp.pl;
+  pill.style.cssText=`position:absolute;${isAr?'left':'right'}:15px;top:15px;font-size:10px;font-weight:700;padding:4px 14px;border-radius:20px;cursor:pointer;z-index:10;border:1px solid ${c.lpb};background:${c.lpbg};color:${c.lpc};`;
+
+  // Logo
+  document.getElementById('lspin').style.background=c.ls;
+  const li=document.getElementById('linn');
+  li.style.background=c.lb;li.style.color=c.lsc;li.textContent=c.lsym;
+
+  // Title & sub
+  const ft=document.getElementById('ftitle');
+  ft.textContent=cp.title;ft.style.cssText=`font-size:18px;font-weight:700;text-align:center;margin-bottom:3px;color:${c.tc};${fontAr}${monoFont}${c.mono?'letter-spacing:1.5px;text-transform:uppercase;font-size:13px;':''}`;
+  const fs=document.getElementById('ftsub');
+  fs.textContent=cp.tsub;fs.style.cssText=`font-size:12px;text-align:center;margin-bottom:22px;color:${c.sc};${fontAr}${monoFont}`;
+
+  // Inputs
+  const is=isAr?'right':'left',os=isAr?'left':'right';
+  const ip=isAr?'padding:0 36px 0 12px;text-align:right;direction:rtl;':'padding:0 12px 0 36px;text-align:left;direction:ltr;';
+  [{id:'lemail',lbl:cp.email},{id:'lpass',lbl:cp.pass}].forEach((item,idx)=>{
+    const lbl=document.getElementById(item.id);
+    const lblText=c.mono?`// ${item.lbl.toUpperCase()}`:item.lbl;
+    lbl.textContent=lblText;
+    lbl.style.cssText=`font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;display:block;margin-bottom:5px;color:${c.lc};${fontAr}${monoFont}text-align:${isAr?'right':'left'};`;
+    const icoEl=document.getElementById(idx===0?'iemail':'ipass');
+    icoEl.style.cssText=`position:absolute;${is}:11px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;color:${c.ico};${os}:auto;`;
+    const inp=document.getElementById(idx===0?'inpe':'inpp');
+    if(idx===0)inp.placeholder=cp.eph;
+    inp.style.cssText=`width:100%;height:41px;border-radius:${c.br}px;border:1.5px solid ${c.ib};color:${c.ic};background:${c.ibg};outline:none;font-size:12px;transition:border-color .2s,box-shadow .2s;${ip}${fontAr}${monoFont}${c.mono?'border-left:3px solid rgba(0,212,255,.5);':''}`;
+    inp.onfocus=()=>{inp.style.borderColor=c.if_;inp.style.boxShadow=`0 0 0 3px ${c.if_}28`;};
+    inp.onblur=()=>{inp.style.borderColor=c.ib;inp.style.boxShadow='none';};
+  });
+
+  // Remember row
+  document.getElementById('frow').style.flexDirection=isAr?'row-reverse':'row';
+  const chk=document.getElementById('fchk');
+  chk.style.cssText=`width:16px;height:16px;border-radius:${c.mono?'2':'4'}px;border:1.5px solid ${c.cb};background:${c.cbg};display:flex;align-items:center;justify-content:center;flex-shrink:0;`;
+  document.getElementById('chki').style.color=c.ci;
+  const remEl=document.getElementById('lrem');
+  remEl.textContent=c.mono?cp.rem.toUpperCase():cp.rem;
+  remEl.style.cssText=`font-size:10px;color:${c.sc};${fontAr}${monoFont}`;
+  const forgotEl=document.getElementById('lforgot');
+  forgotEl.textContent=cp.forgot;
+  forgotEl.style.cssText=`font-size:10px;font-weight:700;cursor:pointer;color:${c.fgc};${fontAr}${monoFont}`;
+
+  // Button
+  const btn=document.getElementById('fbtn');
+  btn.textContent=c.mono?cp.btn.toUpperCase():cp.btn;
+  btn.style.cssText=`width:100%;height:41px;border:none;border-radius:${c.br}px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;background:${c.btn};color:${c.btnc};letter-spacing:${c.mono?'2':'0.3'}px;${fontAr}${monoFont}`;
+
+  // Footer
+  const foot=document.getElementById('ffoot');
+  foot.textContent=cp.foot;
+  foot.style.cssText=`font-size:10px;text-align:center;color:${c.fc};${fontAr}${monoFont}`;
+
+  // Lang toggle buttons
+  ['ar','en'].forEach(l=>{
+    const b=document.getElementById('btn-'+l),act=l===lang;
+    b.style.cssText=`padding:5px 13px;border-radius:20px;border:1px solid var(--color-border-tertiary);background:${act?'var(--color-text-primary)':'transparent'};color:${act?'var(--color-background-primary)':'var(--color-text-secondary)'};font-size:11px;cursor:pointer;font-weight:${act?'600':'400'};`;
+  });
+  // Theme pills
+  Object.keys(T).forEach(k=>{
+    const p=document.getElementById('pill-'+k);if(!p)return;
+    const act=k===theme;
+    p.style.cssText=`padding:5px 13px;border-radius:20px;border:${act?'none':'1px solid var(--color-border-tertiary)'};background:${act?T[k].pill:'transparent'};color:${act?T[k].pt:'var(--color-text-secondary)'};font-size:11px;font-weight:${act?'600':'400'};cursor:pointer;`;
+  });
+}
+
+function setTheme(t){theme=t;render();}
+function setLang(l){lang=l;render();}
+function toggleLang(){setLang(lang==='ar'?'en':'ar');}
+
+const pd=document.getElementById('pills');
+Object.entries(T).forEach(([k,v])=>{
+  const b=document.createElement('button');
+  b.id='pill-'+k;b.textContent=v.label;b.onclick=()=>setTheme(k);pd.appendChild(b);
+});
+render();
+</script>
